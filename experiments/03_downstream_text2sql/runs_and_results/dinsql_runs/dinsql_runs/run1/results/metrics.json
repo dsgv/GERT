@@ -1,0 +1,76 @@
+{
+  "experiment": {
+    "name": "dinsql_full_schema_vs_gert_birdunion_100_v2",
+    "conditions": [
+      "din_linker",
+      "gert_selector"
+    ]
+  },
+  "protocol": {
+    "protocol_version": "dinsql_full_schema_vs_frozen_gert_k15_v2",
+    "upstream_commit": "0474801616130413b024fd008b016a190684649e",
+    "k": 15,
+    "din_schema_input": "full union schema in all four LLM stages",
+    "gert_schema_input": "frozen predicted_schemas_at15 in all four LLM stages",
+    "evidence": "empty",
+    "gold_db_id": "hidden from prompts; execution/evaluation only",
+    "pipeline": "schema linking -> classification -> generation -> self-correction",
+    "total_tokens": "provider-reported prompt + completion tokens across all four stages",
+    "bird_ex": "set(predicted_rows) == set(gold_rows), matching upstream evaluator",
+    "strict_ex": "duplicate-aware; order-aware when gold SQL contains ORDER BY",
+    "gert_routing_cost": "excluded because GERT predictions are frozen inputs",
+    "model_parameters": "provider defaults; no sampling parameters sent"
+  },
+  "metrics": {
+    "din_linker": {
+      "n": 100,
+      "bird_execution_accuracy": 0.1,
+      "strict_execution_accuracy": 0.08,
+      "invalid_sql_rate": 0.77,
+      "normalized_exact_match": 0.04,
+      "context_reduction": 0.0,
+      "avg_schema_tokens_estimate": 40954,
+      "avg_linker_tokens": 44822.56,
+      "avg_downstream_tokens": 123527.04,
+      "avg_pipeline_tokens": 168349.6,
+      "gold_table_complete_rate": 1.0,
+      "avg_linker_fill_count": 0,
+      "avg_linker_call_count": 1.06,
+      "classification_parse_rate": 1.0
+    },
+    "gert_selector": {
+      "n": 100,
+      "bird_execution_accuracy": 0.33,
+      "strict_execution_accuracy": 0.31,
+      "invalid_sql_rate": 0.10999999999999999,
+      "normalized_exact_match": 0.05,
+      "context_reduction": 0.9640779899399327,
+      "avg_schema_tokens_estimate": 1471.15,
+      "avg_linker_tokens": 5825.57,
+      "avg_downstream_tokens": 14530.48,
+      "avg_pipeline_tokens": 20356.05,
+      "gold_table_complete_rate": 0.89,
+      "avg_linker_fill_count": 0,
+      "avg_linker_call_count": 1,
+      "classification_parse_rate": 1.0
+    }
+  },
+  "paired_comparison": {
+    "bird_ex": {
+      "n": 100,
+      "both_correct": 8,
+      "din_only_correct": 2,
+      "gert_only_correct": 25,
+      "neither_correct": 65,
+      "mcnemar_exact_p_two_sided": 5.647540092468262e-06
+    },
+    "strict_ex": {
+      "n": 100,
+      "both_correct": 7,
+      "din_only_correct": 1,
+      "gert_only_correct": 24,
+      "neither_correct": 68,
+      "mcnemar_exact_p_two_sided": 1.5497207641601562e-06
+    }
+  }
+}

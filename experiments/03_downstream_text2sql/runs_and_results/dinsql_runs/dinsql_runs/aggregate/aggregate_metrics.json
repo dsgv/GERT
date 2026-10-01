@@ -1,0 +1,161 @@
+{
+  "protocol_version": "dinsql_full_schema_vs_frozen_gert_k15_v2",
+  "generated_at": "2026-09-04T20:02:18.466587+08:00",
+  "round_count": 3,
+  "result_dirs": [
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\dinsql_runs\\run1\\results",
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\dinsql_runs\\run2\\results",
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\dinsql_runs\\run3\\results"
+  ],
+  "std_definition": "sample standard deviation (n-1)",
+  "metrics": {
+    "din_linker": {
+      "bird_execution_accuracy": {
+        "values": [
+          0.1,
+          0.09,
+          0.13
+        ],
+        "mean": 0.10666666666666667,
+        "sample_std": 0.02081665999466133
+      },
+      "strict_execution_accuracy": {
+        "values": [
+          0.08,
+          0.08,
+          0.12
+        ],
+        "mean": 0.09333333333333334,
+        "sample_std": 0.02309401076758503
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.77,
+          0.73,
+          0.74
+        ],
+        "mean": 0.7466666666666667,
+        "sample_std": 0.020816659994661344
+      },
+      "context_reduction": {
+        "values": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean": 0.0,
+        "sample_std": 0.0
+      },
+      "avg_pipeline_tokens": {
+        "values": [
+          168349.6,
+          168494.54,
+          169178.19
+        ],
+        "mean": 168674.11000000002,
+        "sample_std": 442.5204918419008
+      },
+      "avg_linker_tokens": {
+        "values": [
+          44822.56,
+          44844.19,
+          45613.88
+        ],
+        "mean": 45093.543333333335,
+        "sample_std": 450.7545332365855
+      },
+      "avg_downstream_tokens": {
+        "values": [
+          123527.04,
+          123650.35,
+          123564.31
+        ],
+        "mean": 123580.56666666667,
+        "sample_std": 63.241983154658584
+      },
+      "gold_table_complete_rate": {
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "mean": 1.0,
+        "sample_std": 0.0
+      }
+    },
+    "gert_selector": {
+      "bird_execution_accuracy": {
+        "values": [
+          0.33,
+          0.34,
+          0.33
+        ],
+        "mean": 0.33333333333333337,
+        "sample_std": 0.005773502691896263
+      },
+      "strict_execution_accuracy": {
+        "values": [
+          0.31,
+          0.29,
+          0.31
+        ],
+        "mean": 0.30333333333333334,
+        "sample_std": 0.011547005383792526
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.10999999999999999,
+          0.09999999999999998,
+          0.13
+        ],
+        "mean": 0.11333333333333333,
+        "sample_std": 0.01527525231651948
+      },
+      "context_reduction": {
+        "values": [
+          0.9640779899399327,
+          0.9640779899399327,
+          0.9640779899399327
+        ],
+        "mean": 0.9640779899399327,
+        "sample_std": 0.0
+      },
+      "avg_pipeline_tokens": {
+        "values": [
+          20356.05,
+          20590.08,
+          20598.37
+        ],
+        "mean": 20514.833333333332,
+        "sample_std": 137.57285790930382
+      },
+      "avg_linker_tokens": {
+        "values": [
+          5825.57,
+          6139.23,
+          6116.67
+        ],
+        "mean": 6027.156666666667,
+        "sample_std": 174.94320945190572
+      },
+      "avg_downstream_tokens": {
+        "values": [
+          14530.48,
+          14450.85,
+          14481.7
+        ],
+        "mean": 14487.676666666666,
+        "sample_std": 40.15002656703102
+      },
+      "gold_table_complete_rate": {
+        "values": [
+          0.89,
+          0.89,
+          0.89
+        ],
+        "mean": 0.89,
+        "sample_std": 0.0
+      }
+    }
+  }
+}

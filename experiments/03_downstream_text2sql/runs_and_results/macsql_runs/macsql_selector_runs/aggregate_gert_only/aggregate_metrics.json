@@ -1,0 +1,95 @@
+{
+  "protocol_version": "macsql_selector_vs_frozen_gert_k15_v2",
+  "round_count": 3,
+  "std_definition": "sample standard deviation (n-1)",
+  "result_dirs": [
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\macsql_selector_runs\\run1\\results_gert_only",
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\macsql_selector_runs\\run2\\results_gert_only",
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\macsql_selector_runs\\run3\\results_gert_only"
+  ],
+  "metrics": {
+    "gert_selector": {
+      "execution_accuracy": {
+        "values": [
+          0.34,
+          0.36,
+          0.33
+        ],
+        "mean": 0.3433333333333333,
+        "sample_std": 0.015275252316519449
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.14,
+          0.13,
+          0.08999999999999997
+        ],
+        "mean": 0.12,
+        "sample_std": 0.02645751311064593
+      },
+      "context_reduction": {
+        "values": [
+          0.9640779899399327,
+          0.9640779899399327,
+          0.9640779899399327
+        ],
+        "mean": 0.9640779899399327,
+        "sample_std": 0.0
+      },
+      "downstream_context_reduction": {
+        "values": [
+          0.9640779899399327,
+          0.9640779899399327,
+          0.9640779899399327
+        ],
+        "mean": 0.9640779899399327,
+        "sample_std": 0.0
+      },
+      "avg_pipeline_tokens": {
+        "values": [
+          4992.46,
+          4906.02,
+          4962.73
+        ],
+        "mean": 4953.736666666667,
+        "sample_std": 43.916152305652986
+      },
+      "avg_selector_tokens": {
+        "values": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean": 0.0,
+        "sample_std": 0.0
+      },
+      "avg_total_tokens": {
+        "values": [
+          4992.46,
+          4906.02,
+          4962.73
+        ],
+        "mean": 4953.736666666667,
+        "sample_std": 43.916152305652986
+      },
+      "gold_table_complete_rate": {
+        "values": [
+          0.89,
+          0.89,
+          0.89
+        ],
+        "mean": 0.89,
+        "sample_std": 0.0
+      },
+      "avg_selected_table_count": {
+        "values": [
+          15.0,
+          15.0,
+          15.0
+        ],
+        "mean": 15.0,
+        "sample_std": 0.0
+      }
+    }
+  }
+}

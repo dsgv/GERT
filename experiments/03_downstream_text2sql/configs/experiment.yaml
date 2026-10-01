@@ -1,0 +1,48 @@
+experiment:
+  name: birdunion_multitable_100_text2sql
+  conditions: [full, dense, murre, crush4sql, cred_sql, core_t, linkalign, gert]
+
+paths:
+  prompt: prompts/zero_shot_sql.txt
+  database_root: data/dev_database
+  # Full Source Schema is the complete pooled BirdUnion schema shared by all queries.
+  full_source_schema: data/bird_union_schema_FK.txt
+  gert_input: data/prepared_prompts/gert.json
+  murre_input: data/prepared_prompts/murre.json
+  dense_input: data/prepared_prompts/dense.json
+  crush4sql_input: data/prepared_prompts/crush4sql.json
+  cred_sql_input: data/prepared_prompts/cred_sql.json
+  core_t_input: data/prepared_prompts/core_t.json
+  linkalign_input: data/prepared_prompts/linkalign.json
+  prepared_dir: data/prepared_prompts
+  output_dir: runs_and_results/e2e_generation/outputs
+  result_dir: runs_and_results/e2e_generation/results
+
+generation:
+  # Values may be overridden by TEXT2SQL_MODEL, TEXT2SQL_API_BASE,
+  # and TEXT2SQL_API_KEY in the environment or .env.
+  model: deepseek-v3.2
+  api_base: https://dashscope.aliyuncs.com/compatible-mode/v1
+  timeout_seconds: 120
+  api_retries: 3
+  retry_backoff_seconds: 2
+
+tokenization:
+  # Leave empty to use an explicitly labelled chars/4 schema-token estimate.
+  # For formal reporting, set a tokenizer compatible with the generation model.
+  tokenizer_name: ""
+
+evaluation:
+  sql_timeout_seconds: 30
+  max_result_rows: 100000
+  float_round_digits: 6
+
+# Table alias mappings to reconcile schema naming differences and official typos
+# present in BIRD benchmark SQLite databases (e.g. 'filed_for_bankrupcy', table names with spaces).
+table_aliases:
+  student_loan.filed_for_bankruptcy: filed_for_bankrupcy
+  card_games.ruling: rulings
+  app_store.googleplaystore: playstore
+  regional_sales.sales_orders: Sales Orders
+  regional_sales.store_locations: Store Locations
+  airline.air_carriers: Air Carriers

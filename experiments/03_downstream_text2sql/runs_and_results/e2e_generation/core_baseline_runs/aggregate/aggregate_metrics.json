@@ -1,0 +1,351 @@
+{
+  "generated_at": "2026-09-16T11:24:59.091456+08:00",
+  "round_count": 3,
+  "conditions": [
+    "full",
+    "dense",
+    "murre",
+    "gert"
+  ],
+  "result_files": [
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\core_baseline_runs\\run1\\results\\downstream_metrics.json",
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\core_baseline_runs\\run2\\results\\downstream_metrics.json",
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\core_baseline_runs\\run3\\results\\downstream_metrics.json"
+  ],
+  "std_definition": "sample standard deviation (n-1)",
+  "token_definition": "API-reported downstream prompt + completion tokens per query",
+  "metrics": {
+    "full": {
+      "execution_accuracy": {
+        "values": [
+          0.17,
+          0.16,
+          0.16
+        ],
+        "mean": 0.16333333333333333,
+        "sample_std": 0.005773502691896263
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.42000000000000004,
+          0.45999999999999996,
+          0.43999999999999995
+        ],
+        "mean": 0.44,
+        "sample_std": 0.019999999999999962
+      },
+      "schema_token_reduction_vs_full": {
+        "values": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean": 0.0,
+        "sample_std": 0.0
+      },
+      "avg_prompt_tokens": {
+        "values": [
+          38104.24,
+          38104.24,
+          38104.24
+        ],
+        "mean": 38104.24,
+        "sample_std": 0.0
+      },
+      "avg_completion_tokens": {
+        "values": [
+          68.59,
+          65.88,
+          63.58
+        ],
+        "mean": 66.01666666666667,
+        "sample_std": 2.507794515771447
+      },
+      "avg_total_tokens": {
+        "values": [
+          38172.83,
+          38170.12,
+          38167.82
+        ],
+        "mean": 38170.25666666667,
+        "sample_std": 2.50779451577241
+      },
+      "avg_cost_per_query": {
+        "values": [
+          0.07641425,
+          0.07640612,
+          0.07639922
+        ],
+        "mean": 0.07640653,
+        "sample_std": 7.523383547314194e-06
+      },
+      "downstream_latency_ms_mean": {
+        "values": [
+          2119.6499560039956,
+          3650.3058160154615,
+          2713.6306850076653
+        ],
+        "mean": 2827.862152342374,
+        "sample_std": 771.6951869384313
+      },
+      "total_cost": {
+        "values": [
+          7.641425,
+          7.640612,
+          7.639922
+        ],
+        "mean": 7.640653,
+        "sample_std": 0.0007523383547312319
+      }
+    },
+    "dense": {
+      "execution_accuracy": {
+        "values": [
+          0.17,
+          0.16,
+          0.17
+        ],
+        "mean": 0.16666666666666669,
+        "sample_std": 0.005773502691896263
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.27,
+          0.24,
+          0.20999999999999996
+        ],
+        "mean": 0.24,
+        "sample_std": 0.030000000000000027
+      },
+      "schema_token_reduction_vs_full": {
+        "values": [
+          0.9694864845066296,
+          0.9694864845066296,
+          0.9694864845066296
+        ],
+        "mean": 0.9694864845066296,
+        "sample_std": 0.0
+      },
+      "avg_prompt_tokens": {
+        "values": [
+          1523.39,
+          1523.39,
+          1523.39
+        ],
+        "mean": 1523.39,
+        "sample_std": 0.0
+      },
+      "avg_completion_tokens": {
+        "values": [
+          55.01,
+          57.83,
+          58.89
+        ],
+        "mean": 57.24333333333333,
+        "sample_std": 2.0054259730374837
+      },
+      "avg_total_tokens": {
+        "values": [
+          1578.4,
+          1581.22,
+          1582.28
+        ],
+        "mean": 1580.6333333333334,
+        "sample_std": 2.0054259730374246
+      },
+      "avg_cost_per_query": {
+        "values": [
+          0.00321181,
+          0.00322027,
+          0.00322345
+        ],
+        "mean": 0.00321851,
+        "sample_std": 6.016277919112564e-06
+      },
+      "downstream_latency_ms_mean": {
+        "values": [
+          2009.4364769977983,
+          4163.759683009703,
+          2103.3868860045914
+        ],
+        "mean": 2758.8610153373643,
+        "sample_std": 1217.5844404634818
+      },
+      "total_cost": {
+        "values": [
+          0.321181,
+          0.322027,
+          0.322345
+        ],
+        "mean": 0.321851,
+        "sample_std": 0.0006016277919112461
+      }
+    },
+    "murre": {
+      "execution_accuracy": {
+        "values": [
+          0.24,
+          0.25,
+          0.25
+        ],
+        "mean": 0.24666666666666667,
+        "sample_std": 0.005773502691896263
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.17000000000000004,
+          0.17000000000000004,
+          0.17000000000000004
+        ],
+        "mean": 0.17000000000000004,
+        "sample_std": 0.0
+      },
+      "schema_token_reduction_vs_full": {
+        "values": [
+          0.9703430762093131,
+          0.9703430762093131,
+          0.9703430762093131
+        ],
+        "mean": 0.9703430762093131,
+        "sample_std": 0.0
+      },
+      "avg_prompt_tokens": {
+        "values": [
+          1458.35,
+          1458.35,
+          1458.35
+        ],
+        "mean": 1458.35,
+        "sample_std": 0.0
+      },
+      "avg_completion_tokens": {
+        "values": [
+          69.49,
+          69.74,
+          71.55
+        ],
+        "mean": 70.25999999999999,
+        "sample_std": 1.1241441188744452
+      },
+      "avg_total_tokens": {
+        "values": [
+          1527.84,
+          1528.09,
+          1529.9
+        ],
+        "mean": 1528.61,
+        "sample_std": 1.1241441188745431
+      },
+      "avg_cost_per_query": {
+        "values": [
+          0.00312517,
+          0.00312592,
+          0.0031313499999999998
+        ],
+        "mean": 0.0031274799999999998,
+        "sample_std": 3.3724323566232025e-06
+      },
+      "downstream_latency_ms_mean": {
+        "values": [
+          2476.1047849978786,
+          4079.3505750061013,
+          2710.3535330086015
+        ],
+        "mean": 3088.6029643375273,
+        "sample_std": 865.9698262758722
+      },
+      "total_cost": {
+        "values": [
+          0.312517,
+          0.312592,
+          0.313135
+        ],
+        "mean": 0.31274799999999997,
+        "sample_std": 0.00033724323566233934
+      }
+    },
+    "gert": {
+      "execution_accuracy": {
+        "values": [
+          0.33,
+          0.31,
+          0.3
+        ],
+        "mean": 0.31333333333333335,
+        "sample_std": 0.01527525231651948
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.06000000000000005,
+          0.12,
+          0.10999999999999999
+        ],
+        "mean": 0.09666666666666668,
+        "sample_std": 0.032145502536643146
+      },
+      "schema_token_reduction_vs_full": {
+        "values": [
+          0.9640771127878299,
+          0.9640771127878299,
+          0.9640771127878299
+        ],
+        "mean": 0.9640771127878299,
+        "sample_std": 0.0
+      },
+      "avg_prompt_tokens": {
+        "values": [
+          1745.67,
+          1745.67,
+          1745.67
+        ],
+        "mean": 1745.67,
+        "sample_std": 0.0
+      },
+      "avg_completion_tokens": {
+        "values": [
+          72.09,
+          71.98,
+          71.05
+        ],
+        "mean": 71.70666666666666,
+        "sample_std": 0.5713434460404159
+      },
+      "avg_total_tokens": {
+        "values": [
+          1817.76,
+          1817.65,
+          1816.72
+        ],
+        "mean": 1817.3766666666668,
+        "sample_std": 0.5713434460404152
+      },
+      "avg_cost_per_query": {
+        "values": [
+          0.00370761,
+          0.00370728,
+          0.0037044900000000004
+        ],
+        "mean": 0.00370646,
+        "sample_std": 1.7140303381210058e-06
+      },
+      "downstream_latency_ms_mean": {
+        "values": [
+          2128.259424007847,
+          3727.9809640010353,
+          2933.77069000504
+        ],
+        "mean": 2930.0036926713074,
+        "sample_std": 799.8674228153243
+      },
+      "total_cost": {
+        "values": [
+          0.370761,
+          0.370728,
+          0.37044900000000003
+        ],
+        "mean": 0.37064600000000003,
+        "sample_std": 0.0001714030338121103
+      }
+    }
+  }
+}

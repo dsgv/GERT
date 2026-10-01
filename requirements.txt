@@ -1,0 +1,12 @@
+neo4j>=5.28.1
+neo4j-graphrag>=1.5.0
+numpy>=1.24.0
+openai>=1.65.2
+openpyxl>=3.1.5
+pandas>=2.2.3
+python-dotenv>=1.0.1
+PyYAML>=6.0.2
+SQLAlchemy>=2.0.38
+sentence-transformers>=2.2.0
+rank-bm25>=0.2.2
+tqdm>=4.66.0

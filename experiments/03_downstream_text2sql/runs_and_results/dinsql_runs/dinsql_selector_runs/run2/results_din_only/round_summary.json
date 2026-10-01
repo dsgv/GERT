@@ -1,0 +1,78 @@
+{
+  "protocol_version": "dinsql_selector_vs_frozen_gert_k15_v3",
+  "generated_at": "2026-09-04T22:43:45.072680+08:00",
+  "output_dir": "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\dinsql_selector_runs\\run2\\outputs",
+  "result_dir": "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\dinsql_selector_runs\\run2\\results_din_only",
+  "metrics": {
+    "din_linker": {
+      "n": 100,
+      "bird_execution_accuracy": 0.27,
+      "strict_execution_accuracy": 0.25,
+      "invalid_sql_rate": 0.15000000000000002,
+      "normalized_exact_match": 0.04,
+      "context_reduction": 0.0,
+      "downstream_context_reduction": 0.993275382136055,
+      "avg_schema_tokens_estimate": 275.4,
+      "avg_selected_table_count": 3.19,
+      "avg_linker_tokens": 47375.88,
+      "avg_downstream_tokens": 10542.4,
+      "avg_pipeline_tokens": 57918.28,
+      "gold_table_complete_rate": 0.6,
+      "avg_linker_fill_count": 0,
+      "avg_linker_call_count": 1.12,
+      "classification_parse_rate": 1.0
+    }
+  },
+  "paired_comparison": {},
+  "token_usage": {
+    "protocol_version": "dinsql_selector_vs_frozen_gert_k15_v3",
+    "generated_at": "2026-09-04T22:43:01.679175+08:00",
+    "run_name": "run2",
+    "output_dir": "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\dinsql_selector_runs\\run2\\outputs",
+    "model": "deepseek-v3.2",
+    "model_parameters": "provider_defaults",
+    "token_definition": "Provider-reported prompt + completion tokens across schema linking, classification, SQL generation, and self-correction",
+    "conditions": {
+      "din_linker": {
+        "label": "DIN-SQL Selector（全量 union schema 输入）",
+        "completed_questions": 100,
+        "expected_questions": 100,
+        "complete": true,
+        "prompt_tokens": 5602267,
+        "completion_tokens": 189561,
+        "total_tokens": 5791828,
+        "avg_prompt_tokens_per_question": 56022.67,
+        "avg_completion_tokens_per_question": 1895.61,
+        "avg_total_tokens_per_question": 57918.28,
+        "avg_wall_time_seconds": 37.29293116099929,
+        "api_calls": 412,
+        "stage_usage": {
+          "schema_linking": {
+            "prompt_tokens": 4665127,
+            "completion_tokens": 72461,
+            "total_tokens": 4737588,
+            "avg_tokens_per_question": 47375.88
+          },
+          "classification": {
+            "prompt_tokens": 466734,
+            "completion_tokens": 27119,
+            "total_tokens": 493853,
+            "avg_tokens_per_question": 4938.53
+          },
+          "sql_generation": {
+            "prompt_tokens": 317633,
+            "completion_tokens": 36317,
+            "total_tokens": 353950,
+            "avg_tokens_per_question": 3539.5
+          },
+          "self_correction": {
+            "prompt_tokens": 152773,
+            "completion_tokens": 53664,
+            "total_tokens": 206437,
+            "avg_tokens_per_question": 2064.37
+          }
+        }
+      }
+    }
+  }
+}

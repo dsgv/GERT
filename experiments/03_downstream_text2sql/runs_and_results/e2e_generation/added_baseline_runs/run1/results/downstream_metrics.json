@@ -1,0 +1,189 @@
+{
+  "experiment": {
+    "name": "birdunion_biased_100_text2sql",
+    "conditions": [
+      "gold",
+      "full",
+      "dense",
+      "murre",
+      "crush4sql",
+      "cred_sql",
+      "core_t",
+      "linkalign",
+      "gert"
+    ]
+  },
+  "metrics": {
+    "crush4sql": {
+      "n": 100,
+      "execution_accuracy": 0.24,
+      "normalized_exact_match": 0.0,
+      "parse_valid_rate": 1.0,
+      "executable_rate": 0.83,
+      "invalid_sql_rate": 0.17000000000000004,
+      "timeout_rate": 0.01,
+      "gold_table_coverage_rate": 0.54,
+      "avg_candidate_tables": 15.0,
+      "avg_schema_chars": 5456.61,
+      "avg_schema_tokens": 1364.52,
+      "avg_prompt_tokens": 1640.98,
+      "avg_completion_tokens": 64.34,
+      "avg_total_tokens": 1705.32,
+      "schema_token_reduction_vs_full": 0.9666808292432789,
+      "avg_cost_per_query": 0.00347498,
+      "total_cost": 0.347498,
+      "generation_latency_ms": {
+        "mean": 1765.932999997167,
+        "median": 1672.9156500077806,
+        "p95": 2673.5129650158333
+      },
+      "execution_latency_ms": {
+        "mean": 336.33799300179817,
+        "median": 1.005800033453852,
+        "p95": 153.45998004195275
+      },
+      "downstream_latency_ms": {
+        "mean": 2102.270992998965,
+        "median": 1708.827399997972,
+        "p95": 2971.5318600006863
+      },
+      "failure_categories": {
+        "VALID_BUT_WRONG_RESULT": 59,
+        "HALLUCINATED_TABLE": 4,
+        "HALLUCINATED_COLUMN": 11,
+        "CORRECT": 24,
+        "SQL_EXECUTION_ERROR": 1,
+        "SQL_TIMEOUT": 1
+      }
+    },
+    "cred_sql": {
+      "n": 100,
+      "execution_accuracy": 0.21,
+      "normalized_exact_match": 0.0,
+      "parse_valid_rate": 1.0,
+      "executable_rate": 0.91,
+      "invalid_sql_rate": 0.08999999999999997,
+      "timeout_rate": 0.0,
+      "gold_table_coverage_rate": 0.5,
+      "avg_candidate_tables": 15.0,
+      "avg_schema_chars": 5817.36,
+      "avg_schema_tokens": 1454.77,
+      "avg_prompt_tokens": 1752.29,
+      "avg_completion_tokens": 60.28,
+      "avg_total_tokens": 1812.57,
+      "schema_token_reduction_vs_full": 0.9644770834859473,
+      "avg_cost_per_query": 0.00368542,
+      "total_cost": 0.368542,
+      "generation_latency_ms": {
+        "mean": 1633.002192999702,
+        "median": 1553.0573000432923,
+        "p95": 2409.2271601024545
+      },
+      "execution_latency_ms": {
+        "mean": 65.56285599712282,
+        "median": 1.1997499968856573,
+        "p95": 392.340614972636
+      },
+      "downstream_latency_ms": {
+        "mean": 1698.5650489968248,
+        "median": 1595.9610000718385,
+        "p95": 2847.00157995685
+      },
+      "failure_categories": {
+        "VALID_BUT_WRONG_RESULT": 70,
+        "CORRECT": 21,
+        "HALLUCINATED_TABLE": 7,
+        "HALLUCINATED_COLUMN": 2
+      }
+    },
+    "core_t": {
+      "n": 100,
+      "execution_accuracy": 0.29,
+      "normalized_exact_match": 0.0,
+      "parse_valid_rate": 0.99,
+      "executable_rate": 0.86,
+      "invalid_sql_rate": 0.14,
+      "timeout_rate": 0.02,
+      "gold_table_coverage_rate": 0.72,
+      "avg_candidate_tables": 15.0,
+      "avg_schema_chars": 6077.4,
+      "avg_schema_tokens": 1519.68,
+      "avg_prompt_tokens": 1833.46,
+      "avg_completion_tokens": 78.72,
+      "avg_total_tokens": 1912.18,
+      "schema_token_reduction_vs_full": 0.9628920958171563,
+      "avg_cost_per_query": 0.0039030799999999997,
+      "total_cost": 0.390308,
+      "generation_latency_ms": {
+        "mean": 1952.9493629944045,
+        "median": 1703.4795500221662,
+        "p95": 2953.6305750196325
+      },
+      "execution_latency_ms": {
+        "mean": 685.9189580008388,
+        "median": 1.398300053551793,
+        "p95": 678.8019150029864
+      },
+      "downstream_latency_ms": {
+        "mean": 2638.8683209952433,
+        "median": 1777.643899898976,
+        "p95": 3524.73359489813
+      },
+      "failure_categories": {
+        "VALID_BUT_WRONG_RESULT": 57,
+        "CORRECT": 29,
+        "HALLUCINATED_COLUMN": 2,
+        "HALLUCINATED_TABLE": 9,
+        "SQL_PARSE_ERROR": 1,
+        "SQL_TIMEOUT": 2
+      }
+    },
+    "linkalign": {
+      "n": 100,
+      "execution_accuracy": 0.26,
+      "normalized_exact_match": 0.0,
+      "parse_valid_rate": 1.0,
+      "executable_rate": 0.83,
+      "invalid_sql_rate": 0.17000000000000004,
+      "timeout_rate": 0.01,
+      "gold_table_coverage_rate": 0.81,
+      "avg_candidate_tables": 15.0,
+      "avg_schema_chars": 6341.27,
+      "avg_schema_tokens": 1585.67,
+      "avg_prompt_tokens": 1919.7,
+      "avg_completion_tokens": 70.41,
+      "avg_total_tokens": 1990.11,
+      "schema_token_reduction_vs_full": 0.9612807364539838,
+      "avg_cost_per_query": 0.00405063,
+      "total_cost": 0.405063,
+      "generation_latency_ms": {
+        "mean": 1856.6740849998314,
+        "median": 1746.6104499762878,
+        "p95": 3083.200939977541
+      },
+      "execution_latency_ms": {
+        "mean": 365.50077399704605,
+        "median": 1.7097500385716558,
+        "p95": 194.90743498317727
+      },
+      "downstream_latency_ms": {
+        "mean": 2222.1748589968774,
+        "median": 1783.462200080976,
+        "p95": 3698.1871700379993
+      },
+      "failure_categories": {
+        "HALLUCINATED_TABLE": 9,
+        "VALID_BUT_WRONG_RESULT": 57,
+        "HALLUCINATED_COLUMN": 7,
+        "CORRECT": 26,
+        "SQL_TIMEOUT": 1
+      }
+    }
+  },
+  "significance": {},
+  "notes": [
+    "Predicted SQL is executed on the sample's recorded db_id; database selection is not evaluated.",
+    "The 100-query subset is deliberately bridge-focused and GERT-favorable.",
+    "Latency excludes the already-completed schema-routing stage."
+  ]
+}

@@ -1,0 +1,33 @@
+experiment:
+  name: dinsql_selector_vs_gert_birdunion_100_v3
+  conditions: [din_linker, gert_selector]
+
+paths:
+  dataset: birdunion_data/GERT_t2sql.json
+  database_root: birdunion_data/dev_database
+  union_schema: birdunion_data/bird_union_schema_FK.txt
+  dinsql_repo: .
+  # v3 protocol: keep every stochastic round isolated for later mean +/- std.
+  output_dir: new_runs/run1/outputs
+  result_dir: new_runs/run1/results
+
+routing:
+  k: 15
+  linker_parse_attempts: 2
+
+runtime:
+  workers: 2
+  api_retries: 3
+  retry_backoff_seconds: 2
+  request_timeout_seconds: 180
+
+evaluation:
+  sql_timeout_seconds: 30
+  max_result_rows: 100000
+  float_round_digits: 6
+
+smoke_question_ids: [94, 125, 253, 630, 723, 1001, 1127, 1252, 1450, 1500]
+
+table_aliases:
+  student_loan.filed_for_bankruptcy: filed_for_bankrupcy
+  card_games.ruling: rulings

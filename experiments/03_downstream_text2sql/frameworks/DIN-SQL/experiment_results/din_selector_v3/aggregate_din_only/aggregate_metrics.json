@@ -1,0 +1,105 @@
+{
+  "protocol_version": "dinsql_selector_vs_frozen_gert_k15_v3",
+  "generated_at": "2026-09-04T23:15:12.094185+08:00",
+  "round_count": 3,
+  "result_dirs": [
+    "experiment_results\\din_selector_v3\\run1\\results_din_only",
+    "experiment_results\\din_selector_v3\\run2\\results_din_only",
+    "experiment_results\\din_selector_v3\\run3\\results_din_only"
+  ],
+  "std_definition": "sample standard deviation (n-1)",
+  "metrics": {
+    "din_linker": {
+      "bird_execution_accuracy": {
+        "values": [
+          0.28,
+          0.27,
+          0.27
+        ],
+        "mean": 0.2733333333333334,
+        "sample_std": 0.005773502691896263
+      },
+      "strict_execution_accuracy": {
+        "values": [
+          0.26,
+          0.25,
+          0.24
+        ],
+        "mean": 0.25,
+        "sample_std": 0.010000000000000009
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.18000000000000005,
+          0.15000000000000002,
+          0.17000000000000004
+        ],
+        "mean": 0.1666666666666667,
+        "sample_std": 0.01527525231651948
+      },
+      "context_reduction": {
+        "values": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean": 0.0,
+        "sample_std": 0.0
+      },
+      "downstream_context_reduction": {
+        "values": [
+          0.9924515309859843,
+          0.993275382136055,
+          0.9931786882844167
+        ],
+        "mean": 0.992968533802152,
+        "sample_std": 0.00045034027044024174
+      },
+      "avg_pipeline_tokens": {
+        "values": [
+          55439.32,
+          57918.28,
+          55333.18
+        ],
+        "mean": 56230.26,
+        "sample_std": 1462.8311813739813
+      },
+      "avg_linker_tokens": {
+        "values": [
+          44838.18,
+          47375.88,
+          44808.87
+        ],
+        "mean": 45674.31,
+        "sample_std": 1473.675716601177
+      },
+      "avg_downstream_tokens": {
+        "values": [
+          10601.14,
+          10542.4,
+          10524.31
+        ],
+        "mean": 10555.949999999999,
+        "sample_std": 40.167326273975405
+      },
+      "gold_table_complete_rate": {
+        "values": [
+          0.59,
+          0.6,
+          0.58
+        ],
+        "mean": 0.59,
+        "sample_std": 0.010000000000000009
+      },
+      "avg_selected_table_count": {
+        "values": [
+          3.53,
+          3.19,
+          3.21
+        ],
+        "mean": 3.31,
+        "sample_std": 0.19078784028338905
+      }
+    }
+  }
+}

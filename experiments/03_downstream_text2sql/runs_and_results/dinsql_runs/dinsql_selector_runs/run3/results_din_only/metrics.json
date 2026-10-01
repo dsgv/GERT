@@ -1,0 +1,47 @@
+{
+  "experiment": {
+    "name": "dinsql_selector_vs_gert_birdunion_100_v3",
+    "conditions": [
+      "din_linker",
+      "gert_selector"
+    ]
+  },
+  "protocol": {
+    "protocol_version": "dinsql_selector_vs_frozen_gert_k15_v3",
+    "upstream_commit": "0474801616130413b024fd008b016a190684649e",
+    "k": 15,
+    "din_schema_input": "full union schema for schema linking; tables named by Schema_links are serialized and passed to classification, generation, and self-correction",
+    "gert_schema_input": "frozen predicted_schemas_at15 in all four LLM stages",
+    "evidence": "empty",
+    "gold_db_id": "hidden from prompts; execution/evaluation only",
+    "pipeline": "schema linking -> classification -> generation -> self-correction",
+    "total_tokens": "provider-reported prompt + completion tokens across all four stages",
+    "context_reduction": "end-to-end: zero for DIN because its selector reads the full union schema; GERT is measured against the full union schema",
+    "downstream_context_reduction": "diagnostic only: candidate schema reduction after selection",
+    "bird_ex": "set(predicted_rows) == set(gold_rows), matching upstream evaluator",
+    "strict_ex": "duplicate-aware; order-aware when gold SQL contains ORDER BY",
+    "gert_routing_cost": "excluded because GERT predictions are frozen inputs",
+    "model_parameters": "provider defaults; no sampling parameters sent"
+  },
+  "metrics": {
+    "din_linker": {
+      "n": 100,
+      "bird_execution_accuracy": 0.27,
+      "strict_execution_accuracy": 0.24,
+      "invalid_sql_rate": 0.17000000000000004,
+      "normalized_exact_match": 0.02,
+      "context_reduction": 0.0,
+      "downstream_context_reduction": 0.9931786882844167,
+      "avg_schema_tokens_estimate": 279.36,
+      "avg_selected_table_count": 3.21,
+      "avg_linker_tokens": 44808.87,
+      "avg_downstream_tokens": 10524.31,
+      "avg_pipeline_tokens": 55333.18,
+      "gold_table_complete_rate": 0.58,
+      "avg_linker_fill_count": 0,
+      "avg_linker_call_count": 1.06,
+      "classification_parse_rate": 1.0
+    }
+  },
+  "paired_comparison": {}
+}

@@ -1,0 +1,10 @@
+# Core requirements for the standalone BirdUnion Text-to-SQL experiment.
+# Python 3.10 or newer is recommended.
+openai>=1.41,<3
+python-dotenv>=1.0,<2
+PyYAML>=6.0,<7
+sqlglot>=25,<32
+tqdm>=4.66,<5
+
+# Optional: install transformers separately only when tokenization.tokenizer_name
+# is configured. With the default empty value, schema tokens use chars/4.

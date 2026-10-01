@@ -1,0 +1,18 @@
+{
+  "questions": 100,
+  "execution_databases": [
+    "codebase_community",
+    "debit_card_specializing",
+    "european_football_2",
+    "financial",
+    "formula_1",
+    "student_club",
+    "superhero",
+    "thrombosis_prediction",
+    "toxicology"
+  ],
+  "execution_database_count": 9,
+  "catalog_database_count": 80,
+  "catalog_table_count": 597,
+  "catalog_policy": "The 9 databases needed by the 100 gold questions contain full data; all remaining databases are schema-only SQLite catalogs."
+}

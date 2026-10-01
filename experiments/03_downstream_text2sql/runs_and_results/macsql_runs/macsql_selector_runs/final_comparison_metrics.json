@@ -1,0 +1,21 @@
+{
+  "protocol_version": "macsql_selector_vs_frozen_gert_k15_v2",
+  "round_count_per_method": 3,
+  "std_definition": "sample standard deviation (n-1)",
+  "mac_source": "macsql_selector_runs/aggregate_mac_only/aggregate_metrics.json",
+  "gert_source": "macsql_selector_runs/aggregate_gert_only/aggregate_metrics.json",
+  "metrics": {
+    "mac_selector": {
+      "execution_accuracy": {"mean": 0.32333333333333336, "sample_std": 0.020816659994661344},
+      "invalid_sql_rate": {"mean": 0.08666666666666663, "sample_std": 0.020816659994661344},
+      "context_reduction": {"mean": 0.0, "sample_std": 0.0},
+      "avg_pipeline_tokens": {"mean": 70085.01, "sample_std": 2106.5378054286193}
+    },
+    "gert_selector": {
+      "execution_accuracy": {"mean": 0.3433333333333333, "sample_std": 0.015275252316519449},
+      "invalid_sql_rate": {"mean": 0.12, "sample_std": 0.02645751311064593},
+      "context_reduction": {"mean": 0.9640779899399327, "sample_std": 0.0},
+      "avg_pipeline_tokens": {"mean": 4953.736666666667, "sample_std": 43.916152305652986}
+    }
+  }
+}

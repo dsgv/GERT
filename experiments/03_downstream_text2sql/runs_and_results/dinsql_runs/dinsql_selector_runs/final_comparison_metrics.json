@@ -1,0 +1,24 @@
+{
+  "std_definition": "sample standard deviation (n-1)",
+  "round_count_per_method": 3,
+  "paired_rounds": false,
+  "din_source": "dinsql_selector_runs/aggregate_din_only/aggregate_metrics.json",
+  "gert_source": "dinsql_runs/aggregate/aggregate_metrics.json",
+  "metrics": {
+    "din_selector": {
+      "bird_ex": {"mean": 0.2733333333333334, "sample_std": 0.005773502691896263},
+      "strict_ex": {"mean": 0.25, "sample_std": 0.010000000000000009},
+      "invalid_sql": {"mean": 0.1666666666666667, "sample_std": 0.01527525231651948},
+      "context_reduction": {"mean": 0.0, "sample_std": 0.0},
+      "downstream_context_reduction_diagnostic": {"mean": 0.992968533802152, "sample_std": 0.00045034027044024174},
+      "avg_total_tokens": {"mean": 56230.26, "sample_std": 1462.8311813739813}
+    },
+    "gert": {
+      "bird_ex": {"mean": 0.33333333333333337, "sample_std": 0.005773502691896263},
+      "strict_ex": {"mean": 0.30333333333333334, "sample_std": 0.011547005383792526},
+      "invalid_sql": {"mean": 0.11333333333333333, "sample_std": 0.01527525231651948},
+      "context_reduction": {"mean": 0.9640779899399327, "sample_std": 0.0},
+      "avg_total_tokens": {"mean": 20514.833333333332, "sample_std": 137.57285790930382}
+    }
+  }
+}

@@ -1,0 +1,30 @@
+experiment:
+  name: macsql_selector_vs_gert_birdunion_100
+  conditions: [mac_selector, gert_selector]
+
+paths:
+  dataset: data/prepared_prompts/gert.json
+  database_root: data/dev_database
+  union_schema: data/bird_union_schema_FK.txt
+  macsql_repo: frameworks/MAC-SQL
+  output_dir: runs_and_results/macsql_runs/macsql_outputs
+  result_dir: runs_and_results/macsql_runs/macsql_results
+
+routing:
+  k: 15
+  selector_format_attempts: 3
+  selector_min_llm_tables: 12
+
+runtime:
+  workers: 6
+  api_retries: 5
+  retry_backoff_seconds: 2
+
+evaluation:
+  sql_timeout_seconds: 30
+  max_result_rows: 100000
+  float_round_digits: 6
+
+table_aliases:
+  student_loan.filed_for_bankruptcy: filed_for_bankrupcy
+  card_games.ruling: rulings

@@ -1,0 +1,248 @@
+{
+  "generated_at": "2026-09-16T10:47:06.069845+08:00",
+  "round_count": 3,
+  "result_files": [
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\added_baseline_runs\\run1\\results\\downstream_metrics.json",
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\added_baseline_runs\\run2\\results\\downstream_metrics.json",
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\added_baseline_runs\\run3\\results\\downstream_metrics.json"
+  ],
+  "std_definition": "sample standard deviation (n-1)",
+  "metrics": {
+    "crush4sql": {
+      "execution_accuracy": {
+        "values": [
+          0.24,
+          0.25,
+          0.25
+        ],
+        "mean": 0.24666666666666667,
+        "sample_std": 0.005773502691896263
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.17000000000000004,
+          0.17000000000000004,
+          0.16000000000000003
+        ],
+        "mean": 0.1666666666666667,
+        "sample_std": 0.005773502691896263
+      },
+      "schema_token_reduction_vs_full": {
+        "values": [
+          0.9666808292432789,
+          0.9666808292432789,
+          0.9666808292432789
+        ],
+        "mean": 0.9666808292432789,
+        "sample_std": 0.0
+      },
+      "avg_total_tokens": {
+        "values": [
+          1705.32,
+          1705.45,
+          1709.69
+        ],
+        "mean": 1706.82,
+        "sample_std": 2.4863426956073833
+      },
+      "avg_cost_per_query": {
+        "values": [
+          0.00347498,
+          0.0034753699999999998,
+          0.0034880899999999997
+        ],
+        "mean": 0.0034794799999999996,
+        "sample_std": 7.459028086821944e-06
+      },
+      "downstream_latency_ms_mean": {
+        "values": [
+          2102.270992998965,
+          2111.179308000719,
+          2119.9654470023233
+        ],
+        "mean": 2111.138582667336,
+        "sample_std": 8.84729730108719
+      }
+    },
+    "cred_sql": {
+      "execution_accuracy": {
+        "values": [
+          0.21,
+          0.24,
+          0.24
+        ],
+        "mean": 0.22999999999999998,
+        "sample_std": 0.017320508075688773
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.08999999999999997,
+          0.12,
+          0.09999999999999998
+        ],
+        "mean": 0.10333333333333332,
+        "sample_std": 0.01527525231651948
+      },
+      "schema_token_reduction_vs_full": {
+        "values": [
+          0.9644770834859473,
+          0.9644770834859473,
+          0.9644770834859473
+        ],
+        "mean": 0.9644770834859473,
+        "sample_std": 0.0
+      },
+      "avg_total_tokens": {
+        "values": [
+          1812.57,
+          1814.26,
+          1816.17
+        ],
+        "mean": 1814.3333333333333,
+        "sample_std": 1.80112002191236
+      },
+      "avg_cost_per_query": {
+        "values": [
+          0.00368542,
+          0.0036904900000000003,
+          0.00369622
+        ],
+        "mean": 0.0036907100000000003,
+        "sample_std": 5.4033600657368925e-06
+      },
+      "downstream_latency_ms_mean": {
+        "values": [
+          1698.5650489968248,
+          1703.9353899972048,
+          1720.5460199993104
+        ],
+        "mean": 1707.68215299778,
+        "sample_std": 11.459469721147123
+      }
+    },
+    "core_t": {
+      "execution_accuracy": {
+        "values": [
+          0.29,
+          0.28,
+          0.28
+        ],
+        "mean": 0.2833333333333333,
+        "sample_std": 0.005773502691896231
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.14,
+          0.13,
+          0.13
+        ],
+        "mean": 0.13333333333333333,
+        "sample_std": 0.005773502691896263
+      },
+      "schema_token_reduction_vs_full": {
+        "values": [
+          0.9628920958171563,
+          0.9628920958171563,
+          0.9628920958171563
+        ],
+        "mean": 0.9628920958171563,
+        "sample_std": 0.0
+      },
+      "avg_total_tokens": {
+        "values": [
+          1912.18,
+          1910.51,
+          1902.5
+        ],
+        "mean": 1908.3966666666668,
+        "sample_std": 5.174479039800389
+      },
+      "avg_cost_per_query": {
+        "values": [
+          0.0039030799999999997,
+          0.00389807,
+          0.0038740400000000005
+        ],
+        "mean": 0.00389173,
+        "sample_std": 1.552343711940074e-05
+      },
+      "downstream_latency_ms_mean": {
+        "values": [
+          2638.8683209952433,
+          2676.7725129937753,
+          2117.900820019422
+        ],
+        "mean": 2477.8472180028134,
+        "sample_std": 312.29831733244885
+      }
+    },
+    "linkalign": {
+      "execution_accuracy": {
+        "values": [
+          0.26,
+          0.26,
+          0.25
+        ],
+        "mean": 0.25666666666666665,
+        "sample_std": 0.005773502691896263
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.17000000000000004,
+          0.17000000000000004,
+          0.15000000000000002
+        ],
+        "mean": 0.16333333333333336,
+        "sample_std": 0.011547005383792526
+      },
+      "schema_token_reduction_vs_full": {
+        "values": [
+          0.9612807364539838,
+          0.9612807364539838,
+          0.9612807364539838
+        ],
+        "mean": 0.9612807364539838,
+        "sample_std": 0.0
+      },
+      "avg_total_tokens": {
+        "values": [
+          1990.11,
+          1991.69,
+          2000.95
+        ],
+        "mean": 1994.25,
+        "sample_std": 5.8559030046612435
+      },
+      "avg_cost_per_query": {
+        "values": [
+          0.00405063,
+          0.00405537,
+          0.00408315
+        ],
+        "mean": 0.00406305,
+        "sample_std": 1.7567709013983337e-05
+      },
+      "downstream_latency_ms_mean": {
+        "values": [
+          2222.1748589968774,
+          2147.4721060111187,
+          1986.3161330018193
+        ],
+        "mean": 2118.6543660032717,
+        "sample_std": 120.5412015095788
+      }
+    }
+  },
+  "gert_fixed_reference": {
+    "source": "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\results\\downstream_metrics.json",
+    "note": "GERT was not rerun; these are the existing single-run values.",
+    "metrics": {
+      "execution_accuracy": 0.33,
+      "invalid_sql_rate": 0.06000000000000005,
+      "schema_token_reduction_vs_full": 0.9640771127878299,
+      "avg_total_tokens": 1817.76,
+      "avg_cost_per_query": 0.00370761,
+      "downstream_latency_ms_mean": 2136.4122030028375
+    }
+  }
+}

@@ -1,0 +1,19 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Temporary smoke-test locations documented in README.md.
+outputs/smoke/
+results/smoke/
+macsql_outputs/smoke/
+macsql_results/smoke/
+chess_smoke/
+chess_smoke_results/
+chess_smoke_stress/
+dinsql_smoke/
+dinsql_smoke_results/
+dinsql_smoke_balanced/
+dinsql_smoke_balanced_results/
+dinsql_v2_smoke/

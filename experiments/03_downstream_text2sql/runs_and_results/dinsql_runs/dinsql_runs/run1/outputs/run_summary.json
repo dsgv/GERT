@@ -1,0 +1,91 @@
+{
+  "protocol_version": "dinsql_full_schema_vs_frozen_gert_k15_v2",
+  "generated_at": "2026-09-04T14:46:57.361821+08:00",
+  "run_name": "run1",
+  "output_dir": "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\dinsql_runs\\run1\\outputs",
+  "model": "deepseek-v3.2",
+  "model_parameters": "provider_defaults",
+  "token_definition": "Provider-reported prompt + completion tokens across schema linking, classification, SQL generation, and self-correction",
+  "conditions": {
+    "din_linker": {
+      "label": "DIN-SQL（全量 union schema）",
+      "completed_questions": 100,
+      "expected_questions": 100,
+      "complete": true,
+      "prompt_tokens": 16654657,
+      "completion_tokens": 180303,
+      "total_tokens": 16834960,
+      "avg_prompt_tokens_per_question": 166546.57,
+      "avg_completion_tokens_per_question": 1803.03,
+      "avg_total_tokens_per_question": 168349.6,
+      "avg_wall_time_seconds": 37.70376748399969,
+      "api_calls": 406,
+      "stage_usage": {
+        "schema_linking": {
+          "prompt_tokens": 4415043,
+          "completion_tokens": 67213,
+          "total_tokens": 4482256,
+          "avg_tokens_per_question": 44822.56
+        },
+        "classification": {
+          "prompt_tokens": 4235108,
+          "completion_tokens": 21716,
+          "total_tokens": 4256824,
+          "avg_tokens_per_question": 42568.24
+        },
+        "sql_generation": {
+          "prompt_tokens": 4083254,
+          "completion_tokens": 35445,
+          "total_tokens": 4118699,
+          "avg_tokens_per_question": 41186.99
+        },
+        "self_correction": {
+          "prompt_tokens": 3921252,
+          "completion_tokens": 55929,
+          "total_tokens": 3977181,
+          "avg_tokens_per_question": 39771.81
+        }
+      }
+    },
+    "gert_selector": {
+      "label": "DIN-SQL + GERT (ours)",
+      "completed_questions": 100,
+      "expected_questions": 100,
+      "complete": true,
+      "prompt_tokens": 1866280,
+      "completion_tokens": 169325,
+      "total_tokens": 2035605,
+      "avg_prompt_tokens_per_question": 18662.8,
+      "avg_completion_tokens_per_question": 1693.25,
+      "avg_total_tokens_per_question": 20356.05,
+      "avg_wall_time_seconds": 35.392999135998835,
+      "api_calls": 400,
+      "stage_usage": {
+        "schema_linking": {
+          "prompt_tokens": 529069,
+          "completion_tokens": 53488,
+          "total_tokens": 582557,
+          "avg_tokens_per_question": 5825.57
+        },
+        "classification": {
+          "prompt_tokens": 599297,
+          "completion_tokens": 23147,
+          "total_tokens": 622444,
+          "avg_tokens_per_question": 6224.44
+        },
+        "sql_generation": {
+          "prompt_tokens": 452949,
+          "completion_tokens": 36631,
+          "total_tokens": 489580,
+          "avg_tokens_per_question": 4895.8
+        },
+        "self_correction": {
+          "prompt_tokens": 284965,
+          "completion_tokens": 56059,
+          "total_tokens": 341024,
+          "avg_tokens_per_question": 3410.24
+        }
+      }
+    }
+  }
+}

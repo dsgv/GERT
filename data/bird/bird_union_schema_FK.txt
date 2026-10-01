@@ -1,0 +1,7417 @@
+-- Database: debit_card_specializing
+
+CREATE TABLE customers (
+    CustomerID INT,
+    client segment TEXT,
+    Currency TEXT,
+    PRIMARY KEY (CustomerID)
+);
+
+CREATE TABLE gasstations (
+    Gas Station ID INT,
+    Chain ID INT,
+    Country TEXT,
+    chain segment TEXT,
+    PRIMARY KEY (Gas Station ID)
+);
+
+CREATE TABLE products (
+    Product ID INT,
+    Description TEXT,
+    PRIMARY KEY (Product ID)
+);
+
+CREATE TABLE transactions_1k (
+    Transaction ID INT,
+    Date TEXT,
+    Time TEXT,
+    Customer ID INT,
+    Card ID INT,
+    Gas Station ID INT,
+    Product ID INT,
+    Amount INT,
+    Price REAL,
+    PRIMARY KEY (Transaction ID)
+);
+
+CREATE TABLE yearmonth (
+    Customer ID INT,
+    Date TEXT,
+    Consumption REAL,
+    PRIMARY KEY (Customer ID, Date),
+    FOREIGN KEY (Customer ID) REFERENCES customers(CustomerID)
+);
+
+
+-- Database: financial
+
+CREATE TABLE account (
+    account id INT,
+    location of branch INT,
+    frequency TEXT,
+    date TEXT,
+    PRIMARY KEY (account id),
+    FOREIGN KEY (location of branch) REFERENCES district(location of branch)
+);
+
+CREATE TABLE card (
+    credit card id INT,
+    disposition id INT,
+    type TEXT,
+    issued TEXT,
+    PRIMARY KEY (credit card id),
+    FOREIGN KEY (disposition id) REFERENCES disp(disposition id)
+);
+
+CREATE TABLE client (
+    client_id INT,
+    gender TEXT,
+    birth_date TEXT,
+    location of branch INT,
+    PRIMARY KEY (client_id),
+    FOREIGN KEY (location of branch) REFERENCES district(location of branch)
+);
+
+CREATE TABLE disp (
+    disposition id INT,
+    client_id INT,
+    account_id INT,
+    type TEXT,
+    PRIMARY KEY (disposition id),
+    FOREIGN KEY (client_id) REFERENCES client(client_id),
+    FOREIGN KEY (account_id) REFERENCES account(account id)
+);
+
+CREATE TABLE district (
+    location of branch INT,
+    district_name TEXT,
+    region TEXT,
+    number of inhabitants TEXT,
+    no. of municipalities with inhabitants < 499 TEXT,
+    no. of municipalities with inhabitants 500-1999 TEXT,
+    no. of municipalities with inhabitants 2000-9999 TEXT,
+    no. of municipalities with inhabitants > 10000 INT,
+    A9 INT,
+    ratio of urban inhabitants REAL,
+    average salary INT,
+    unemployment rate 1995 REAL,
+    unemployment rate 1996 REAL,
+    no. of entrepreneurs per 1000 inhabitants INT,
+    no. of committed crimes 1995 INT,
+    no. of committed crimes 1996 INT,
+    PRIMARY KEY (location of branch)
+);
+
+CREATE TABLE loan (
+    loan_id INT,
+    account_id INT,
+    date TEXT,
+    amount INT,
+    duration INT,
+    monthly payments REAL,
+    status TEXT,
+    PRIMARY KEY (loan_id),
+    FOREIGN KEY (account_id) REFERENCES account(account id)
+);
+
+CREATE TABLE order (
+    order_id INT,
+    account_id INT,
+    bank of the recipient TEXT,
+    account of the recipient INT,
+    debited amount REAL,
+    characterization of the payment TEXT,
+    PRIMARY KEY (order_id),
+    FOREIGN KEY (account_id) REFERENCES account(account id)
+);
+
+CREATE TABLE trans (
+    transaction id INT,
+    account_id INT,
+    date of transaction TEXT,
+    +/- transaction TEXT,
+    mode of transaction TEXT,
+    amount of money INT,
+    balance after transaction INT,
+    characterization of the transaction TEXT,
+    bank of the partner TEXT,
+    account of the partner INT,
+    PRIMARY KEY (transaction id),
+    FOREIGN KEY (account_id) REFERENCES account(account id)
+);
+
+
+-- Database: formula_1
+
+CREATE TABLE circuits (
+    circuit Id INT,
+    circuit reference name TEXT,
+    name TEXT,
+    location TEXT,
+    country TEXT,
+    latitude REAL,
+    longitude REAL,
+    alt INT,
+    url TEXT,
+    PRIMARY KEY (circuit Id)
+);
+
+CREATE TABLE constructors (
+    constructor Id INT,
+    Constructor Reference name TEXT,
+    name TEXT,
+    nationality TEXT,
+    url TEXT,
+    PRIMARY KEY (constructor Id)
+);
+
+CREATE TABLE drivers (
+    driver ID INT,
+    driver reference name TEXT,
+    number INT,
+    code TEXT,
+    forename TEXT,
+    surname TEXT,
+    date of birth TEXT,
+    nationality TEXT,
+    url TEXT,
+    PRIMARY KEY (driver ID)
+);
+
+CREATE TABLE seasons (
+    race ID INT,
+    url TEXT,
+    PRIMARY KEY (race ID)
+);
+
+CREATE TABLE races (
+    race ID INT,
+    year INT,
+    round INT,
+    Circuit Id INT,
+    name TEXT,
+    date TEXT,
+    time TEXT,
+    url TEXT,
+    PRIMARY KEY (race ID),
+    FOREIGN KEY (year) REFERENCES seasons(race ID),
+    FOREIGN KEY (Circuit Id) REFERENCES circuits(circuit Id)
+);
+
+CREATE TABLE constructorresults (
+    constructor Results Id INT,
+    race Id INT,
+    constructor Id INT,
+    points REAL,
+    status TEXT,
+    PRIMARY KEY (constructor Results Id),
+    FOREIGN KEY (race Id) REFERENCES races(race ID),
+    FOREIGN KEY (constructor Id) REFERENCES constructors(constructor Id)
+);
+
+CREATE TABLE constructorstandings (
+    constructor Standings Id INT,
+    race id INT,
+    constructor id INT,
+    points REAL,
+    position INT,
+    position text TEXT,
+    wins INT,
+    PRIMARY KEY (constructor Standings Id),
+    FOREIGN KEY (race id) REFERENCES races(race ID),
+    FOREIGN KEY (constructor id) REFERENCES constructors(constructor Id)
+);
+
+CREATE TABLE driverstandings (
+    driver Standings Id INT,
+    constructor Reference name INT,
+    driverId INT,
+    points REAL,
+    position INT,
+    position text TEXT,
+    wins INT,
+    PRIMARY KEY (driver Standings Id),
+    FOREIGN KEY (constructor Reference name) REFERENCES races(race ID),
+    FOREIGN KEY (driverId) REFERENCES drivers(driver ID)
+);
+
+CREATE TABLE laptimes (
+    race ID INT,
+    driver ID INT,
+    lap INT,
+    position INT,
+    time TEXT,
+    milliseconds INT,
+    PRIMARY KEY (race ID, driver ID, lap),
+    FOREIGN KEY (race ID) REFERENCES races(race ID),
+    FOREIGN KEY (driver ID) REFERENCES drivers(driver ID)
+);
+
+CREATE TABLE pitstops (
+    race ID INT,
+    driver ID INT,
+    stop INT,
+    lap INT,
+    time TEXT,
+    duration TEXT,
+    milliseconds INT,
+    PRIMARY KEY (race ID, driver ID, stop),
+    FOREIGN KEY (race ID) REFERENCES races(race ID),
+    FOREIGN KEY (driver ID) REFERENCES drivers(driver ID)
+);
+
+CREATE TABLE qualifying (
+    qualify Id INT,
+    race Id INT,
+    driver Id INT,
+    constructor id INT,
+    number INT,
+    position INT,
+    qualifying 1 TEXT,
+    qualifying 2 TEXT,
+    qualifying 3 TEXT,
+    PRIMARY KEY (qualify Id),
+    FOREIGN KEY (race Id) REFERENCES races(race ID),
+    FOREIGN KEY (driver Id) REFERENCES drivers(driver ID),
+    FOREIGN KEY (constructor id) REFERENCES constructors(constructor Id)
+);
+
+CREATE TABLE status (
+    status ID INT,
+    status TEXT,
+    PRIMARY KEY (status ID)
+);
+
+CREATE TABLE results (
+    Result ID INT,
+    race ID INT,
+    driver ID INT,
+    constructor Id INT,
+    number INT,
+    grid INT,
+    position INT,
+    position text TEXT,
+    position order INT,
+    points REAL,
+    laps INT,
+    time TEXT,
+    milliseconds INT,
+    fastest lap INT,
+    rank INT,
+    fastest Lap Time TEXT,
+    fastest Lap Speed TEXT,
+    status Id INT,
+    PRIMARY KEY (Result ID),
+    FOREIGN KEY (race ID) REFERENCES races(race ID),
+    FOREIGN KEY (driver ID) REFERENCES drivers(driver ID),
+    FOREIGN KEY (constructor Id) REFERENCES constructors(constructor Id),
+    FOREIGN KEY (status Id) REFERENCES status(status ID)
+);
+
+
+-- Database: california_schools
+
+CREATE TABLE frpm (
+    CDSCode TEXT,
+    Academic Year TEXT,
+    County Code TEXT,
+    District Code INT,
+    School Code TEXT,
+    County Name TEXT,
+    District Name TEXT,
+    School Name TEXT,
+    District Type TEXT,
+    School Type TEXT,
+    Educational Option Type TEXT,
+    NSLP Provision Status TEXT,
+    Charter School (Y/N) INT,
+    Charter School Number TEXT,
+    Charter Funding Type TEXT,
+    IRC INT,
+    Low Grade TEXT,
+    High Grade TEXT,
+    Enrollment (K-12) REAL,
+    Free Meal Count (K-12) REAL,
+    Percent (%) Eligible Free (K-12) REAL,
+    FRPM Count (K-12) REAL,
+    Percent (%) Eligible FRPM (K-12) REAL,
+    Enrollment (Ages 5-17) REAL,
+    Free Meal Count (Ages 5-17) REAL,
+    Percent (%) Eligible Free (Ages 5-17) REAL,
+    FRPM Count (Ages 5-17) REAL,
+    Percent (%) Eligible FRPM (Ages 5-17) REAL,
+    2013-14 CALPADS Fall 1 Certification Status INT,
+    PRIMARY KEY (CDSCode),
+    FOREIGN KEY (CDSCode) REFERENCES schools(CDSCode)
+);
+
+CREATE TABLE satscores (
+    cds TEXT,
+    rtype TEXT,
+    school name TEXT,
+    district name TEXT,
+    county name TEXT,
+    enrollment (1st-12nd grade) INT,
+    Number of Test Takers INT,
+    average scores in Reading INT,
+    average scores in Math INT,
+    average scores in writing INT,
+    Number of Test Takers Whose Total SAT Scores Are Greater or Equal to 1500 INT,
+    PRIMARY KEY (cds),
+    FOREIGN KEY (cds) REFERENCES schools(CDSCode)
+);
+
+CREATE TABLE schools (
+    CDSCode TEXT,
+    National Center for Educational Statistics school district identification number TEXT,
+    National Center for Educational Statistics school identification number TEXT,
+    StatusType TEXT,
+    County TEXT,
+    District TEXT,
+    School TEXT,
+    Street TEXT,
+    street address TEXT,
+    City TEXT,
+    Zip TEXT,
+    State TEXT,
+    MailStreet TEXT,
+    mailing street address TEXT,
+    mailing city TEXT,
+    mailing zip TEXT,
+    mailing state TEXT,
+    Phone TEXT,
+    extension TEXT,
+    Website TEXT,
+    OpenDate TEXT,
+    ClosedDate TEXT,
+    Charter INT,
+    CharterNum TEXT,
+    FundingType TEXT,
+    District Ownership Code TEXT,
+    The District Ownership Code Type TEXT,
+    School Ownership Code TEXT,
+    School Ownership Code Type TEXT,
+    Education Option Code TEXT,
+    Educational Option Name TEXT,
+    Educational Instruction Level Code TEXT,
+    Educational Instruction Level Name TEXT,
+    grade span offered TEXT,
+    grade span served. TEXT,
+    Virtual TEXT,
+    Magnet INT,
+    Latitude REAL,
+    Longitude REAL,
+    administrator's first name 1 TEXT,
+    administrator's last name 1 TEXT,
+    administrator's email address 1 TEXT,
+    administrator's first name 2 TEXT,
+    administrator's last name 2 TEXT,
+    administrator's email address 2 TEXT,
+    administrator's first name 3 TEXT,
+    administrator's last name 3 TEXT,
+    administrator's email address 3 TEXT,
+    Last Update TEXT,
+    PRIMARY KEY (CDSCode)
+);
+
+
+-- Database: card_games
+
+CREATE TABLE cards (
+    unique id number identifying the cards INT,
+    artist TEXT,
+    ascii Name TEXT,
+    availability TEXT,
+    border Color TEXT,
+    card Kingdom Foil Id TEXT,
+    card Kingdom Id TEXT,
+    color Identity TEXT,
+    color Indicator TEXT,
+    colors TEXT,
+    converted Mana Cost REAL,
+    duel Deck TEXT,
+    rec Rank in edh INT,
+    face Converted Mana Cost REAL,
+    face Name TEXT,
+    flavor Name TEXT,
+    flavor Text TEXT,
+    frame Effects TEXT,
+    frame Version TEXT,
+    hand TEXT,
+    has Alternative Deck Limit INT,
+    has Content Warning INT,
+    has Foil INT,
+    has Non Foil INT,
+    is Alternative INT,
+    is Full Art INT,
+    is Online Only INT,
+    is Oversized INT,
+    is Promotion INT,
+    is Reprint INT,
+    is Reserved INT,
+    is Starter INT,
+    is Story Spotlight INT,
+    is Text less INT,
+    is Time shifted INT,
+    keywords TEXT,
+    layout TEXT,
+    leadership Skills TEXT,
+    life TEXT,
+    loyalty TEXT,
+    mana Cost TEXT,
+    mcmId TEXT,
+    mcmMetaId TEXT,
+    mtgArenaId TEXT,
+    mtgjsonV4Id TEXT,
+    mtgoFoilId TEXT,
+    mtgoId TEXT,
+    multiverseId TEXT,
+    name TEXT,
+    number TEXT,
+    originalReleaseDate TEXT,
+    originalText TEXT,
+    originalType TEXT,
+    otherFaceIds TEXT,
+    power TEXT,
+    printings TEXT,
+    promo Types TEXT,
+    purchase Urls TEXT,
+    rarity TEXT,
+    scryfallId TEXT,
+    scryfallIllustrationId TEXT,
+    scryfallOracleId TEXT,
+    Set Code TEXT,
+    side TEXT,
+    subtypes TEXT,
+    super types TEXT,
+    tcg player ProductId TEXT,
+    text TEXT,
+    toughness TEXT,
+    type TEXT,
+    types TEXT,
+    uuid TEXT,
+    variations TEXT,
+    watermark TEXT,
+    PRIMARY KEY (unique id number identifying the cards)
+);
+
+CREATE TABLE foreign_data (
+    id INT,
+    flavor Text TEXT,
+    language TEXT,
+    multiverseid INT,
+    name TEXT,
+    text TEXT,
+    type TEXT,
+    uuid TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (uuid) REFERENCES cards(uuid)
+);
+
+CREATE TABLE legalities (
+    id INT,
+    format TEXT,
+    status TEXT,
+    uuid TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (uuid) REFERENCES cards(uuid)
+);
+
+CREATE TABLE sets (
+    id INT,
+    base Set Size INT,
+    block TEXT,
+    booster TEXT,
+    code TEXT,
+    is Foil Only INT,
+    is Foreign Only INT,
+    is Non Foil Only INT,
+    is Online Only INT,
+    is Partial Preview INT,
+    keyrune Code TEXT,
+    magic card market id INT,
+    magic card market ID Extras INT,
+    magic card market name TEXT,
+    magic the gathering online code TEXT,
+    name TEXT,
+    parent Code TEXT,
+    release Date TEXT,
+    tcg player Group Id INT,
+    total Set Size INT,
+    type TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE set_translations (
+    id INT,
+    language TEXT,
+    set code TEXT,
+    translation TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (set code) REFERENCES sets(code)
+);
+
+CREATE TABLE ruling (
+    id INT,
+    date TEXT,
+    text TEXT,
+    uuid TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (uuid) REFERENCES cards(uuid)
+);
+
+
+-- Database: european_football_2
+
+CREATE TABLE player_attributes (
+    id INT,
+    player federation international football association api id INT,
+    player api id INT,
+    date TEXT,
+    overall_rating INT,
+    potential INT,
+    preferred foot TEXT,
+    attacking work rate TEXT,
+    defensive_work_rate TEXT,
+    crossing INT,
+    finishing INT,
+    heading accuracy INT,
+    short passing INT,
+    volleys INT,
+    dribbling INT,
+    curve INT,
+    free kick accuracy INT,
+    long passing INT,
+    ball control INT,
+    acceleration INT,
+    sprint speed INT,
+    agility INT,
+    reactions INT,
+    balance INT,
+    shot power INT,
+    jumping INT,
+    stamina INT,
+    strength INT,
+    long shots INT,
+    aggression INT,
+    interceptions INT,
+    positioning INT,
+    vision INT,
+    penalties INT,
+    marking INT,
+    standing tackle INT,
+    sliding tackle INT,
+    goalkeep diving INT,
+    goalkeep handling INT,
+    goalkeep kicking INT,
+    goalkeep positioning INT,
+    goalkeep reflexes INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (player federation international football association api id) REFERENCES player(player federation international football association api id),
+    FOREIGN KEY (player api id) REFERENCES player(player api id)
+);
+
+CREATE TABLE player (
+    id INT,
+    player api id INT,
+    player name TEXT,
+    player federation international football association api id INT,
+    birthday TEXT,
+    height INT,
+    weight INT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE league (
+    id INT,
+    country id INT,
+    name TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (country id) REFERENCES country(id)
+);
+
+CREATE TABLE country (
+    id INT,
+    name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE team (
+    id INT,
+    team api id INT,
+    team federation international football association api id INT,
+    team long name TEXT,
+    team short name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE team_attributes (
+    id INT,
+    team federation international football association api id INT,
+    team api id INT,
+    date TEXT,
+    build Up Play Speed INT,
+    build Up Play Speed Class TEXT,
+    build Up Play Dribbling INT,
+    build Up Play Dribbling Class TEXT,
+    build Up Play Passing INT,
+    build Up Play Passing Class TEXT,
+    build Up Play Positioning Class TEXT,
+    chance Creation Passing INT,
+    chance Creation Passing Class TEXT,
+    chance Creation Crossing INT,
+    chance Creation Crossing Class TEXT,
+    chance Creation Shooting INT,
+    chance Creation Shooting Class TEXT,
+    chance Creation Positioning Class TEXT,
+    defence Pressure INT,
+    defence Pressure Class TEXT,
+    defence Aggression INT,
+    defence Aggression Class TEXT,
+    defence Team Width INT,
+    defence Team Width Class TEXT,
+    defence Defender Line Class TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (team federation international football association api id) REFERENCES team(team federation international football association api id),
+    FOREIGN KEY (team api id) REFERENCES team(team api id)
+);
+
+CREATE TABLE match (
+    id INT,
+    country id INT,
+    league id INT,
+    season TEXT,
+    stage INT,
+    date TEXT,
+    match api id INT,
+    home team api id INT,
+    away team api id INT,
+    home team goal INT,
+    away team goal INT,
+    home_player_X1 INT,
+    home_player_X2 INT,
+    home_player_X3 INT,
+    home_player_X4 INT,
+    home_player_X5 INT,
+    home_player_X6 INT,
+    home_player_X7 INT,
+    home_player_X8 INT,
+    home_player_X9 INT,
+    home_player_X10 INT,
+    home_player_X11 INT,
+    away_player_X1 INT,
+    away_player_X2 INT,
+    away_player_X3 INT,
+    away_player_X4 INT,
+    away_player_X5 INT,
+    away_player_X6 INT,
+    away_player_X7 INT,
+    away_player_X8 INT,
+    away_player_X9 INT,
+    away_player_X10 INT,
+    away_player_X11 INT,
+    home_player_Y1 INT,
+    home_player_Y2 INT,
+    home_player_Y3 INT,
+    home_player_Y4 INT,
+    home_player_Y5 INT,
+    home_player_Y6 INT,
+    home_player_Y7 INT,
+    home_player_Y8 INT,
+    home_player_Y9 INT,
+    home_player_Y10 INT,
+    home_player_Y11 INT,
+    away_player_Y1 INT,
+    away_player_Y2 INT,
+    away_player_Y3 INT,
+    away_player_Y4 INT,
+    away_player_Y5 INT,
+    away_player_Y6 INT,
+    away_player_Y7 INT,
+    away_player_Y8 INT,
+    away_player_Y9 INT,
+    away_player_Y10 INT,
+    away_player_Y11 INT,
+    home_player_1 INT,
+    home_player_2 INT,
+    home_player_3 INT,
+    home_player_4 INT,
+    home_player_5 INT,
+    home_player_6 INT,
+    home_player_7 INT,
+    home_player_8 INT,
+    home_player_9 INT,
+    home_player_10 INT,
+    home_player_11 INT,
+    away_player_1 INT,
+    away_player_2 INT,
+    away_player_3 INT,
+    away_player_4 INT,
+    away_player_5 INT,
+    away_player_6 INT,
+    away_player_7 INT,
+    away_player_8 INT,
+    away_player_9 INT,
+    away_player_10 INT,
+    away_player_11 INT,
+    goal TEXT,
+    shot on TEXT,
+    shot off TEXT,
+    foul commit TEXT,
+    card TEXT,
+    cross TEXT,
+    corner TEXT,
+    possession TEXT,
+    B365H REAL,
+    B365D REAL,
+    B365A REAL,
+    BWH REAL,
+    BWD REAL,
+    BWA REAL,
+    IWH REAL,
+    IWD REAL,
+    IWA REAL,
+    LBH REAL,
+    LBD REAL,
+    LBA REAL,
+    PSH REAL,
+    PSD REAL,
+    PSA REAL,
+    WHH REAL,
+    WHD REAL,
+    WHA REAL,
+    SJH REAL,
+    SJD REAL,
+    SJA REAL,
+    VCH REAL,
+    VCD REAL,
+    VCA REAL,
+    GBH REAL,
+    GBD REAL,
+    GBA REAL,
+    BSH REAL,
+    BSD REAL,
+    BSA REAL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (home team api id) REFERENCES team(team api id),
+    FOREIGN KEY (away team api id) REFERENCES team(team api id),
+    FOREIGN KEY (home_player_1) REFERENCES player(player api id),
+    FOREIGN KEY (home_player_2) REFERENCES player(player api id),
+    FOREIGN KEY (home_player_3) REFERENCES player(player api id),
+    FOREIGN KEY (home_player_4) REFERENCES player(player api id),
+    FOREIGN KEY (home_player_5) REFERENCES player(player api id),
+    FOREIGN KEY (home_player_6) REFERENCES player(player api id),
+    FOREIGN KEY (home_player_7) REFERENCES player(player api id),
+    FOREIGN KEY (home_player_8) REFERENCES player(player api id),
+    FOREIGN KEY (home_player_9) REFERENCES player(player api id),
+    FOREIGN KEY (home_player_10) REFERENCES player(player api id),
+    FOREIGN KEY (home_player_11) REFERENCES player(player api id),
+    FOREIGN KEY (away_player_1) REFERENCES player(player api id),
+    FOREIGN KEY (away_player_2) REFERENCES player(player api id),
+    FOREIGN KEY (away_player_3) REFERENCES player(player api id),
+    FOREIGN KEY (away_player_4) REFERENCES player(player api id),
+    FOREIGN KEY (away_player_5) REFERENCES player(player api id),
+    FOREIGN KEY (away_player_6) REFERENCES player(player api id),
+    FOREIGN KEY (away_player_7) REFERENCES player(player api id),
+    FOREIGN KEY (away_player_8) REFERENCES player(player api id),
+    FOREIGN KEY (away_player_9) REFERENCES player(player api id),
+    FOREIGN KEY (away_player_10) REFERENCES player(player api id),
+    FOREIGN KEY (away_player_11) REFERENCES player(player api id)
+);
+
+
+-- Database: thrombosis_prediction
+
+CREATE TABLE examination (
+    ID INT,
+    Examination Date TEXT,
+    anti-Cardiolipin antibody (IgG) REAL,
+    anti-Cardiolipin antibody (IgM) REAL,
+    anti-nucleus antibody INT,
+    pattern observed in the sheet of ANA examination TEXT,
+    anti-Cardiolipin antibody (IgA) concentration INT,
+    Diagnosis TEXT,
+    measure of degree of coagulation TEXT,
+    measure of degree of coagulation TEXT,
+    measure of degree of coagulation TEXT,
+    Symptoms TEXT,
+    Thrombosis INT,
+    FOREIGN KEY (ID) REFERENCES patient(ID)
+);
+
+CREATE TABLE patient (
+    ID INT,
+    SEX TEXT,
+    Birthday TEXT,
+    Description TEXT,
+    First Date TEXT,
+    Admission TEXT,
+    Diagnosis TEXT,
+    PRIMARY KEY (ID)
+);
+
+CREATE TABLE laboratory (
+    ID INT,
+    Date TEXT,
+    AST glutamic oxaloacetic transaminase INT,
+    ALT glutamic pyruvic transaminase INT,
+    lactate dehydrogenase INT,
+    alkaliphophatase INT,
+    total protein REAL,
+    albumin REAL,
+    uric acid REAL,
+    urea nitrogen INT,
+    creatinine REAL,
+    total bilirubin REAL,
+    total cholesterol INT,
+    triglyceride INT,
+    creatinine phosphokinase INT,
+    blood glucose INT,
+    White blood cell REAL,
+    Red blood cell REAL,
+    Hemoglobin REAL,
+    Hematoclit REAL,
+    platelet INT,
+    prothrombin time REAL,
+    activated partial prothrombin time INT,
+    fibrinogen REAL,
+    PIC INT,
+    TAT INT,
+    TAT2 INT,
+    proteinuria TEXT,
+    Ig G INT,
+    Ig A INT,
+    Ig M INT,
+    C-reactive protein TEXT,
+    Rhuematoid Factor TEXT,
+    RAHA TEXT,
+    complement 3 INT,
+    complement 4 INT,
+    anti-ribonuclear protein TEXT,
+    anti-SM TEXT,
+    anti-scl70 TEXT,
+    anti-SSA TEXT,
+    anti-SSB TEXT,
+    anti-centromere TEXT,
+    anti-DNA TEXT,
+    anti-DNA INT,
+    PRIMARY KEY (ID, Date),
+    FOREIGN KEY (ID) REFERENCES patient(ID)
+);
+
+
+-- Database: toxicology
+
+CREATE TABLE atom (
+    atom id TEXT,
+    molecule id TEXT,
+    element TEXT,
+    PRIMARY KEY (atom id),
+    FOREIGN KEY (molecule id) REFERENCES molecule(molecule id)
+);
+
+CREATE TABLE bond (
+    bond_id TEXT,
+    molecule_id TEXT,
+    bond_type TEXT,
+    PRIMARY KEY (bond_id),
+    FOREIGN KEY (molecule_id) REFERENCES molecule(molecule id)
+);
+
+CREATE TABLE connected (
+    atom id TEXT,
+    atom id 2 TEXT,
+    bond id TEXT,
+    PRIMARY KEY (atom id, atom id 2),
+    FOREIGN KEY (atom id) REFERENCES atom(atom id),
+    FOREIGN KEY (atom id 2) REFERENCES atom(atom id),
+    FOREIGN KEY (bond id) REFERENCES bond(bond_id)
+);
+
+CREATE TABLE molecule (
+    molecule id TEXT,
+    label TEXT,
+    PRIMARY KEY (molecule id)
+);
+
+
+-- Database: student_club
+
+CREATE TABLE event (
+    event id TEXT,
+    event name TEXT,
+    event date TEXT,
+    type TEXT,
+    notes TEXT,
+    location TEXT,
+    status TEXT,
+    PRIMARY KEY (event id)
+);
+
+CREATE TABLE major (
+    major id TEXT,
+    major name TEXT,
+    department TEXT,
+    college TEXT,
+    PRIMARY KEY (major id)
+);
+
+CREATE TABLE zip_code (
+    zip code INT,
+    type TEXT,
+    city TEXT,
+    county TEXT,
+    state TEXT,
+    short state TEXT,
+    PRIMARY KEY (zip code)
+);
+
+CREATE TABLE attendance (
+    link to event TEXT,
+    link to member TEXT,
+    PRIMARY KEY (link to event, link to member),
+    FOREIGN KEY (link to event) REFERENCES event(event id),
+    FOREIGN KEY (link to member) REFERENCES member(member id)
+);
+
+CREATE TABLE budget (
+    budget id TEXT,
+    category TEXT,
+    spent REAL,
+    remaining REAL,
+    amount INT,
+    event status TEXT,
+    link to event TEXT,
+    PRIMARY KEY (budget id),
+    FOREIGN KEY (link to event) REFERENCES event(event id)
+);
+
+CREATE TABLE expense (
+    expense id TEXT,
+    expense description TEXT,
+    expense date TEXT,
+    cost REAL,
+    approved TEXT,
+    link to member TEXT,
+    link to budget TEXT,
+    PRIMARY KEY (expense id),
+    FOREIGN KEY (link to member) REFERENCES member(member id),
+    FOREIGN KEY (link to budget) REFERENCES budget(budget id)
+);
+
+CREATE TABLE income (
+    income id TEXT,
+    date received TEXT,
+    amount INT,
+    source TEXT,
+    notes TEXT,
+    link to member TEXT,
+    PRIMARY KEY (income id),
+    FOREIGN KEY (link to member) REFERENCES member(member id)
+);
+
+CREATE TABLE member (
+    member id TEXT,
+    first name TEXT,
+    last name TEXT,
+    email TEXT,
+    position TEXT,
+    t_shirt_size TEXT,
+    phone TEXT,
+    zip INT,
+    link to major TEXT,
+    PRIMARY KEY (member id),
+    FOREIGN KEY (zip) REFERENCES zip_code(zip code),
+    FOREIGN KEY (link to major) REFERENCES major(major id)
+);
+
+
+-- Database: superhero
+
+CREATE TABLE alignment (
+    id INT,
+    alignment TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE attribute (
+    id INT,
+    attribute name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE colour (
+    id INT,
+    colour TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE gender (
+    id INT,
+    gender TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE publisher (
+    id INT,
+    publisher_name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE race (
+    id INT,
+    race TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE superhero (
+    id INT,
+    superhero name TEXT,
+    full name TEXT,
+    gender id INT,
+    eye colour id INT,
+    hair colour id INT,
+    skin colour id INT,
+    race id INT,
+    publisher id INT,
+    alignment id INT,
+    height cm INT,
+    weight kg INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (gender id) REFERENCES gender(id),
+    FOREIGN KEY (eye colour id) REFERENCES colour(id),
+    FOREIGN KEY (hair colour id) REFERENCES colour(id),
+    FOREIGN KEY (skin colour id) REFERENCES colour(id),
+    FOREIGN KEY (race id) REFERENCES race(id),
+    FOREIGN KEY (publisher id) REFERENCES publisher(id),
+    FOREIGN KEY (alignment id) REFERENCES alignment(id)
+);
+
+CREATE TABLE hero_attribute (
+    hero id INT,
+    attribute id INT,
+    attribute value INT,
+    FOREIGN KEY (hero id) REFERENCES superhero(id),
+    FOREIGN KEY (attribute id) REFERENCES attribute(id)
+);
+
+CREATE TABLE superpower (
+    id INT,
+    power name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE hero_power (
+    hero id INT,
+    power id INT,
+    FOREIGN KEY (hero id) REFERENCES superhero(id),
+    FOREIGN KEY (power id) REFERENCES superpower(id)
+);
+
+
+-- Database: codebase_community
+
+CREATE TABLE badges (
+    Id INT,
+    User Id INT,
+    Name TEXT,
+    Date TEXT,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (User Id) REFERENCES users(Id)
+);
+
+CREATE TABLE comments (
+    Id INT,
+    Post Id INT,
+    Score INT,
+    Text TEXT,
+    Creation Date TEXT,
+    User Id INT,
+    User Display Name TEXT,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Post Id) REFERENCES posts(Id),
+    FOREIGN KEY (User Id) REFERENCES users(Id)
+);
+
+CREATE TABLE posthistory (
+    Id INT,
+    Post History Type Id INT,
+    Post Id INT,
+    Revision GUID TEXT,
+    Creation Date TEXT,
+    User Id INT,
+    Text TEXT,
+    Comment TEXT,
+    User Display Name TEXT,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Post Id) REFERENCES posts(Id),
+    FOREIGN KEY (User Id) REFERENCES users(Id)
+);
+
+CREATE TABLE postlinks (
+    Id INT,
+    Creation Date TEXT,
+    Post Id INT,
+    Related Post Id INT,
+    Link Type Id INT,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Post Id) REFERENCES posts(Id),
+    FOREIGN KEY (Related Post Id) REFERENCES posts(Id)
+);
+
+CREATE TABLE posts (
+    Id INT,
+    Post Type Id INT,
+    Accepted Answer Id INT,
+    Creation Date TEXT,
+    Score INT,
+    View Count INT,
+    Body TEXT,
+    Owner User Id INT,
+    Last Activity Date TEXT,
+    Title TEXT,
+    Tags TEXT,
+    Answer Count INT,
+    Comment Count INT,
+    Favorite Count INT,
+    Last Editor User Id INT,
+    Last Edit Date TEXT,
+    Community Owned Date TEXT,
+    ParentId INT,
+    Closed Date TEXT,
+    Owner Display Name TEXT,
+    Last Editor Display Name TEXT,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Owner User Id) REFERENCES users(Id),
+    FOREIGN KEY (Last Editor User Id) REFERENCES users(Id),
+    FOREIGN KEY (ParentId) REFERENCES posts(Id)
+);
+
+CREATE TABLE tags (
+    Id INT,
+    Tag Name TEXT,
+    Count INT,
+    Excerpt Post Id INT,
+    Wiki Post Id INT,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Excerpt Post Id) REFERENCES posts(Id)
+);
+
+CREATE TABLE users (
+    Id INT,
+    Reputation INT,
+    Creation Date TEXT,
+    Display Name TEXT,
+    Last Access Date TEXT,
+    Website Url TEXT,
+    Location TEXT,
+    About Me TEXT,
+    Views INT,
+    UpVotes INT,
+    DownVotes INT,
+    Account Id INT,
+    Age INT,
+    Profile Image Url TEXT,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE votes (
+    Id INT,
+    Post Id INT,
+    Vote Type Id INT,
+    Creation Date TEXT,
+    User Id INT,
+    Bounty Amount INT,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Post Id) REFERENCES posts(Id),
+    FOREIGN KEY (User Id) REFERENCES users(Id)
+);
+
+
+-- Database: european_football_1
+
+CREATE TABLE divisions (
+    division TEXT,
+    name TEXT,
+    country TEXT,
+    PRIMARY KEY (division)
+);
+
+CREATE TABLE matchs (
+    Division TEXT,
+    Date TEXT,
+    HomeTeam TEXT,
+    AwayTeam TEXT,
+    Final-time Home-team Goals INT,
+    Final-time Away-team Goals INT,
+    Final-time Results TEXT,
+    season INT,
+    FOREIGN KEY (Division) REFERENCES divisions(division)
+);
+
+
+-- Database: sales_in_weather
+
+CREATE TABLE sales_in_weather (
+    date TEXT,
+    store number INT,
+    item number INT,
+    units INT,
+    PRIMARY KEY (date, store number, item number)
+);
+
+CREATE TABLE weather (
+    station number INT,
+    date TEXT,
+    temperature max INT,
+    temperature min INT,
+    temperature average INT,
+    departure from normal INT,
+    dew point INT,
+    wet bulb INT,
+    heat INT,
+    cool INT,
+    sunrise TEXT,
+    sunset TEXT,
+    code summarization TEXT,
+    snowfall REAL,
+    preciptotal REAL,
+    station pressure REAL,
+    sea level REAL,
+    resultant speed REAL,
+    resultant direction INT,
+    average speed REAL,
+    PRIMARY KEY (station number, date)
+);
+
+CREATE TABLE relation (
+    store number INT,
+    station number INT,
+    PRIMARY KEY (store number),
+    FOREIGN KEY (store number) REFERENCES sales_in_weather(store number),
+    FOREIGN KEY (station number) REFERENCES weather(station number)
+);
+
+
+-- Database: craftbeer
+
+CREATE TABLE breweries (
+    id INT,
+    name TEXT,
+    city TEXT,
+    state TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE beers (
+    id INT,
+    brewery id INT,
+    alcohol by volume REAL,
+    International Bitterness Units REAL,
+    name TEXT,
+    style TEXT,
+    ounces REAL,
+    PRIMARY KEY (id)
+);
+
+
+-- Database: soccer_2016
+
+CREATE TABLE batting_style (
+    batting id INT,
+    batting hand TEXT,
+    PRIMARY KEY (batting id)
+);
+
+CREATE TABLE bowling_style (
+    bowling id INT,
+    bowling skill TEXT,
+    PRIMARY KEY (bowling id)
+);
+
+CREATE TABLE city (
+    city id INT,
+    city name TEXT,
+    country id INT,
+    PRIMARY KEY (city id)
+);
+
+CREATE TABLE country (
+    country id INT,
+    country name TEXT,
+    PRIMARY KEY (country id)
+);
+
+CREATE TABLE extra_type (
+    extra id INT,
+    extra name TEXT,
+    PRIMARY KEY (extra id)
+);
+
+CREATE TABLE extra_runs (
+    match id INT,
+    over id INT,
+    ball id INT,
+    extra type id INT,
+    extra runs INT,
+    innings number INT,
+    PRIMARY KEY (match id, over id, ball id, innings number),
+    FOREIGN KEY (extra type id) REFERENCES extra_type(extra id)
+);
+
+CREATE TABLE out_type (
+    out id INT,
+    out name TEXT,
+    PRIMARY KEY (out id)
+);
+
+CREATE TABLE outcome (
+    outcome id INT,
+    outcome type TEXT,
+    PRIMARY KEY (outcome id)
+);
+
+CREATE TABLE player (
+    player id INT,
+    player name TEXT,
+    date of birth TEXT,
+    batting hand INT,
+    bowling skill INT,
+    country name INT,
+    PRIMARY KEY (player id),
+    FOREIGN KEY (batting hand) REFERENCES batting_style(batting id),
+    FOREIGN KEY (bowling skill) REFERENCES bowling_style(bowling id),
+    FOREIGN KEY (country name) REFERENCES country(country id)
+);
+
+CREATE TABLE rolee (
+    role id INT,
+    role description TEXT,
+    PRIMARY KEY (role id)
+);
+
+CREATE TABLE season (
+    season id INT,
+    man of the series INT,
+    orange cap INT,
+    purple cap INT,
+    season year INT,
+    PRIMARY KEY (season id)
+);
+
+CREATE TABLE team (
+    team id INT,
+    team name TEXT,
+    PRIMARY KEY (team id)
+);
+
+CREATE TABLE toss_decision (
+    toss id INT,
+    toss name TEXT,
+    PRIMARY KEY (toss id)
+);
+
+CREATE TABLE umpire (
+    umpire id INT,
+    umpire name TEXT,
+    umpire country INT,
+    PRIMARY KEY (umpire id),
+    FOREIGN KEY (umpire country) REFERENCES country(country id)
+);
+
+CREATE TABLE venue (
+    venue id INT,
+    venue name TEXT,
+    city id INT,
+    PRIMARY KEY (venue id),
+    FOREIGN KEY (city id) REFERENCES city(city id)
+);
+
+CREATE TABLE win_by (
+    winning id INT,
+    winning type TEXT,
+    PRIMARY KEY (winning id)
+);
+
+CREATE TABLE match (
+    Match_Id INT,
+    team 1 INT,
+    team 2 INT,
+    match date TEXT,
+    season id INT,
+    venue id INT,
+    toss winner INT,
+    toss decide INT,
+    winning type INT,
+    winning margin INT,
+    outcome type INT,
+    match winner INT,
+    man of the match INT,
+    PRIMARY KEY (Match_Id),
+    FOREIGN KEY (team 1) REFERENCES team(team id),
+    FOREIGN KEY (team 2) REFERENCES team(team id),
+    FOREIGN KEY (season id) REFERENCES season(season id),
+    FOREIGN KEY (venue id) REFERENCES venue(venue id),
+    FOREIGN KEY (toss winner) REFERENCES team(team id),
+    FOREIGN KEY (toss decide) REFERENCES toss_decision(toss id),
+    FOREIGN KEY (winning type) REFERENCES win_by(winning id),
+    FOREIGN KEY (outcome type) REFERENCES out_type(out id),
+    FOREIGN KEY (match winner) REFERENCES team(team id),
+    FOREIGN KEY (man of the match) REFERENCES player(player id)
+);
+
+CREATE TABLE ball_by_ball (
+    match id INT,
+    over id INT,
+    ball id INT,
+    innings number INT,
+    team batting INT,
+    team bowling INT,
+    striker batting position INT,
+    Striker INT,
+    non striker INT,
+    Bowler INT,
+    PRIMARY KEY (match id, over id, ball id, innings number),
+    FOREIGN KEY (match id) REFERENCES match(Match_Id)
+);
+
+CREATE TABLE batsman_scored (
+    match id INT,
+    over id INT,
+    ball id INT,
+    runs scored INT,
+    innings number INT,
+    PRIMARY KEY (match id, over id, ball id, innings number),
+    FOREIGN KEY (match id) REFERENCES match(Match_Id)
+);
+
+CREATE TABLE player_match (
+    match id INT,
+    player id INT,
+    role id INT,
+    team id INT,
+    PRIMARY KEY (match id, player id, role id),
+    FOREIGN KEY (match id) REFERENCES match(Match_Id),
+    FOREIGN KEY (player id) REFERENCES player(player id),
+    FOREIGN KEY (role id) REFERENCES rolee(role id),
+    FOREIGN KEY (team id) REFERENCES team(team id)
+);
+
+CREATE TABLE wicket_taken (
+    match id INT,
+    over id INT,
+    ball id INT,
+    player out INT,
+    kind out INT,
+    Fielders INT,
+    innings number INT,
+    PRIMARY KEY (match id, over id, ball id, innings number),
+    FOREIGN KEY (match id) REFERENCES match(Match_Id),
+    FOREIGN KEY (player out) REFERENCES player(player id),
+    FOREIGN KEY (kind out) REFERENCES out_type(out id),
+    FOREIGN KEY (Fielders) REFERENCES player(player id)
+);
+
+
+-- Database: restaurant
+
+CREATE TABLE geographic (
+    city TEXT,
+    country TEXT,
+    region TEXT,
+    PRIMARY KEY (city)
+);
+
+CREATE TABLE generalinfo (
+    id restaurant INT,
+    label TEXT,
+    food type TEXT,
+    city TEXT,
+    review REAL,
+    PRIMARY KEY (id restaurant),
+    FOREIGN KEY (city) REFERENCES geographic(city)
+);
+
+CREATE TABLE location (
+    id restaurant INT,
+    street number INT,
+    street name TEXT,
+    city TEXT,
+    PRIMARY KEY (id restaurant),
+    FOREIGN KEY (id restaurant) REFERENCES generalinfo(id restaurant),
+    FOREIGN KEY (city) REFERENCES geographic(city)
+);
+
+
+-- Database: movie
+
+CREATE TABLE actor (
+    actor id INT,
+    Name TEXT,
+    date of birth TEXT,
+    birth city TEXT,
+    birth country TEXT,
+    height inches INT,
+    Biography TEXT,
+    Gender TEXT,
+    Ethnicity TEXT,
+    NetWorth TEXT,
+    PRIMARY KEY (actor id)
+);
+
+CREATE TABLE movie (
+    movie id INT,
+    Title TEXT,
+    motion picture association of america rating TEXT,
+    Budget INT,
+    Gross INT,
+    Release Date TEXT,
+    Genre TEXT,
+    Runtime INT,
+    Rating REAL,
+    rating count INT,
+    Summary TEXT,
+    PRIMARY KEY (movie id)
+);
+
+CREATE TABLE characters (
+    movie id INT,
+    actor id INT,
+    character name TEXT,
+    credit order INT,
+    pay TEXT,
+    screentime TEXT,
+    PRIMARY KEY (movie id, actor id),
+    FOREIGN KEY (movie id) REFERENCES movie(movie id),
+    FOREIGN KEY (actor id) REFERENCES actor(actor id)
+);
+
+
+-- Database: olympics
+
+CREATE TABLE city (
+    id INT,
+    city name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE games (
+    id INT,
+    games year INT,
+    games name TEXT,
+    season TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE games_city (
+    games id INT,
+    city id INT,
+    FOREIGN KEY (games id) REFERENCES games(id),
+    FOREIGN KEY (city id) REFERENCES city(id)
+);
+
+CREATE TABLE medal (
+    id INT,
+    medal name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE noc_region (
+    id INT,
+    noc TEXT,
+    region name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE person (
+    id INT,
+    full name TEXT,
+    gender TEXT,
+    height INT,
+    weight INT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE games_competitor (
+    id INT,
+    games id INT,
+    person id INT,
+    age INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (games id) REFERENCES games(id),
+    FOREIGN KEY (person id) REFERENCES person(id)
+);
+
+CREATE TABLE person_region (
+    person_id INT,
+    region_id INT,
+    FOREIGN KEY (person_id) REFERENCES person(id),
+    FOREIGN KEY (region_id) REFERENCES noc_region(id)
+);
+
+CREATE TABLE sport (
+    id INT,
+    sport name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE event (
+    id INT,
+    sport id INT,
+    event name TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (sport id) REFERENCES sport(id)
+);
+
+CREATE TABLE competitor_event (
+    event id INT,
+    competitor id INT,
+    medal id INT,
+    FOREIGN KEY (event id) REFERENCES event(id),
+    FOREIGN KEY (competitor id) REFERENCES games_competitor(id),
+    FOREIGN KEY (medal id) REFERENCES medal(id)
+);
+
+
+-- Database: language_corpus
+
+CREATE TABLE langs (
+    language id INT,
+    language TEXT,
+    locale TEXT,
+    pages INT,
+    words INT,
+    PRIMARY KEY (language id)
+);
+
+CREATE TABLE pages (
+    page id INT,
+    language id INT,
+    page INT,
+    revision INT,
+    title TEXT,
+    words INT,
+    PRIMARY KEY (page id),
+    FOREIGN KEY (language id) REFERENCES langs(language id)
+);
+
+CREATE TABLE words (
+    word id INT,
+    word TEXT,
+    occurrences INT,
+    PRIMARY KEY (word id)
+);
+
+CREATE TABLE langs_words (
+    language id INT,
+    word id INT,
+    occurrences INT,
+    PRIMARY KEY (language id, word id),
+    FOREIGN KEY (language id) REFERENCES langs(language id),
+    FOREIGN KEY (word id) REFERENCES words(word id)
+);
+
+CREATE TABLE pages_words (
+    page id INT,
+    word id INT,
+    occurrences INT,
+    PRIMARY KEY (page id, word id),
+    FOREIGN KEY (page id) REFERENCES pages(page id),
+    FOREIGN KEY (word id) REFERENCES words(word id)
+);
+
+CREATE TABLE biwords (
+    language id INT,
+    word id of the first word INT,
+    word id of the second word INT,
+    occurrences INT,
+    PRIMARY KEY (language id, word id of the first word, word id of the second word),
+    FOREIGN KEY (language id) REFERENCES langs(language id),
+    FOREIGN KEY (word id of the first word) REFERENCES words(word id),
+    FOREIGN KEY (word id of the second word) REFERENCES words(word id)
+);
+
+
+-- Database: app_store
+
+CREATE TABLE googleplaystore (
+    App TEXT,
+    Category TEXT,
+    Rating REAL,
+    Reviews INT,
+    Size TEXT,
+    Installs TEXT,
+    Type TEXT,
+    Price TEXT,
+    Content Rating TEXT,
+    Genres TEXT,
+);
+
+CREATE TABLE googleplaystore_user_reviews (
+    App TEXT,
+    Translated_Review TEXT,
+    Sentiment TEXT,
+    Sentiment Polarity TEXT,
+    Sentiment Subjectivity TEXT,
+    FOREIGN KEY (App) REFERENCES googleplaystore(App)
+);
+
+
+-- Database: sales
+
+CREATE TABLE customers (
+    Customer ID INT,
+    First Name TEXT,
+    Middle Initial TEXT,
+    Last Name TEXT,
+    PRIMARY KEY (Customer ID)
+);
+
+CREATE TABLE employees (
+    Employee ID INT,
+    First Name TEXT,
+    Middle Initial TEXT,
+    Last Name TEXT,
+    PRIMARY KEY (Employee ID)
+);
+
+CREATE TABLE products (
+    Product ID INT,
+    Name TEXT,
+    Price REAL,
+    PRIMARY KEY (Product ID)
+);
+
+CREATE TABLE sales (
+    Sales ID INT,
+    SalesPerson ID INT,
+    Customer ID INT,
+    Product ID INT,
+    Quantity INT,
+    PRIMARY KEY (Sales ID),
+    FOREIGN KEY (SalesPerson ID) REFERENCES employees(Employee ID),
+    FOREIGN KEY (Customer ID) REFERENCES customers(Customer ID),
+    FOREIGN KEY (Product ID) REFERENCES products(Product ID)
+);
+
+
+-- Database: video_games
+
+CREATE TABLE genre (
+    id INT,
+    genre_name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE game (
+    id INT,
+    genre id INT,
+    game name TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (genre id) REFERENCES genre(id)
+);
+
+CREATE TABLE platform (
+    id INT,
+    platform_name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE publisher (
+    id INT,
+    publisher_name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE game_publisher (
+    id INT,
+    game id INT,
+    publisher id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (game id) REFERENCES game(id),
+    FOREIGN KEY (publisher id) REFERENCES publisher(id)
+);
+
+CREATE TABLE game_platform (
+    id INT,
+    game publisher id INT,
+    platform id INT,
+    release year INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (game publisher id) REFERENCES game_publisher(id),
+    FOREIGN KEY (platform id) REFERENCES platform(id)
+);
+
+CREATE TABLE region (
+    id INT,
+    region_name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE region_sales (
+    region_id INT,
+    game platform id INT,
+    number sales REAL,
+    FOREIGN KEY (region_id) REFERENCES region(id),
+    FOREIGN KEY (game platform id) REFERENCES game_platform(id)
+);
+
+
+-- Database: image_and_language
+
+CREATE TABLE att_classes (
+    ATTRIBUTE CLASS ID INT,
+    ATTRIBUTE CLASS TEXT,
+    PRIMARY KEY (ATTRIBUTE CLASS ID)
+);
+
+CREATE TABLE obj_classes (
+    OBJECT CLASS ID INT,
+    OBJECT CLASS TEXT,
+    PRIMARY KEY (OBJECT CLASS ID)
+);
+
+CREATE TABLE img_obj (
+    IMAGE ID INT,
+    OBJECT SAMPLE ID INT,
+    OBJECT CLASS ID INT,
+    X INT,
+    Y INT,
+    W INT,
+    H INT,
+    PRIMARY KEY (IMAGE ID, OBJECT SAMPLE ID),
+    FOREIGN KEY (OBJECT CLASS ID) REFERENCES obj_classes(OBJECT CLASS ID)
+);
+
+CREATE TABLE img_obj_att (
+    IMAGE ID INT,
+    ATTRIBUTE CLASS ID INT,
+    OBJECT SAMPLE ID INT,
+    PRIMARY KEY (IMAGE ID, ATTRIBUTE CLASS ID, OBJECT SAMPLE ID),
+    FOREIGN KEY (IMAGE ID) REFERENCES img_obj(IMAGE ID),
+    FOREIGN KEY (ATTRIBUTE CLASS ID) REFERENCES att_classes(ATTRIBUTE CLASS ID),
+    FOREIGN KEY (OBJECT SAMPLE ID) REFERENCES img_obj(OBJECT SAMPLE ID)
+);
+
+CREATE TABLE pred_classes (
+    PREDICTION CLASS ID INT,
+    PREDICTION CLASS TEXT,
+    PRIMARY KEY (PREDICTION CLASS ID)
+);
+
+CREATE TABLE img_rel (
+    IMAGE ID INT,
+    PREDICTION CLASS ID INT,
+    OBJECT1 SAMPLE ID INT,
+    OBJECT2 SAMPLE ID INT,
+    PRIMARY KEY (IMAGE ID, PREDICTION CLASS ID, OBJECT1 SAMPLE ID, OBJECT2 SAMPLE ID),
+    FOREIGN KEY (IMAGE ID) REFERENCES img_obj(IMAGE ID),
+    FOREIGN KEY (PREDICTION CLASS ID) REFERENCES pred_classes(PREDICTION CLASS ID),
+    FOREIGN KEY (OBJECT1 SAMPLE ID) REFERENCES img_obj(OBJECT SAMPLE ID),
+    FOREIGN KEY (OBJECT2 SAMPLE ID) REFERENCES img_obj(OBJECT SAMPLE ID)
+);
+
+
+-- Database: software_company
+
+CREATE TABLE demog (
+    GEOGRAPHIC ID INT,
+    INHABITANTS (THOUSANDS) REAL,
+    INCOME (THOUSANDS) REAL,
+    A_VAR1 REAL,
+    A_VAR2 REAL,
+    A_VAR3 REAL,
+    A_VAR4 REAL,
+    A_VAR5 REAL,
+    A_VAR6 REAL,
+    A_VAR7 REAL,
+    A_VAR8 REAL,
+    A_VAR9 REAL,
+    A_VAR10 REAL,
+    A_VAR11 REAL,
+    A_VAR12 REAL,
+    A_VAR13 REAL,
+    A_VAR14 REAL,
+    A_VAR15 REAL,
+    A_VAR16 REAL,
+    A_VAR17 REAL,
+    A_VAR18 REAL,
+    PRIMARY KEY (GEOGRAPHIC ID)
+);
+
+CREATE TABLE mailings3 (
+    REFERENCE ID INT,
+    REFERENCE DATE TEXT,
+    RESPONSE TEXT,
+    PRIMARY KEY (REFERENCE ID)
+);
+
+CREATE TABLE customers (
+    ID INT,
+    SEX TEXT,
+    MARITAL STATUS TEXT,
+    GEOGRAPHIC ID INT,
+    EDUCATION NUMBER INT,
+    OCCUPATION TEXT,
+    age INT,
+    PRIMARY KEY (ID)
+);
+
+CREATE TABLE mailings1_2 (
+    REFERENCE ID INT,
+    REFERENCE DATE TEXT,
+    RESPONSE TEXT,
+    PRIMARY KEY (REFERENCE ID)
+);
+
+CREATE TABLE sales (
+    EVENT ID INT,
+    REFERENCE ID INT,
+    EVENT DATE TEXT,
+    AMOUNT REAL,
+    PRIMARY KEY (EVENT ID)
+);
+
+
+-- Database: authors
+
+CREATE TABLE author (
+    Id INT,
+    Name TEXT,
+    Affiliation TEXT,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE conference (
+    Id INT,
+    ShortName TEXT,
+    FullName TEXT,
+    HomePage TEXT,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE journal (
+    Id INT,
+    ShortName TEXT,
+    FullName TEXT,
+    HomePage TEXT,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE paper (
+    Id INT,
+    Title TEXT,
+    Year INT,
+    ConferenceId INT,
+    JournalId INT,
+    Keyword TEXT,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (ConferenceId) REFERENCES conference(Id),
+    FOREIGN KEY (JournalId) REFERENCES journal(Id)
+);
+
+CREATE TABLE paperauthor (
+    PaperId INT,
+    AuthorId INT,
+    Name TEXT,
+    Affiliation TEXT,
+    FOREIGN KEY (PaperId) REFERENCES paper(Id),
+    FOREIGN KEY (AuthorId) REFERENCES author(Id)
+);
+
+
+-- Database: movies_4
+
+CREATE TABLE country (
+    country id INT,
+    country iso code TEXT,
+    country name TEXT,
+    PRIMARY KEY (country id)
+);
+
+CREATE TABLE department (
+    department id INT,
+    department name TEXT,
+    PRIMARY KEY (department id)
+);
+
+CREATE TABLE gender (
+    gender id INT,
+    gender TEXT,
+    PRIMARY KEY (gender id)
+);
+
+CREATE TABLE genre (
+    genre id INT,
+    genre_name TEXT,
+    PRIMARY KEY (genre id)
+);
+
+CREATE TABLE keyword (
+    keyword id INT,
+    keyword name TEXT,
+    PRIMARY KEY (keyword id)
+);
+
+CREATE TABLE language (
+    language id INT,
+    language code TEXT,
+    language name TEXT,
+    PRIMARY KEY (language id)
+);
+
+CREATE TABLE language_role (
+    role id INT,
+    language role TEXT,
+    PRIMARY KEY (role id)
+);
+
+CREATE TABLE movie (
+    movie id INT,
+    title TEXT,
+    budget INT,
+    homepage TEXT,
+    overview TEXT,
+    popularity REAL,
+    release date TEXT,
+    revenue INT,
+    runtime INT,
+    movie_status TEXT,
+    tagline TEXT,
+    vote average REAL,
+    vote count INT,
+    PRIMARY KEY (movie id)
+);
+
+CREATE TABLE movie_genres (
+    movie id INT,
+    genre id INT,
+    FOREIGN KEY (movie id) REFERENCES movie(movie id),
+    FOREIGN KEY (genre id) REFERENCES genre(genre id)
+);
+
+CREATE TABLE movie_languages (
+    movie id INT,
+    language id INT,
+    language role id INT,
+    FOREIGN KEY (movie id) REFERENCES movie(movie id),
+    FOREIGN KEY (language id) REFERENCES language(language id),
+    FOREIGN KEY (language role id) REFERENCES language_role(role id)
+);
+
+CREATE TABLE person (
+    person id INT,
+    person name TEXT,
+    PRIMARY KEY (person id)
+);
+
+CREATE TABLE movie_crew (
+    movie id INT,
+    person id INT,
+    department id INT,
+    job TEXT,
+    FOREIGN KEY (movie id) REFERENCES movie(movie id),
+    FOREIGN KEY (person id) REFERENCES person(person id),
+    FOREIGN KEY (department id) REFERENCES department(department id)
+);
+
+CREATE TABLE production_company (
+    company id INT,
+    company name TEXT,
+    PRIMARY KEY (company id)
+);
+
+CREATE TABLE production_country (
+    mivie id INT,
+    country id INT,
+    FOREIGN KEY (mivie id) REFERENCES movie(movie id),
+    FOREIGN KEY (country id) REFERENCES country(country id)
+);
+
+CREATE TABLE movie_cast (
+    movie id INT,
+    person id INT,
+    character name TEXT,
+    gender id INT,
+    cast order INT,
+    FOREIGN KEY (movie id) REFERENCES movie(movie id),
+    FOREIGN KEY (person id) REFERENCES person(person id),
+    FOREIGN KEY (gender id) REFERENCES gender(gender id)
+);
+
+CREATE TABLE movie_keywords (
+    movie id INT,
+    keyword id INT,
+);
+
+CREATE TABLE movie_company (
+    movie id INT,
+    company id INT,
+);
+
+
+-- Database: social_media
+
+CREATE TABLE location (
+    location id INT,
+    Country TEXT,
+    State TEXT,
+    state code TEXT,
+    City TEXT,
+    PRIMARY KEY (location id)
+);
+
+CREATE TABLE user (
+    user id TEXT,
+    Gender TEXT,
+    PRIMARY KEY (user id)
+);
+
+CREATE TABLE twitter (
+    tweet id TEXT,
+    Weekday TEXT,
+    Hour INT,
+    Day INT,
+    language TEXT,
+    is reshare TEXT,
+    Reach INT,
+    retweet count INT,
+    Likes INT,
+    Klout INT,
+    Sentiment REAL,
+    text TEXT,
+    location id INT,
+    user id TEXT,
+    PRIMARY KEY (tweet id),
+    FOREIGN KEY (location id) REFERENCES location(location id),
+    FOREIGN KEY (user id) REFERENCES user(user id)
+);
+
+
+-- Database: human_resources
+
+CREATE TABLE location (
+    location id INT,
+    location city TEXT,
+    address TEXT,
+    state TEXT,
+    zip code INT,
+    office phone TEXT,
+    PRIMARY KEY (location id)
+);
+
+CREATE TABLE position (
+    position id INT,
+    position title TEXT,
+    education required TEXT,
+    minimum salary TEXT,
+    maximum salary TEXT,
+    PRIMARY KEY (position id)
+);
+
+CREATE TABLE employee (
+    social security number TEXT,
+    last name TEXT,
+    first name TEXT,
+    hire date TEXT,
+    salary TEXT,
+    gender TEXT,
+    performance TEXT,
+    position id INT,
+    location id INT,
+    PRIMARY KEY (social security number),
+    FOREIGN KEY (position id) REFERENCES position(position id),
+    FOREIGN KEY (location id) REFERENCES location(location id)
+);
+
+
+-- Database: regional_sales
+
+CREATE TABLE customers (
+    customer id INT,
+    customer names TEXT,
+    PRIMARY KEY (customer id)
+);
+
+CREATE TABLE products (
+    product id INT,
+    product name TEXT,
+    PRIMARY KEY (product id)
+);
+
+CREATE TABLE regions (
+    state code TEXT,
+    State TEXT,
+    Region TEXT,
+    PRIMARY KEY (state code)
+);
+
+CREATE TABLE sales team (
+    SalesTeam ID INT,
+    Sales Team TEXT,
+    Region TEXT,
+    PRIMARY KEY (SalesTeam ID)
+);
+
+CREATE TABLE store locations (
+    Store ID INT,
+    City Name TEXT,
+    County TEXT,
+    State Code TEXT,
+    State TEXT,
+    Type TEXT,
+    Latitude REAL,
+    Longitude REAL,
+    Area Code INT,
+    Population INT,
+    Household Income INT,
+    Median Income INT,
+    Land Area INT,
+    Water Area INT,
+    Time Zone TEXT,
+    PRIMARY KEY (Store ID),
+    FOREIGN KEY (State Code) REFERENCES regions(state code)
+);
+
+CREATE TABLE sales orders (
+    Order Number TEXT,
+    Sales Channel TEXT,
+    Warehouse Code TEXT,
+    Procured Date TEXT,
+    Order Date TEXT,
+    Ship Date TEXT,
+    Delivery Date TEXT,
+    Currency Code TEXT,
+    _Sales Team ID INT,
+    _Customer ID INT,
+    _Store ID INT,
+    _Product ID INT,
+    Order Quantity INT,
+    Discount Applied REAL,
+    Unit Price TEXT,
+    Unit Cost TEXT,
+    PRIMARY KEY (Order Number),
+    FOREIGN KEY (_Sales Team ID) REFERENCES sales team(SalesTeam ID),
+    FOREIGN KEY (_Customer ID) REFERENCES customers(customer id),
+    FOREIGN KEY (_Store ID) REFERENCES store locations(Store ID),
+    FOREIGN KEY (_Product ID) REFERENCES products(product id)
+);
+
+
+-- Database: computer_student
+
+CREATE TABLE course (
+    course id INT,
+    course level TEXT,
+    PRIMARY KEY (course id)
+);
+
+CREATE TABLE person (
+    person ID INT,
+    professor INT,
+    student INT,
+    has position TEXT,
+    in phase TEXT,
+    years in program TEXT,
+    PRIMARY KEY (person ID)
+);
+
+CREATE TABLE advisedby (
+    person id INT,
+    person id dummy INT,
+    PRIMARY KEY (person id, person id dummy),
+    FOREIGN KEY (person id) REFERENCES person(person ID),
+    FOREIGN KEY (person id dummy) REFERENCES person(person ID)
+);
+
+CREATE TABLE taughtby (
+    course ID INT,
+    person ID INT,
+    PRIMARY KEY (course ID, person ID),
+    FOREIGN KEY (course ID) REFERENCES course(course id),
+    FOREIGN KEY (person ID) REFERENCES person(person ID)
+);
+
+
+-- Database: works_cycles
+
+CREATE TABLE countryregion (
+    Country Region Code TEXT,
+    Name TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Country Region Code)
+);
+
+CREATE TABLE culture (
+    Culture ID TEXT,
+    Name TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Culture ID)
+);
+
+CREATE TABLE currency (
+    Currency Code TEXT,
+    Name TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Currency Code)
+);
+
+CREATE TABLE countryregioncurrency (
+    Country Region Code TEXT,
+    Currency Code TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Country Region Code, Currency Code),
+    FOREIGN KEY (Country Region Code) REFERENCES countryregion(Country Region Code),
+    FOREIGN KEY (Currency Code) REFERENCES currency(Currency Code)
+);
+
+CREATE TABLE person (
+    Business Entity ID INT,
+    Person Type TEXT,
+    Name Style INT,
+    Title TEXT,
+    First Name TEXT,
+    Middle Name TEXT,
+    Last Name TEXT,
+    Suffix TEXT,
+    Email Promotion INT,
+    Additional Contact Info TEXT,
+    Demographics TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID),
+    FOREIGN KEY (Business Entity ID) REFERENCES businessentity(business entity id)
+);
+
+CREATE TABLE businessentitycontact (
+    Business Entity ID INT,
+    Person ID INT,
+    Contact Type ID INT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID, Person ID, Contact Type ID),
+    FOREIGN KEY (Business Entity ID) REFERENCES businessentity(business entity id),
+    FOREIGN KEY (Person ID) REFERENCES person(Business Entity ID),
+    FOREIGN KEY (Contact Type ID) REFERENCES contacttype(Contact Type ID)
+);
+
+CREATE TABLE emailaddress (
+    Business Entity ID INT,
+    Email Address ID INT,
+    Email Address TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID, Email Address ID),
+    FOREIGN KEY (Business Entity ID) REFERENCES person(Business Entity ID)
+);
+
+CREATE TABLE employee (
+    Business Entity ID INT,
+    National ID Number TEXT,
+    Login ID TEXT,
+    Organization Node TEXT,
+    Organization Level INT,
+    Job Title TEXT,
+    Birth Date TEXT,
+    Marital Status TEXT,
+    Gender TEXT,
+    Hire Date TEXT,
+    Salaried Flag INT,
+    Vacation Hours INT,
+    Sick Leave Hours INT,
+    Current Flag INT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID),
+    FOREIGN KEY (Business Entity ID) REFERENCES person(Business Entity ID)
+);
+
+CREATE TABLE password (
+    Business Entity ID INT,
+    Password Hash TEXT,
+    Password Salt TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID),
+    FOREIGN KEY (Business Entity ID) REFERENCES person(Business Entity ID)
+);
+
+CREATE TABLE personcreditcard (
+    Business Entity ID INT,
+    Credit Card ID INT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID, Credit Card ID),
+    FOREIGN KEY (Business Entity ID) REFERENCES person(Business Entity ID),
+    FOREIGN KEY (Credit Card ID) REFERENCES creditcard(Credit Card ID)
+);
+
+CREATE TABLE productcategory (
+    Product Category ID INT,
+    Name TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Product Category ID)
+);
+
+CREATE TABLE productdescription (
+    Product Description ID INT,
+    Description TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Product Description ID)
+);
+
+CREATE TABLE productmodel (
+    Product Model ID INT,
+    Name TEXT,
+    Catalog Description TEXT,
+    Instructions TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Product Model ID)
+);
+
+CREATE TABLE productmodelproductdescriptionculture (
+    Product Model ID INT,
+    Product Description ID INT,
+    Culture ID TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Product Model ID, Product Description ID, Culture ID),
+    FOREIGN KEY (Product Model ID) REFERENCES productmodel(Product Model ID),
+    FOREIGN KEY (Product Description ID) REFERENCES productdescription(Product Description ID),
+    FOREIGN KEY (Culture ID) REFERENCES culture(Culture ID)
+);
+
+CREATE TABLE productphoto (
+    Product Photo ID INT,
+    Thumb Nail Photo BLOB,
+    Thumbnail Photo File Name TEXT,
+    large photo BLOB,
+    Large Photo File Name TEXT,
+    Modified Date TEXT,
+    PRIMARY KEY (Product Photo ID)
+);
+
+CREATE TABLE productsubcategory (
+    Product Subcategory ID INT,
+    Product Category ID INT,
+    Name TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Product Subcategory ID),
+    FOREIGN KEY (Product Category ID) REFERENCES productcategory(Product Category ID)
+);
+
+CREATE TABLE salesreason (
+    SalesReasonID INT,
+    Name TEXT,
+    ReasonType TEXT,
+    modified date TEXT,
+    PRIMARY KEY (SalesReasonID)
+);
+
+CREATE TABLE salesterritory (
+    TerritoryID INT,
+    Name TEXT,
+    Country Region Code TEXT,
+    Group TEXT,
+    Sales Year to Date REAL,
+    Sales Last Year REAL,
+    Cost Year to Date REAL,
+    Cost Last Year REAL,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (TerritoryID),
+    FOREIGN KEY (Country Region Code) REFERENCES countryregion(Country Region Code)
+);
+
+CREATE TABLE salesperson (
+    Business Entity ID INT,
+    Territory ID INT,
+    Sales Quota REAL,
+    Bonus REAL,
+    Commission percentage REAL,
+    sales year to date REAL,
+    Sales Last Year REAL,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID),
+    FOREIGN KEY (Business Entity ID) REFERENCES employee(Business Entity ID),
+    FOREIGN KEY (Territory ID) REFERENCES salesterritory(TerritoryID)
+);
+
+CREATE TABLE salespersonquotahistory (
+    Business Entity ID INT,
+    Quota Date TEXT,
+    Sales Quota REAL,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID, Quota Date),
+    FOREIGN KEY (Business Entity ID) REFERENCES salesperson(Business Entity ID)
+);
+
+CREATE TABLE salesterritoryhistory (
+    Business Entity ID INT,
+    Territory ID INT,
+    Start Date TEXT,
+    End Date TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID, Territory ID, Start Date),
+    FOREIGN KEY (Business Entity ID) REFERENCES salesperson(Business Entity ID),
+    FOREIGN KEY (Territory ID) REFERENCES salesterritory(TerritoryID)
+);
+
+CREATE TABLE scrapreason (
+    Scrap Reason ID INT,
+    Name TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Scrap Reason ID)
+);
+
+CREATE TABLE shift (
+    ShiftID INT,
+    Name TEXT,
+    Start Time TEXT,
+    End Time TEXT,
+    modified date TEXT,
+    PRIMARY KEY (ShiftID)
+);
+
+CREATE TABLE shipmethod (
+    Ship Method ID INT,
+    Name TEXT,
+    Ship Base REAL,
+    Ship Rate REAL,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Ship Method ID)
+);
+
+CREATE TABLE specialoffer (
+    Special Offer ID INT,
+    Description TEXT,
+    Discount precentage REAL,
+    Type TEXT,
+    Category TEXT,
+    Start Date TEXT,
+    End Date TEXT,
+    Min Quality INT,
+    Max Quality INT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Special Offer ID)
+);
+
+CREATE TABLE businessentityaddress (
+    Business Entity ID INT,
+    Address ID INT,
+    Address Type ID INT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID, Address ID, Address Type ID),
+    FOREIGN KEY (Business Entity ID) REFERENCES businessentity(business entity id),
+    FOREIGN KEY (Address ID) REFERENCES address(address id),
+    FOREIGN KEY (Address Type ID) REFERENCES addresstype(address type id)
+);
+
+CREATE TABLE salestaxrate (
+    Sales Tax Rate ID INT,
+    State Province ID INT,
+    Tax Type INT,
+    Tax Rate REAL,
+    Name TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Sales Tax Rate ID),
+    FOREIGN KEY (State Province ID) REFERENCES stateprovince(State Province ID)
+);
+
+CREATE TABLE store (
+    Business Entity ID INT,
+    Name TEXT,
+    Sales Person ID INT,
+    Demographics TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID),
+    FOREIGN KEY (Business Entity ID) REFERENCES businessentity(business entity id),
+    FOREIGN KEY (Sales Person ID) REFERENCES salesperson(Business Entity ID)
+);
+
+CREATE TABLE salesorderheadersalesreason (
+    Sales Order ID INT,
+    Sales Reason ID INT,
+    modified date TEXT,
+    PRIMARY KEY (Sales Order ID, Sales Reason ID),
+    FOREIGN KEY (Sales Order ID) REFERENCES salesorderheader(Sales Order ID),
+    FOREIGN KEY (Sales Reason ID) REFERENCES salesreason(SalesReasonID)
+);
+
+CREATE TABLE transactionhistoryarchive (
+    Transaction ID INT,
+    Product ID INT,
+    Reference Order ID INT,
+    Reference Order Line ID INT,
+    Transaction Date TEXT,
+    Transaction Type TEXT,
+    Quantity INT,
+    Actual Cost REAL,
+    modified date TEXT,
+    PRIMARY KEY (Transaction ID)
+);
+
+CREATE TABLE unitmeasure (
+    Unit Measure Code TEXT,
+    Name TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Unit Measure Code)
+);
+
+CREATE TABLE productcosthistory (
+    Product ID INT,
+    Start Date TEXT,
+    End Date TEXT,
+    Standard Cost REAL,
+    modified date TEXT,
+    PRIMARY KEY (Product ID, Start Date),
+    FOREIGN KEY (Product ID) REFERENCES product(Product ID)
+);
+
+CREATE TABLE productdocument (
+    Product ID INT,
+    Document Node TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Product ID, Document Node),
+    FOREIGN KEY (Product ID) REFERENCES product(Product ID),
+    FOREIGN KEY (Document Node) REFERENCES document(Document Node)
+);
+
+CREATE TABLE productinventory (
+    Product ID INT,
+    Location ID INT,
+    Shelf TEXT,
+    Bin INT,
+    Quantity INT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Product ID, Location ID),
+    FOREIGN KEY (Product ID) REFERENCES product(Product ID),
+    FOREIGN KEY (Location ID) REFERENCES location(Location ID)
+);
+
+CREATE TABLE productproductphoto (
+    Product ID INT,
+    Product Photo ID INT,
+    Primary INT,
+    Modified Date TEXT,
+    PRIMARY KEY (Product ID, Product Photo ID),
+    FOREIGN KEY (Product ID) REFERENCES product(Product ID),
+    FOREIGN KEY (Product Photo ID) REFERENCES productphoto(Product Photo ID)
+);
+
+CREATE TABLE productreview (
+    Product Review ID INT,
+    Product ID INT,
+    Reviewer Name TEXT,
+    Review Date TEXT,
+    Email Address TEXT,
+    Rating INT,
+    Comments TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Product Review ID),
+    FOREIGN KEY (Product ID) REFERENCES product(Product ID)
+);
+
+CREATE TABLE shoppingcartitem (
+    Shopping CartItem ID INT,
+    Shopping Cart ID TEXT,
+    Quantity INT,
+    Product ID INT,
+    Date Created TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Shopping CartItem ID),
+    FOREIGN KEY (Product ID) REFERENCES product(Product ID)
+);
+
+CREATE TABLE specialofferproduct (
+    Special Offer ID INT,
+    Product ID INT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Special Offer ID, Product ID),
+    FOREIGN KEY (Special Offer ID) REFERENCES specialoffer(Special Offer ID),
+    FOREIGN KEY (Product ID) REFERENCES product(Product ID)
+);
+
+CREATE TABLE salesorderdetail (
+    SalesOrderID INT,
+    SalesOrderDetailID INT,
+    CarrierTrackingNumber TEXT,
+    OrderQty INT,
+    ProductID INT,
+    SpecialOfferID INT,
+    UnitPrice REAL,
+    UnitPriceDiscount REAL,
+    LineTotal REAL,
+    rowguid TEXT,
+    ModifiedDate TEXT,
+    PRIMARY KEY (SalesOrderDetailID),
+    FOREIGN KEY (SalesOrderID) REFERENCES salesorderheader(Sales Order ID),
+    FOREIGN KEY (ProductID) REFERENCES specialofferproduct(Product ID),
+    FOREIGN KEY (SpecialOfferID) REFERENCES specialofferproduct(Special Offer ID)
+);
+
+CREATE TABLE transactionhistory (
+    Transaction ID INT,
+    Product ID INT,
+    Reference Order ID INT,
+    Reference Order Line ID INT,
+    Transaction Date TEXT,
+    Transaction Type TEXT,
+    Quantity INT,
+    Actual Cost REAL,
+    modified date TEXT,
+    PRIMARY KEY (Transaction ID),
+    FOREIGN KEY (Product ID) REFERENCES product(Product ID)
+);
+
+CREATE TABLE vendor (
+    BusinessEntityID INT,
+    AccountNumber TEXT,
+    Name TEXT,
+    CreditRating INT,
+    Preferred Vendor Status INT,
+    Active Flag INT,
+    PurchasingWebServiceURL TEXT,
+    modified date TEXT,
+    PRIMARY KEY (BusinessEntityID),
+    FOREIGN KEY (BusinessEntityID) REFERENCES businessentity(business entity id)
+);
+
+CREATE TABLE productvendor (
+    Product ID INT,
+    Business Entity ID INT,
+    Average Lead Time INT,
+    Standard Price REAL,
+    Last Receipt Cost REAL,
+    Last Receipt Date TEXT,
+    Min Order Quantity INT,
+    Max Order Quantity INT,
+    On Order Quantity INT,
+    Unit Measure Code TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Product ID, Business Entity ID),
+    FOREIGN KEY (Product ID) REFERENCES product(Product ID),
+    FOREIGN KEY (Business Entity ID) REFERENCES vendor(BusinessEntityID),
+    FOREIGN KEY (Unit Measure Code) REFERENCES unitmeasure(Unit Measure Code)
+);
+
+CREATE TABLE purchaseorderheader (
+    Purchase Order ID INT,
+    Revision Number INT,
+    Status INT,
+    Employee ID INT,
+    Vendor ID INT,
+    Ship Method ID INT,
+    Order Date TEXT,
+    Ship Date TEXT,
+    SubTotal REAL,
+    Tax Amount REAL,
+    Freight REAL,
+    Total Due REAL,
+    modified date TEXT,
+    PRIMARY KEY (Purchase Order ID),
+    FOREIGN KEY (Employee ID) REFERENCES employee(Business Entity ID),
+    FOREIGN KEY (Vendor ID) REFERENCES vendor(BusinessEntityID),
+    FOREIGN KEY (Ship Method ID) REFERENCES shipmethod(Ship Method ID)
+);
+
+CREATE TABLE purchaseorderdetail (
+    Purchase Order ID INT,
+    Purchase Orde rDetail ID INT,
+    Due Date TEXT,
+    Order Quantity INT,
+    Product ID INT,
+    Unit Price REAL,
+    Line Total REAL,
+    ReceivedQty REAL,
+    RejectedQty REAL,
+    StockedQty REAL,
+    ModifiedDate TEXT,
+    PRIMARY KEY (Purchase Orde rDetail ID),
+    FOREIGN KEY (Purchase Order ID) REFERENCES purchaseorderheader(Purchase Order ID),
+    FOREIGN KEY (Product ID) REFERENCES product(Product ID)
+);
+
+CREATE TABLE workorder (
+    Work Order ID INT,
+    Product ID INT,
+    Order Quantity INT,
+    Stocked Quantity INT,
+    Scrapped Quantity INT,
+    Start Date TEXT,
+    End Date TEXT,
+    Due Date TEXT,
+    Scrap Reason ID INT,
+    modified date TEXT,
+    PRIMARY KEY (Work Order ID),
+    FOREIGN KEY (Product ID) REFERENCES product(Product ID),
+    FOREIGN KEY (Scrap Reason ID) REFERENCES scrapreason(Scrap Reason ID)
+);
+
+CREATE TABLE workorderrouting (
+    WorkOrderID INT,
+    ProductID INT,
+    Operation Sequence INT,
+    Location ID INT,
+    Scheduled Start Date TEXT,
+    Scheduled End Date TEXT,
+    Actual Start Date TEXT,
+    ActualEndDate TEXT,
+    Actual Resource Hours REAL,
+    Planned Cost REAL,
+    ActualCost REAL,
+    modified date TEXT,
+    PRIMARY KEY (WorkOrderID, ProductID, Operation Sequence),
+    FOREIGN KEY (WorkOrderID) REFERENCES workorder(Work Order ID),
+    FOREIGN KEY (Location ID) REFERENCES location(Location ID)
+);
+
+CREATE TABLE customer (
+    Customer ID INT,
+    Person ID INT,
+    Store ID INT,
+    Territory ID INT,
+    Account Number TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Customer ID),
+    FOREIGN KEY (Person ID) REFERENCES person(Business Entity ID),
+    FOREIGN KEY (Store ID) REFERENCES store(Business Entity ID),
+    FOREIGN KEY (Territory ID) REFERENCES salesterritory(TerritoryID)
+);
+
+CREATE TABLE productlistpricehistory (
+    Product ID INT,
+    Start Date TEXT,
+    End Date TEXT,
+    ListPrice REAL,
+    modified date TEXT,
+    PRIMARY KEY (Product ID, Start Date),
+    FOREIGN KEY (Product ID) REFERENCES product(Product ID)
+);
+
+CREATE TABLE address (
+    address id INT,
+    address line 1 TEXT,
+    address line 2 TEXT,
+    City TEXT,
+    state province id INT,
+    postal code TEXT,
+    spatial location TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (address id)
+);
+
+CREATE TABLE addresstype (
+    address type id INT,
+    Name TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (address type id)
+);
+
+CREATE TABLE billofmaterials (
+    bill of materials id INT,
+    product assembly id INT,
+    component ID INT,
+    start date TEXT,
+    end date TEXT,
+    unit measure code TEXT,
+    bill of materials level INT,
+    per assembly quantity REAL,
+    modified date TEXT,
+    PRIMARY KEY (bill of materials id)
+);
+
+CREATE TABLE businessentity (
+    business entity id INT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (business entity id)
+);
+
+CREATE TABLE contacttype (
+    Contact Type ID INT,
+    Name TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Contact Type ID)
+);
+
+CREATE TABLE currencyrate (
+    Currency Rate ID INT,
+    Currency Rate Date TEXT,
+    From Currency Code TEXT,
+    ToCurrencyCode TEXT,
+    Average Rate REAL,
+    End Of Day Rate REAL,
+    modified date TEXT,
+    PRIMARY KEY (Currency Rate ID)
+);
+
+CREATE TABLE department (
+    Department ID INT,
+    Name TEXT,
+    Group Name TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Department ID)
+);
+
+CREATE TABLE employeedepartmenthistory (
+    Business Entity ID INT,
+    DepartmentI D INT,
+    Shift ID INT,
+    Start Date TEXT,
+    End Date TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID, DepartmentI D, Shift ID, Start Date)
+);
+
+CREATE TABLE employeepayhistory (
+    Business Entity ID INT,
+    Rate Change Date TEXT,
+    Rate REAL,
+    Pay Frequency INT,
+    modified date TEXT,
+    PRIMARY KEY (Business Entity ID, Rate Change Date)
+);
+
+CREATE TABLE jobcandidate (
+    Job Candidate ID INT,
+    Business Entity ID INT,
+    Resume TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Job Candidate ID)
+);
+
+CREATE TABLE location (
+    Location ID INT,
+    Name TEXT,
+    Cost Rate REAL,
+    Availability REAL,
+    modified date TEXT,
+    PRIMARY KEY (Location ID)
+);
+
+CREATE TABLE phonenumbertype (
+    Phone Number Type ID INT,
+    Phone Number TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Phone Number Type ID)
+);
+
+CREATE TABLE product (
+    Product ID INT,
+    Name TEXT,
+    Product Number TEXT,
+    Make Flag INT,
+    Finished Goods Flag INT,
+    Color TEXT,
+    Safety Stock Level INT,
+    Reorder Point INT,
+    Standard Cost REAL,
+    List Price REAL,
+    Size TEXT,
+    Size Unit Measure Code TEXT,
+    Weight Unit Measure Code TEXT,
+    Weight REAL,
+    Days To Manufacture INT,
+    Product Line TEXT,
+    Class TEXT,
+    Style TEXT,
+    Product Subcategory ID INT,
+    Product Model ID INT,
+    Sell Start Date TEXT,
+    Sell End Date TEXT,
+    Discontinued Date TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Product ID)
+);
+
+CREATE TABLE document (
+    Document Node TEXT,
+    Document Level INT,
+    Title TEXT,
+    Owner INT,
+    Folder Flag INT,
+    File Name TEXT,
+    File Extension TEXT,
+    Revision TEXT,
+    Change Number INT,
+    Status INT,
+    Document Summary TEXT,
+    Document BLOB,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Document Node)
+);
+
+CREATE TABLE stateprovince (
+    State Province ID INT,
+    State Province Code TEXT,
+    Country Region Code TEXT,
+    Is Only State Province Flag INT,
+    Name TEXT,
+    Territory ID INT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (State Province ID)
+);
+
+CREATE TABLE creditcard (
+    Credit Card ID INT,
+    Card Type TEXT,
+    Card Number TEXT,
+    Expiration Month INT,
+    Expiration Year INT,
+    modified date TEXT,
+    PRIMARY KEY (Credit Card ID)
+);
+
+CREATE TABLE salesorderheader (
+    Sales Order ID INT,
+    RevisionNumber INT,
+    Order Date TEXT,
+    DueDate TEXT,
+    Ship Date TEXT,
+    Status INT,
+    OnlineOrderFlag INT,
+    SalesOrderNumber TEXT,
+    PurchaseOrderNumber TEXT,
+    AccountNumber TEXT,
+    CustomerID INT,
+    SalesPersonID INT,
+    TerritoryID INT,
+    BillToAddressID INT,
+    ShipToAddressID INT,
+    Ship Method ID INT,
+    CreditCardID INT,
+    CreditCardApprovalCode TEXT,
+    CurrencyRateID INT,
+    SubTotal REAL,
+    Tax Amount REAL,
+    Freight REAL,
+    Total Due REAL,
+    Comment TEXT,
+    rowguid TEXT,
+    modified date TEXT,
+    PRIMARY KEY (Sales Order ID)
+);
+
+
+-- Database: food_inspection_2
+
+CREATE TABLE employee (
+    employee id INT,
+    first name TEXT,
+    last name TEXT,
+    address TEXT,
+    city TEXT,
+    state TEXT,
+    zip INT,
+    phone TEXT,
+    title TEXT,
+    salary INT,
+    supervisor INT,
+    PRIMARY KEY (employee id),
+    FOREIGN KEY (supervisor) REFERENCES employee(employee id)
+);
+
+CREATE TABLE establishment (
+    license number INT,
+    doing business as name TEXT,
+    as know as name TEXT,
+    facility type TEXT,
+    risk level INT,
+    address TEXT,
+    city TEXT,
+    state TEXT,
+    zip INT,
+    latitude REAL,
+    longitude REAL,
+    ward INT,
+    PRIMARY KEY (license number)
+);
+
+CREATE TABLE inspection (
+    inspection id INT,
+    inspection date TEXT,
+    inspection type TEXT,
+    results TEXT,
+    employee id INT,
+    license number INT,
+    followup to INT,
+    PRIMARY KEY (inspection id),
+    FOREIGN KEY (employee id) REFERENCES employee(employee id),
+    FOREIGN KEY (license number) REFERENCES establishment(license number),
+    FOREIGN KEY (followup to) REFERENCES inspection(inspection id)
+);
+
+CREATE TABLE inspection_point (
+    point id INT,
+    Description TEXT,
+    category TEXT,
+    code TEXT,
+    fine INT,
+    point_level TEXT,
+    PRIMARY KEY (point id)
+);
+
+CREATE TABLE violation (
+    inspection id INT,
+    point id INT,
+    fine INT,
+    inspector_comment TEXT,
+    PRIMARY KEY (inspection id, point id),
+    FOREIGN KEY (inspection id) REFERENCES inspection(inspection id),
+    FOREIGN KEY (point id) REFERENCES inspection_point(point id)
+);
+
+
+-- Database: citeseer
+
+CREATE TABLE cites (
+    cited_paper_id TEXT,
+    citing_paper_id TEXT,
+    PRIMARY KEY (cited_paper_id, citing_paper_id)
+);
+
+CREATE TABLE paper (
+    paper id TEXT,
+    class label TEXT,
+    PRIMARY KEY (paper id)
+);
+
+CREATE TABLE content (
+    paper id TEXT,
+    word cited id TEXT,
+    PRIMARY KEY (paper id, word cited id),
+    FOREIGN KEY (paper id) REFERENCES paper(paper id)
+);
+
+
+-- Database: bike_share_1
+
+CREATE TABLE station (
+    id INT,
+    name TEXT,
+    latitude REAL,
+    longitude REAL,
+    dock count INT,
+    city TEXT,
+    installation date TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE status (
+    station id INT,
+    bikes_available INT,
+    docks_available INT,
+    time TEXT,
+);
+
+CREATE TABLE trip (
+    id INT,
+    duration INT,
+    start date TEXT,
+    start station name TEXT,
+    start station id INT,
+    end date TEXT,
+    end station name TEXT,
+    end station id INT,
+    bike id INT,
+    subscription type TEXT,
+    zip code INT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE weather (
+    date TEXT,
+    max temperature in Fahrenheit degree INT,
+    mean temperature in Fahrenheit degree INT,
+    min temperature in Fahrenheit degree INT,
+    max dew point in Fahrenheit degree INT,
+    mean dew point in Fahrenheit degree INT,
+    min dew point in Fahrenheit degree INT,
+    max humidity INT,
+    mean humidity INT,
+    min humidity INT,
+    max sea level pressure in inches REAL,
+    mean sea level pressure in inches REAL,
+    min sea level pressure in inches REAL,
+    max visibility in miles INT,
+    mean visibility in miles INT,
+    min visibility in miles INT,
+    max wind Speed in mph INT,
+    mean wind Speed in mph INT,
+    max gust Speed in mph INT,
+    precipitation in inches TEXT,
+    cloud cover INT,
+    events TEXT,
+    wind direction degrees INT,
+    zip code TEXT,
+);
+
+
+-- Database: law_episode
+
+CREATE TABLE episode (
+    episode id TEXT,
+    series TEXT,
+    season INT,
+    episode INT,
+    number in series INT,
+    title TEXT,
+    summary TEXT,
+    air date TEXT,
+    episode image TEXT,
+    rating REAL,
+    votes INT,
+    PRIMARY KEY (episode id)
+);
+
+CREATE TABLE keyword (
+    episode id TEXT,
+    keyword TEXT,
+    PRIMARY KEY (episode id, keyword),
+    FOREIGN KEY (episode id) REFERENCES episode(episode id)
+);
+
+CREATE TABLE person (
+    person id TEXT,
+    name TEXT,
+    birth date TEXT,
+    birth name TEXT,
+    birth place TEXT,
+    birth region TEXT,
+    birth country TEXT,
+    height meters REAL,
+    nickname TEXT,
+    PRIMARY KEY (person id)
+);
+
+CREATE TABLE award (
+    award id INT,
+    organization TEXT,
+    year INT,
+    award category TEXT,
+    award TEXT,
+    series TEXT,
+    episode id TEXT,
+    person_id TEXT,
+    role TEXT,
+    result TEXT,
+    PRIMARY KEY (award id),
+    FOREIGN KEY (episode id) REFERENCES episode(episode id),
+    FOREIGN KEY (person_id) REFERENCES person(person id)
+);
+
+CREATE TABLE credit (
+    episode id TEXT,
+    person id TEXT,
+    category TEXT,
+    role TEXT,
+    credited TEXT,
+    PRIMARY KEY (episode id, person id),
+    FOREIGN KEY (episode id) REFERENCES episode(episode id),
+    FOREIGN KEY (person id) REFERENCES person(person id)
+);
+
+CREATE TABLE vote (
+    episode id TEXT,
+    stars INT,
+    votes INT,
+    percent REAL,
+    FOREIGN KEY (episode id) REFERENCES episode(episode id)
+);
+
+
+-- Database: cs_semester
+
+CREATE TABLE course (
+    course id INT,
+    name TEXT,
+    credit INT,
+    difficulty INT,
+    PRIMARY KEY (course id)
+);
+
+CREATE TABLE prof (
+    professor id INT,
+    gender TEXT,
+    first name TEXT,
+    last name TEXT,
+    email TEXT,
+    popularity INT,
+    teaching ability INT,
+    graduate from TEXT,
+    PRIMARY KEY (professor id)
+);
+
+CREATE TABLE ra (
+    student id INT,
+    capability INT,
+    professor id INT,
+    salary TEXT,
+    PRIMARY KEY (student id, professor id),
+    FOREIGN KEY (student id) REFERENCES student(student id),
+    FOREIGN KEY (professor id) REFERENCES prof(professor id)
+);
+
+CREATE TABLE registration (
+    course id INT,
+    student id INT,
+    grade TEXT,
+    satisfying degree INT,
+    PRIMARY KEY (course id, student id),
+    FOREIGN KEY (course id) REFERENCES course(course id),
+    FOREIGN KEY (student id) REFERENCES student(student id)
+);
+
+CREATE TABLE student (
+    student id INT,
+    first name TEXT,
+    last name TEXT,
+    phone number TEXT,
+    email TEXT,
+    intelligence INT,
+    graduate point average REAL,
+    type TEXT,
+    PRIMARY KEY (student id)
+);
+
+
+-- Database: legislator
+
+CREATE TABLE current (
+    ballotpedia id TEXT,
+    bioguide id TEXT,
+    birthday bio TEXT,
+    cspan id REAL,
+    fec id TEXT,
+    first name TEXT,
+    gender bio TEXT,
+    google entity id TEXT,
+    govtrack id INT,
+    house history id REAL,
+    interuniversity consortium for political and social research id REAL,
+    last name TEXT,
+    legislator id TEXT,
+    maplight id REAL,
+    middle name TEXT,
+    nickname TEXT,
+    official full name TEXT,
+    opensecrets id TEXT,
+    religion bio TEXT,
+    suffix name TEXT,
+    thomas id INT,
+    votesmart id REAL,
+    wikidata id TEXT,
+    wikipedia id TEXT,
+    PRIMARY KEY (bioguide id, cspan id)
+);
+
+CREATE TABLE current-terms (
+    address TEXT,
+    bioguide id TEXT,
+    caucus TEXT,
+    chamber TEXT,
+    class REAL,
+    contact_form TEXT,
+    district REAL,
+    end TEXT,
+    fax TEXT,
+    last TEXT,
+    name TEXT,
+    office TEXT,
+    party TEXT,
+    party affiliations TEXT,
+    phone TEXT,
+    relation TEXT,
+    Really Simple Syndication URL TEXT,
+    start TEXT,
+    state TEXT,
+    state_rank TEXT,
+    title TEXT,
+    type TEXT,
+    url TEXT,
+    PRIMARY KEY (bioguide id, end),
+    FOREIGN KEY (bioguide id) REFERENCES current(bioguide id)
+);
+
+CREATE TABLE historical (
+    ballotpedia id TEXT,
+    bioguide id TEXT,
+    bioguide previous id TEXT,
+    birthday bio TEXT,
+    cspan id TEXT,
+    fec id TEXT,
+    first name TEXT,
+    gender bio TEXT,
+    google entity id TEXT,
+    govtrack id INT,
+    house history alternate id TEXT,
+    house history id REAL,
+    interuniversity consortium for political and social research id REAL,
+    last name TEXT,
+    legislator id TEXT,
+    maplight id TEXT,
+    middle name TEXT,
+    nickname TEXT,
+    official full name TEXT,
+    opensecrets id TEXT,
+    religion bio TEXT,
+    suffix name TEXT,
+    thomas id TEXT,
+    votesmart id TEXT,
+    wikidata id TEXT,
+    wikipedia id TEXT,
+    PRIMARY KEY (bioguide id)
+);
+
+CREATE TABLE historical-terms (
+    address TEXT,
+    bioguide id TEXT,
+    chamber TEXT,
+    class REAL,
+    contact_form TEXT,
+    district REAL,
+    end TEXT,
+    fax TEXT,
+    last TEXT,
+    middle TEXT,
+    name TEXT,
+    office TEXT,
+    party TEXT,
+    party affiliations TEXT,
+    phone TEXT,
+    relation TEXT,
+    Really Simple Syndication URL TEXT,
+    start TEXT,
+    state TEXT,
+    state_rank TEXT,
+    title TEXT,
+    type TEXT,
+    url TEXT,
+    PRIMARY KEY (bioguide id),
+    FOREIGN KEY (bioguide id) REFERENCES historical(bioguide id)
+);
+
+CREATE TABLE social-media (
+    bioguide TEXT,
+    facebook TEXT,
+    facebook_id REAL,
+    govtrack REAL,
+    instagram TEXT,
+    instagram_id REAL,
+    thomas INT,
+    twitter TEXT,
+    twitter_id REAL,
+    youtube TEXT,
+    youtube_id TEXT,
+    PRIMARY KEY (bioguide),
+    FOREIGN KEY (bioguide) REFERENCES current(bioguide id)
+);
+
+
+-- Database: world
+
+CREATE TABLE city (
+    ID INT,
+    Name TEXT,
+    Country Code TEXT,
+    District TEXT,
+    Population INT,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (Country Code) REFERENCES country(Code)
+);
+
+CREATE TABLE country (
+    Code TEXT,
+    Name TEXT,
+    Continent TEXT,
+    Region TEXT,
+    Surface Area REAL,
+    Independence Year INT,
+    Population INT,
+    Life Expectancy REAL,
+    Gross National Product REAL,
+    Gross National Product Old REAL,
+    Local Name TEXT,
+    Government Form TEXT,
+    Head Of State TEXT,
+    Capital INT,
+    Code2 TEXT,
+    PRIMARY KEY (Code)
+);
+
+CREATE TABLE countrylanguage (
+    Country Code TEXT,
+    Language TEXT,
+    Is Official TEXT,
+    Percentage REAL,
+    PRIMARY KEY (Country Code, Language),
+    FOREIGN KEY (Country Code) REFERENCES country(Code)
+);
+
+
+-- Database: cookbook
+
+CREATE TABLE ingredient (
+    ingredient id INT,
+    category TEXT,
+    name TEXT,
+    plural TEXT,
+    PRIMARY KEY (ingredient id)
+);
+
+CREATE TABLE recipe (
+    recipe id INT,
+    title TEXT,
+    subtitle TEXT,
+    servings INT,
+    yield unit TEXT,
+    preparation minute INT,
+    cooked minute INT,
+    stand minute INT,
+    source TEXT,
+    introduction TEXT,
+    directions TEXT,
+    PRIMARY KEY (recipe id)
+);
+
+CREATE TABLE nutrition (
+    recipe id INT,
+    protein REAL,
+    carbo REAL,
+    alcohol REAL,
+    total fat REAL,
+    saturated fat REAL,
+    cholesterol REAL,
+    sodium REAL,
+    iron REAL,
+    vitamin c REAL,
+    vitamin a REAL,
+    fiber REAL,
+    percentage calculation carbo REAL,
+    percentage calculation fat REAL,
+    percentage calculation protein REAL,
+    calories REAL,
+    PRIMARY KEY (recipe id),
+    FOREIGN KEY (recipe id) REFERENCES recipe(recipe id)
+);
+
+CREATE TABLE quantity (
+    quantity id INT,
+    recipe id INT,
+    ingredient id INT,
+    maximum quantity REAL,
+    minimum quantity REAL,
+    unit TEXT,
+    preparation TEXT,
+    optional TEXT,
+    PRIMARY KEY (quantity id),
+    FOREIGN KEY (recipe id) REFERENCES recipe(recipe id),
+    FOREIGN KEY (ingredient id) REFERENCES ingredient(ingredient id)
+);
+
+
+-- Database: university
+
+CREATE TABLE country (
+    id INT,
+    country name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE ranking_system (
+    id INT,
+    system name TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE ranking_criteria (
+    id INT,
+    ranking system id INT,
+    criteria name TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (ranking system id) REFERENCES ranking_system(id)
+);
+
+CREATE TABLE university (
+    id INT,
+    country id INT,
+    university name TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (country id) REFERENCES country(id)
+);
+
+CREATE TABLE university_ranking_year (
+    university id INT,
+    ranking criteria id INT,
+    year INT,
+    score INT,
+    FOREIGN KEY (university id) REFERENCES university(id),
+    FOREIGN KEY (ranking criteria id) REFERENCES ranking_criteria(id)
+);
+
+CREATE TABLE university_year (
+    university id INT,
+    year INT,
+    number of students INT,
+    student staff ratio REAL,
+    pct internation student INT,
+    pct female students INT,
+    FOREIGN KEY (university id) REFERENCES university(id)
+);
+
+
+-- Database: books
+
+CREATE TABLE address_status (
+    status id INT,
+    address status TEXT,
+    PRIMARY KEY (status id)
+);
+
+CREATE TABLE author (
+    author id INT,
+    author name TEXT,
+    PRIMARY KEY (author id)
+);
+
+CREATE TABLE book_language (
+    language id INT,
+    language code TEXT,
+    language name TEXT,
+    PRIMARY KEY (language id)
+);
+
+CREATE TABLE country (
+    country id INT,
+    country name TEXT,
+    PRIMARY KEY (country id)
+);
+
+CREATE TABLE address (
+    address id INT,
+    street number TEXT,
+    street name TEXT,
+    city TEXT,
+    country id INT,
+    PRIMARY KEY (address id),
+    FOREIGN KEY (country id) REFERENCES country(country id)
+);
+
+CREATE TABLE customer (
+    customer id INT,
+    first name TEXT,
+    last name TEXT,
+    email TEXT,
+    PRIMARY KEY (customer id)
+);
+
+CREATE TABLE customer_address (
+    customer id INT,
+    address id INT,
+    status id INT,
+    PRIMARY KEY (customer id, address id),
+    FOREIGN KEY (customer id) REFERENCES customer(customer id),
+    FOREIGN KEY (address id) REFERENCES address(address id)
+);
+
+CREATE TABLE order_status (
+    status id INT,
+    status value TEXT,
+    PRIMARY KEY (status id)
+);
+
+CREATE TABLE publisher (
+    publisher id INT,
+    publisher name TEXT,
+    PRIMARY KEY (publisher id)
+);
+
+CREATE TABLE book (
+    book id INT,
+    title TEXT,
+    isbn13 TEXT,
+    language id INT,
+    number pages INT,
+    publication date TEXT,
+    publisher_id INT,
+    PRIMARY KEY (book id),
+    FOREIGN KEY (language id) REFERENCES book_language(language id),
+    FOREIGN KEY (publisher_id) REFERENCES publisher(publisher id)
+);
+
+CREATE TABLE book_author (
+    book id INT,
+    author id INT,
+    PRIMARY KEY (book id, author id),
+    FOREIGN KEY (book id) REFERENCES book(book id),
+    FOREIGN KEY (author id) REFERENCES author(author id)
+);
+
+CREATE TABLE shipping_method (
+    method id INT,
+    method name TEXT,
+    cost REAL,
+    PRIMARY KEY (method id)
+);
+
+CREATE TABLE cust_order (
+    order id INT,
+    order date TEXT,
+    customer id INT,
+    shipping method id INT,
+    destination address id INT,
+    PRIMARY KEY (order id)
+);
+
+CREATE TABLE order_history (
+    history id INT,
+    order_id INT,
+    status id INT,
+    status date TEXT,
+    PRIMARY KEY (history id)
+);
+
+CREATE TABLE order_line (
+    line id INT,
+    order id INT,
+    book id INT,
+    price REAL,
+    PRIMARY KEY (line id)
+);
+
+
+-- Database: shipping
+
+CREATE TABLE city (
+    city id INT,
+    city name TEXT,
+    state TEXT,
+    population INT,
+    area REAL,
+    PRIMARY KEY (city id)
+);
+
+CREATE TABLE customer (
+    customer id INT,
+    customer name TEXT,
+    annual revenue INT,
+    customer type TEXT,
+    address TEXT,
+    city TEXT,
+    state TEXT,
+    zip REAL,
+    phone TEXT,
+    PRIMARY KEY (customer id)
+);
+
+CREATE TABLE driver (
+    driver id INT,
+    first name TEXT,
+    last name TEXT,
+    address TEXT,
+    city TEXT,
+    state TEXT,
+    zip code INT,
+    phone TEXT,
+    PRIMARY KEY (driver id)
+);
+
+CREATE TABLE truck (
+    truck id INT,
+    make TEXT,
+    model year INT,
+    PRIMARY KEY (truck id)
+);
+
+CREATE TABLE shipment (
+    ship id INT,
+    customer id INT,
+    weight REAL,
+    truck id INT,
+    driver id INT,
+    city id INT,
+    ship date TEXT,
+    PRIMARY KEY (ship id),
+    FOREIGN KEY (customer id) REFERENCES customer(customer id),
+    FOREIGN KEY (truck id) REFERENCES truck(truck id),
+    FOREIGN KEY (driver id) REFERENCES driver(driver id),
+    FOREIGN KEY (city id) REFERENCES city(city id)
+);
+
+
+-- Database: food_inspection
+
+CREATE TABLE businesses (
+    business id INT,
+    name TEXT,
+    address TEXT,
+    city TEXT,
+    postal code TEXT,
+    latitude REAL,
+    longitude REAL,
+    phone number INT,
+    tax code TEXT,
+    business certificate INT,
+    application date TEXT,
+    owner name TEXT,
+    owner address TEXT,
+    owner city TEXT,
+    owner state TEXT,
+    owner zip TEXT,
+    PRIMARY KEY (business id)
+);
+
+CREATE TABLE inspections (
+    business id INT,
+    score INT,
+    date TEXT,
+    type TEXT,
+    FOREIGN KEY (business id) REFERENCES businesses(business id)
+);
+
+CREATE TABLE violations (
+    business id INT,
+    date TEXT,
+    violation type id TEXT,
+    risk category TEXT,
+    description TEXT,
+    FOREIGN KEY (business id) REFERENCES businesses(business id)
+);
+
+
+-- Database: movie_platform
+
+CREATE TABLE lists (
+    user_id INT,
+    list_id INT,
+    list_title TEXT,
+    list_movie_number INT,
+    list_update_timestamp_utc TEXT,
+    list_creation_timestamp_utc TEXT,
+    list_followers INT,
+    list_url TEXT,
+    list_comments INT,
+    list_description TEXT,
+    list_cover_image_url TEXT,
+    list_first_image_url TEXT,
+    list_second_image_url TEXT,
+    list_third_image_url TEXT,
+    PRIMARY KEY (list_id),
+    FOREIGN KEY (user_id) REFERENCES lists_users(user_id)
+);
+
+CREATE TABLE movies (
+    movie_id INT,
+    movie_title TEXT,
+    movie_release_year INT,
+    movie_url TEXT,
+    movie_title_language TEXT,
+    movie_popularity INT,
+    movie_image_url TEXT,
+    director_id TEXT,
+    director_name TEXT,
+    director_url TEXT,
+    PRIMARY KEY (movie_id)
+);
+
+CREATE TABLE ratings_users (
+    user_id INT,
+    rating_date_utc TEXT,
+    user_trialist INT,
+    user_subscriber INT,
+    user_avatar_image_url TEXT,
+    user_cover_image_url TEXT,
+    user_eligible_for_trial INT,
+    user_has_payment_method INT,
+    FOREIGN KEY (user_id) REFERENCES lists_users(user_id)
+);
+
+CREATE TABLE lists_users (
+    user_id INT,
+    list_id INT,
+    list_update_date_utc TEXT,
+    list_creation_date_utc TEXT,
+    user_trialist INT,
+    user_subscriber INT,
+    user_avatar_image_url TEXT,
+    user_cover_image_url TEXT,
+    user_eligible_for_trial TEXT,
+    user_has_payment_method TEXT,
+    PRIMARY KEY (user_id, list_id),
+    FOREIGN KEY (user_id) REFERENCES lists(user_id),
+    FOREIGN KEY (list_id) REFERENCES lists(list_id)
+);
+
+CREATE TABLE ratings (
+    movie_id INT,
+    rating_id INT,
+    rating_url TEXT,
+    rating_score INT,
+    rating_timestamp_utc TEXT,
+    critic TEXT,
+    critic_likes INT,
+    critic_comments INT,
+    user_id INT,
+    user_trialist INT,
+    user_subscriber INT,
+    user_eligible_for_trial INT,
+    user_has_payment_method INT,
+    FOREIGN KEY (movie_id) REFERENCES movies(movie_id),
+    FOREIGN KEY (user_id) REFERENCES lists_users(user_id)
+);
+
+
+-- Database: shakespeare
+
+CREATE TABLE chapters (
+    id INT,
+    Act INT,
+    Scene INT,
+    Description TEXT,
+    work id INT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE characters (
+    id INT,
+    char name TEXT,
+    abbreviation TEXT,
+    Description TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE paragraphs (
+    id INT,
+    paragraph number INT,
+    Plain Text TEXT,
+    character id INT,
+    chapter id INT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE works (
+    id INT,
+    Title TEXT,
+    Long Title TEXT,
+    character id INT,
+    genre type TEXT,
+    PRIMARY KEY (id)
+);
+
+
+-- Database: book_publishing_company
+
+CREATE TABLE authors (
+    author id TEXT,
+    author last name TEXT,
+    author first name TEXT,
+    phone TEXT,
+    address TEXT,
+    city TEXT,
+    state TEXT,
+    zip TEXT,
+    contract TEXT,
+    PRIMARY KEY (author id)
+);
+
+CREATE TABLE jobs (
+    job id INT,
+    job description TEXT,
+    min level INT,
+    max level INT,
+    PRIMARY KEY (job id)
+);
+
+CREATE TABLE publishers (
+    publisher id TEXT,
+    publisher name TEXT,
+    city TEXT,
+    state TEXT,
+    country TEXT,
+    PRIMARY KEY (publisher id)
+);
+
+CREATE TABLE employee (
+    employee id TEXT,
+    first name TEXT,
+    minit TEXT,
+    last name TEXT,
+    job id INT,
+    job level INT,
+    publisher id TEXT,
+    hire_date TEXT,
+    PRIMARY KEY (employee id),
+    FOREIGN KEY (job id) REFERENCES jobs(job id),
+    FOREIGN KEY (publisher id) REFERENCES publishers(publisher id)
+);
+
+CREATE TABLE pub_info (
+    publication id TEXT,
+    logo BLOB,
+    publisher's information TEXT,
+    PRIMARY KEY (publication id),
+    FOREIGN KEY (publication id) REFERENCES publishers(publisher id)
+);
+
+CREATE TABLE stores (
+    store id TEXT,
+    store name TEXT,
+    store address TEXT,
+    city TEXT,
+    state TEXT,
+    zip TEXT,
+    PRIMARY KEY (store id)
+);
+
+CREATE TABLE discounts (
+    discount type TEXT,
+    store id TEXT,
+    low quantity INT,
+    high quantity INT,
+    discount REAL,
+    FOREIGN KEY (store id) REFERENCES stores(store id)
+);
+
+CREATE TABLE titles (
+    title id TEXT,
+    title TEXT,
+    type TEXT,
+    publisher id TEXT,
+    price REAL,
+    advance REAL,
+    royalty INT,
+    year to date sales INT,
+    notes TEXT,
+    publication date TEXT,
+    PRIMARY KEY (title id),
+    FOREIGN KEY (publisher id) REFERENCES publishers(publisher id)
+);
+
+CREATE TABLE roysched (
+    title_id TEXT,
+    low range INT,
+    high range INT,
+    royalty INT,
+    FOREIGN KEY (title_id) REFERENCES titles(title id)
+);
+
+CREATE TABLE sales (
+    store id TEXT,
+    order number TEXT,
+    order date TEXT,
+    quantity INT,
+    payterms TEXT,
+    title id TEXT,
+    PRIMARY KEY (store id, order number, title id),
+    FOREIGN KEY (store id) REFERENCES stores(store id),
+    FOREIGN KEY (title id) REFERENCES titles(title id)
+);
+
+CREATE TABLE titleauthor (
+    author id TEXT,
+    title id TEXT,
+    author ordering INT,
+    royaltyper INT,
+    PRIMARY KEY (author id, title id),
+    FOREIGN KEY (author id) REFERENCES authors(author id),
+    FOREIGN KEY (title id) REFERENCES titles(title id)
+);
+
+
+-- Database: car_retails
+
+CREATE TABLE offices (
+    office code TEXT,
+    city TEXT,
+    phone TEXT,
+    addressLine1 TEXT,
+    addressLine2 TEXT,
+    state TEXT,
+    country TEXT,
+    postalCode TEXT,
+    territory TEXT,
+    PRIMARY KEY (office code)
+);
+
+CREATE TABLE employees (
+    Employee Number INT,
+    last name TEXT,
+    first name TEXT,
+    extension TEXT,
+    email TEXT,
+    office code TEXT,
+    reports to INT,
+    job title TEXT,
+    PRIMARY KEY (Employee Number),
+    FOREIGN KEY (office code) REFERENCES offices(office code),
+    FOREIGN KEY (reports to) REFERENCES employees(Employee Number)
+);
+
+CREATE TABLE customers (
+    customer number INT,
+    customer name TEXT,
+    contact last name TEXT,
+    contact first name TEXT,
+    phone TEXT,
+    addressLine1 TEXT,
+    addressLine2 TEXT,
+    city TEXT,
+    state TEXT,
+    postalCode TEXT,
+    country TEXT,
+    sales representative employee number INT,
+    credit limit REAL,
+    PRIMARY KEY (customer number),
+    FOREIGN KEY (sales representative employee number) REFERENCES employees(Employee Number)
+);
+
+CREATE TABLE orders (
+    order number INT,
+    order date TEXT,
+    required Date TEXT,
+    shipped date TEXT,
+    status TEXT,
+    comments TEXT,
+    customer number INT,
+    PRIMARY KEY (order number),
+    FOREIGN KEY (customer number) REFERENCES customers(customer number)
+);
+
+CREATE TABLE payments (
+    customer number INT,
+    check Number TEXT,
+    payment Date TEXT,
+    amount REAL,
+    PRIMARY KEY (customer number, check Number),
+    FOREIGN KEY (customer number) REFERENCES customers(customer number)
+);
+
+CREATE TABLE productlines (
+    product line TEXT,
+    text description TEXT,
+    html description TEXT,
+    image BLOB,
+    PRIMARY KEY (product line)
+);
+
+CREATE TABLE products (
+    product code TEXT,
+    product name TEXT,
+    product line TEXT,
+    product scale TEXT,
+    product vendor TEXT,
+    product description TEXT,
+    quantity in stock INT,
+    buy price REAL,
+    Manufacturer Suggested Retail Price REAL,
+    PRIMARY KEY (product code),
+    FOREIGN KEY (product line) REFERENCES productlines(product line)
+);
+
+CREATE TABLE orderdetails (
+    order number INT,
+    product code TEXT,
+    quantity ordered INT,
+    price for each REAL,
+    order Line Number INT,
+    PRIMARY KEY (order number, product code)
+);
+
+
+-- Database: mental_health_survey
+
+CREATE TABLE question (
+    question text TEXT,
+    question id INT,
+    PRIMARY KEY (question id)
+);
+
+CREATE TABLE survey (
+    Survey ID INT,
+    Description TEXT,
+    PRIMARY KEY (Survey ID)
+);
+
+CREATE TABLE answer (
+    Answer Text TEXT,
+    Survey ID INT,
+    User ID INT,
+    Question ID INT,
+    PRIMARY KEY (User ID, Question ID)
+);
+
+
+-- Database: hockey
+
+CREATE TABLE awardsmisc (
+    name TEXT,
+    ID TEXT,
+    award TEXT,
+    year INT,
+    league ID TEXT,
+    note TEXT,
+    PRIMARY KEY (name)
+);
+
+CREATE TABLE hof (
+    year INT,
+    hall of fame id TEXT,
+    name TEXT,
+    category TEXT,
+    PRIMARY KEY (hall of fame id)
+);
+
+CREATE TABLE teams (
+    year INT,
+    league ID TEXT,
+    team ID TEXT,
+    Franchise ID TEXT,
+    Conference ID TEXT,
+    Division ID TEXT,
+    rank INT,
+    playoff TEXT,
+    games INT,
+    wins INT,
+    loses INT,
+    ties INT,
+    Overtime losses TEXT,
+    points INT,
+    Shootout wins TEXT,
+    Shootout loses TEXT,
+    Goals for INT,
+    Goals against INT,
+    Full team name TEXT,
+    Penalty minutes TEXT,
+    Bench minors (minutes) TEXT,
+    Power play goals TEXT,
+    Power play chances TEXT,
+    Shorthanded goals against TEXT,
+    Power play goals against TEXT,
+    Penalty kill chances TEXT,
+    Shorthanded goals for TEXT,
+    PRIMARY KEY (year, team ID)
+);
+
+CREATE TABLE coaches (
+    coach ID TEXT,
+    year INT,
+    team ID TEXT,
+    league ID TEXT,
+    stint INT,
+    notes TEXT,
+    games INT,
+    wins INT,
+    loses INT,
+    ties INT,
+    post-season games TEXT,
+    post-season wins TEXT,
+    post-season loses TEXT,
+    post-season ties TEXT,
+    PRIMARY KEY (coach ID, year, team ID, stint),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE awardscoaches (
+    coach ID TEXT,
+    award TEXT,
+    year INT,
+    league ID TEXT,
+    note TEXT,
+    FOREIGN KEY (coach ID) REFERENCES coaches(coach ID)
+);
+
+CREATE TABLE master (
+    playerID TEXT,
+    coach ID TEXT,
+    hofID TEXT,
+    first name TEXT,
+    last name TEXT,
+    name note TEXT,
+    name given TEXT,
+    Nickname TEXT,
+    height TEXT,
+    weight TEXT,
+    shoot catch TEXT,
+    legends ID TEXT,
+    Internet Hockey Database ID TEXT,
+    Hockey-Reference.com ID TEXT,
+    First NHL season TEXT,
+    Last NHL season TEXT,
+    First WHA season TEXT,
+    Last WHA season TEXT,
+    position TEXT,
+    birth Year TEXT,
+    birth Month TEXT,
+    birth Day TEXT,
+    birth Country TEXT,
+    birth State TEXT,
+    birth city TEXT,
+    death year TEXT,
+    death month TEXT,
+    death day TEXT,
+    death country TEXT,
+    death state TEXT,
+    death city TEXT,
+    FOREIGN KEY (coach ID) REFERENCES coaches(coach ID)
+);
+
+CREATE TABLE awardsplayers (
+    player id TEXT,
+    award TEXT,
+    year INT,
+    league ID TEXT,
+    note TEXT,
+    position TEXT,
+    PRIMARY KEY (player id, award, year),
+    FOREIGN KEY (player id) REFERENCES master(playerID)
+);
+
+CREATE TABLE combinedshutouts (
+    year INT,
+    month INT,
+    date INT,
+    team ID TEXT,
+    opposite team ID TEXT,
+    regular / postseason TEXT,
+    ID of goalie 1 TEXT,
+    ID of goalie 2 TEXT,
+    FOREIGN KEY (ID of goalie 1) REFERENCES master(playerID),
+    FOREIGN KEY (ID of goalie 2) REFERENCES master(playerID)
+);
+
+CREATE TABLE goalies (
+    playerID TEXT,
+    year INT,
+    stint INT,
+    team ID TEXT,
+    league ID TEXT,
+    Games played TEXT,
+    Minutes TEXT,
+    wins TEXT,
+    loses TEXT,
+    Ties / overtime losses TEXT,
+    Empty net goals TEXT,
+    Shutouts TEXT,
+    Goals against TEXT,
+    Shots against TEXT,
+    Postseason games played TEXT,
+    Postseason minutes TEXT,
+    Postseason wins TEXT,
+    Postseason loses TEXT,
+    Postseason ties TEXT,
+    Postseason empty net goals TEXT,
+    Postseason Shutouts TEXT,
+    Postseason Goals against TEXT,
+    Postseason Shots against TEXT,
+    PRIMARY KEY (playerID, year, stint),
+    FOREIGN KEY (playerID) REFERENCES master(playerID),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE goaliessc (
+    playerID TEXT,
+    year INT,
+    team ID TEXT,
+    league ID TEXT,
+    Games played INT,
+    Minutes INT,
+    Wins INT,
+    Loses INT,
+    Ties INT,
+    Shutouts INT,
+    Goals against INT,
+    PRIMARY KEY (playerID, year),
+    FOREIGN KEY (playerID) REFERENCES master(playerID),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE goaliesshootout (
+    playerID TEXT,
+    year INT,
+    stint INT,
+    team ID TEXT,
+    Wins INT,
+    Loses INT,
+    Shots against INT,
+    Goals against INT,
+    FOREIGN KEY (playerID) REFERENCES master(playerID),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE scoring (
+    playerID TEXT,
+    year INT,
+    stint INT,
+    team id TEXT,
+    league id TEXT,
+    position TEXT,
+    game played INT,
+    goals INT,
+    assists INT,
+    points INT,
+    Penalty minutes INT,
+    Plus / minus TEXT,
+    Power play goals TEXT,
+    Power play assists TEXT,
+    Shorthanded goals TEXT,
+    Shorthanded assists TEXT,
+    Game-winning goals TEXT,
+    Game-tying goals TEXT,
+    Shots on goal TEXT,
+    Postseason games played TEXT,
+    Postseason goals TEXT,
+    Postseason assists TEXT,
+    Postseason points TEXT,
+    Postseason penalty minutes TEXT,
+    Postseason Plus / minus TEXT,
+    Postseason power play goals TEXT,
+    Postseason power play assists TEXT,
+    Postseason Shorthanded goals TEXT,
+    Postseason Shorthanded assists TEXT,
+    Postseason game-winning goals TEXT,
+    Postseason shots on goal TEXT,
+    FOREIGN KEY (playerID) REFERENCES master(playerID),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team id) REFERENCES teams(team ID)
+);
+
+CREATE TABLE scoringsc (
+    playerID TEXT,
+    year INT,
+    team ID TEXT,
+    league ID TEXT,
+    position TEXT,
+    Games played INT,
+    Goals INT,
+    assists INT,
+    points INT,
+    Penalty minutes INT,
+    FOREIGN KEY (playerID) REFERENCES master(playerID),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE scoringshootout (
+    player id TEXT,
+    year INT,
+    stint INT,
+    team ID TEXT,
+    shots INT,
+    goals INT,
+    game deciding goals INT,
+    FOREIGN KEY (player id) REFERENCES master(playerID),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE scoringsup (
+    player id TEXT,
+    year INT,
+    Power play assists TEXT,
+    Shorthanded assists TEXT,
+    FOREIGN KEY (player id) REFERENCES master(playerID)
+);
+
+CREATE TABLE seriespost (
+    year INT,
+    round TEXT,
+    series TEXT,
+    Team ID of winner TEXT,
+    League ID of winner TEXT,
+    Team ID of loser TEXT,
+    league id of loser TEXT,
+    wins INT,
+    loses INT,
+    ties INT,
+    goals for winner INT,
+    goals for loser INT,
+    note TEXT,
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (Team ID of winner) REFERENCES teams(team ID),
+    FOREIGN KEY (Team ID of loser) REFERENCES teams(team ID)
+);
+
+CREATE TABLE teamsplits (
+    year INT,
+    league ID TEXT,
+    team ID TEXT,
+    home wins INT,
+    home loses INT,
+    home ties INT,
+    Home overtime losses TEXT,
+    Road wins INT,
+    Road loses INT,
+    Road ties INT,
+    road overtime loses TEXT,
+    September wins TEXT,
+    September loses TEXT,
+    September ties TEXT,
+    September overtime loses TEXT,
+    October wins TEXT,
+    October loses TEXT,
+    October ties TEXT,
+    October overtime loses TEXT,
+    November wins TEXT,
+    November loses TEXT,
+    November ties TEXT,
+    November overtime loses TEXT,
+    December wins TEXT,
+    December loses TEXT,
+    December ties TEXT,
+    December overtime loses TEXT,
+    January wins INT,
+    January loses INT,
+    January ties INT,
+    January overtime loses TEXT,
+    February wins INT,
+    February loses INT,
+    February ties INT,
+    February overtime loses TEXT,
+    March wins TEXT,
+    March loses TEXT,
+    March ties TEXT,
+    March overtime loses TEXT,
+    April wins TEXT,
+    April loses TEXT,
+    April ties TEXT,
+    April overtime loses TEXT,
+    PRIMARY KEY (year, team ID),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE teamvsteam (
+    year INT,
+    league ID TEXT,
+    team ID TEXT,
+    opponent ID TEXT,
+    wins INT,
+    loses INT,
+    ties INT,
+    overtime loses TEXT,
+    PRIMARY KEY (year, team ID, opponent ID),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID),
+    FOREIGN KEY (opponent ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE teamshalf (
+    year INT,
+    league ID TEXT,
+    team ID TEXT,
+    half INT,
+    rank INT,
+    Games INT,
+    wins INT,
+    loses INT,
+    ties INT,
+    goals for INT,
+    goals against INT,
+    PRIMARY KEY (year, team ID, half),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE teamspost (
+    year INT,
+    league ID TEXT,
+    team ID TEXT,
+    Games INT,
+    wins INT,
+    loses INT,
+    ties INT,
+    goals for INT,
+    goals against INT,
+    penalty minutes TEXT,
+    Bench minors (minutes) TEXT,
+    Power play goals TEXT,
+    Power play chances TEXT,
+    Shorthanded goals against TEXT,
+    Power play goals against TEXT,
+    Penalty kill chances TEXT,
+    Shorthanded goals for TEXT,
+    PRIMARY KEY (year, team ID),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE teamssc (
+    year INT,
+    league ID TEXT,
+    team ID TEXT,
+    Games INT,
+    wins INT,
+    loses INT,
+    ties INT,
+    goals for INT,
+    goals against INT,
+    penalty minutes TEXT,
+    PRIMARY KEY (year, team ID),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE abbrev (
+    Type TEXT,
+    Code TEXT,
+    Fullname TEXT,
+    PRIMARY KEY (Type, Code)
+);
+
+
+-- Database: music_platform_2
+
+CREATE TABLE runs (
+    run at TEXT,
+    max row id INT,
+    reviews added INT,
+);
+
+CREATE TABLE podcasts (
+    podcast id TEXT,
+    itunes id INT,
+    slug TEXT,
+    itunes url TEXT,
+    title TEXT,
+    PRIMARY KEY (podcast id)
+);
+
+CREATE TABLE reviews (
+    podcast id TEXT,
+    title TEXT,
+    content TEXT,
+    rating INT,
+    author id TEXT,
+    created at TEXT,
+);
+
+CREATE TABLE categories (
+    podcast id TEXT,
+    category TEXT,
+    PRIMARY KEY (podcast id, category)
+);
+
+
+-- Database: address
+
+CREATE TABLE cbsa (
+    CBSA INT,
+    cbsa name TEXT,
+    cbsa type TEXT,
+    PRIMARY KEY (CBSA)
+);
+
+CREATE TABLE state (
+    abbreviation TEXT,
+    name TEXT,
+    PRIMARY KEY (abbreviation)
+);
+
+CREATE TABLE congress (
+    congress representative id TEXT,
+    first name TEXT,
+    last name TEXT,
+    CID TEXT,
+    party TEXT,
+    state TEXT,
+    abbreviation TEXT,
+    House TEXT,
+    District INT,
+    land area REAL,
+    PRIMARY KEY (congress representative id),
+    FOREIGN KEY (abbreviation) REFERENCES state(abbreviation)
+);
+
+CREATE TABLE zip_data (
+    zip code INT,
+    city TEXT,
+    state TEXT,
+    multi country TEXT,
+    type TEXT,
+    organization TEXT,
+    time zone TEXT,
+    daylight savings TEXT,
+    latitude REAL,
+    longitude REAL,
+    elevation INT,
+    state fips INT,
+    country fips INT,
+    region TEXT,
+    division TEXT,
+    population 2020 INT,
+    population 2010 INT,
+    households INT,
+    average house value INT,
+    average income per household INT,
+    persons per household REAL,
+    white population INT,
+    black population INT,
+    Hispanic population INT,
+    Asian population INT,
+    American Indian population INT,
+    Hawaiian population INT,
+    other population INT,
+    male population INT,
+    female population INT,
+    median age REAL,
+    male median age REAL,
+    female median age REAL,
+    residential mailboxes INT,
+    business mailboxes INT,
+    total delivery receptacles INT,
+    businesses INT,
+    1st quarter payroll INT,
+    annual payroll INT,
+    employees INT,
+    water area REAL,
+    land area REAL,
+    single-family delivery units INT,
+    multi-family delivery units INT,
+    total beneficiaries INT,
+    retired workers INT,
+    disable workers INT,
+    parents and widowed INT,
+    spouses INT,
+    children INT,
+    over 65 INT,
+    monthly benefits all INT,
+    monthly benefits retired workers INT,
+    monthly benefits widowed INT,
+    CBSA INT,
+    PRIMARY KEY (zip code),
+    FOREIGN KEY (state) REFERENCES state(abbreviation),
+    FOREIGN KEY (CBSA) REFERENCES cbsa(CBSA)
+);
+
+CREATE TABLE alias (
+    zip code INT,
+    alias TEXT,
+    PRIMARY KEY (zip code),
+    FOREIGN KEY (zip code) REFERENCES zip_data(zip code)
+);
+
+CREATE TABLE area_code (
+    zip code INT,
+    area code INT,
+    PRIMARY KEY (zip code, area code),
+    FOREIGN KEY (zip code) REFERENCES zip_data(zip code)
+);
+
+CREATE TABLE avoid (
+    zip code INT,
+    bad alias TEXT,
+    PRIMARY KEY (zip code, bad alias),
+    FOREIGN KEY (zip code) REFERENCES zip_data(zip code)
+);
+
+CREATE TABLE country (
+    zip code INT,
+    country TEXT,
+    state TEXT,
+    PRIMARY KEY (zip code, country),
+    FOREIGN KEY (zip code) REFERENCES zip_data(zip code),
+    FOREIGN KEY (state) REFERENCES state(abbreviation)
+);
+
+CREATE TABLE zip_congress (
+    zip code INT,
+    district TEXT,
+    PRIMARY KEY (zip code, district),
+    FOREIGN KEY (zip code) REFERENCES zip_data(zip code),
+    FOREIGN KEY (district) REFERENCES congress(congress representative id)
+);
+
+
+-- Database: menu
+
+CREATE TABLE dish (
+    id INT,
+    name TEXT,
+    description TEXT,
+    menus appeared INT,
+    times appeared INT,
+    first appeared INT,
+    last appeared INT,
+    lowest price REAL,
+    highest price REAL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE menu (
+    id INT,
+    name TEXT,
+    sponsor TEXT,
+    event TEXT,
+    venue TEXT,
+    place TEXT,
+    physical description TEXT,
+    occasion TEXT,
+    notes TEXT,
+    call_number TEXT,
+    keywords TEXT,
+    language TEXT,
+    date TEXT,
+    location TEXT,
+    location_type TEXT,
+    currency TEXT,
+    currency_symbol TEXT,
+    status TEXT,
+    page count INT,
+    dish count INT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE menupage (
+    id INT,
+    menu id INT,
+    page number INT,
+    image id REAL,
+    full height INT,
+    full width INT,
+    uuid TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (menu id) REFERENCES menu(id)
+);
+
+CREATE TABLE menuitem (
+    id INT,
+    menu_page_id INT,
+    price REAL,
+    high price REAL,
+    dish_id INT,
+    created at TEXT,
+    updated at TEXT,
+    x position REAL,
+    y position REAL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (menu_page_id) REFERENCES menupage(id),
+    FOREIGN KEY (dish_id) REFERENCES dish(id)
+);
+
+
+-- Database: professional_basketball
+
+CREATE TABLE awards_players (
+    playerID TEXT,
+    award TEXT,
+    year INT,
+    league ID TEXT,
+    note TEXT,
+    position TEXT,
+    PRIMARY KEY (playerID, award, year),
+    FOREIGN KEY (playerID) REFERENCES players(playerID)
+);
+
+CREATE TABLE coaches (
+    coachID TEXT,
+    year INT,
+    team ID TEXT,
+    league ID TEXT,
+    stint INT,
+    won INT,
+    lost INT,
+    post season wins INT,
+    post season losses INT,
+    PRIMARY KEY (coachID, year, team ID, stint),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE draft (
+    id INT,
+    draftYear INT,
+    draftRound INT,
+    league ID INT,
+    draft overall rank INT,
+    team ID TEXT,
+    firstName TEXT,
+    lastName TEXT,
+    suffixName TEXT,
+    playerID TEXT,
+    draftFrom TEXT,
+    league ID TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (draftYear) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE player_allstar (
+    playerID TEXT,
+    last_name TEXT,
+    first_name TEXT,
+    season_id INT,
+    conference TEXT,
+    league ID TEXT,
+    games_played INT,
+    minutes INT,
+    points INT,
+    offense rebounds INT,
+    defense rebounds INT,
+    rebounds INT,
+    assistants INT,
+    steals INT,
+    blocks INT,
+    turnovers INT,
+    personal_fouls INT,
+    field goal attempted INT,
+    field goal made INT,
+    free throw attempted INT,
+    free throw made INT,
+    three point attempted INT,
+    three point made INT,
+    PRIMARY KEY (playerID, season_id),
+    FOREIGN KEY (playerID) REFERENCES players(playerID)
+);
+
+CREATE TABLE players (
+    playerID TEXT,
+    use first name TEXT,
+    firstName TEXT,
+    middleName TEXT,
+    lastName TEXT,
+    nameGiven TEXT,
+    fullGivenName TEXT,
+    nameSuffix TEXT,
+    nick name TEXT,
+    position TEXT,
+    firstseason INT,
+    lastseason INT,
+    height REAL,
+    weight INT,
+    college TEXT,
+    collegeOther TEXT,
+    birthDate TEXT,
+    birthCity TEXT,
+    birthState TEXT,
+    birthCountry TEXT,
+    highSchool TEXT,
+    high school city TEXT,
+    high school state TEXT,
+    high school country TEXT,
+    deathDate TEXT,
+    race TEXT,
+    PRIMARY KEY (playerID)
+);
+
+CREATE TABLE teams (
+    year INT,
+    league ID TEXT,
+    team ID TEXT,
+    franchID TEXT,
+    confID TEXT,
+    division ID TEXT,
+    rank INT,
+    confRank INT,
+    playoff TEXT,
+    name TEXT,
+    offense field goal made INT,
+    offense free throw made INT,
+    offense points INT,
+    defense points INT,
+    home wins INT,
+    home loses INT,
+    away wins INT,
+    away loses INT,
+    won INT,
+    lost INT,
+    games INT,
+    arena TEXT,
+    PRIMARY KEY (year, team ID)
+);
+
+CREATE TABLE awards_coaches (
+    id INT,
+    year INT,
+    coachID TEXT,
+    award TEXT,
+    league ID TEXT,
+    note TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (year) REFERENCES coaches(year),
+    FOREIGN KEY (coachID) REFERENCES coaches(coachID)
+);
+
+CREATE TABLE players_teams (
+    id INT,
+    playerID TEXT,
+    year INT,
+    stint INT,
+    team ID TEXT,
+    lgID TEXT,
+    game presentatons INT,
+    game starting INT,
+    minutes INT,
+    points INT,
+    offense rebounds INT,
+    defense rebounds INT,
+    rebounds INT,
+    assistants INT,
+    steals INT,
+    blocks INT,
+    turnovers INT,
+    personal fouls INT,
+    field goal attempted INT,
+    field goal made INT,
+    free throw attempted INT,
+    free throw made INT,
+    three point attempted INT,
+    three point made INT,
+    post season game presentations INT,
+    post season game starting INT,
+    post season minutes INT,
+    post season points INT,
+    post season offense rebounds INT,
+    post season defense rebounds INT,
+    post season defense rebounds INT,
+    post season assistants INT,
+    post season steals INT,
+    post season blocks INT,
+    post season turnovers INT,
+    post season personal fouls INT,
+    post season field goal attempted INT,
+    post season field goal made INT,
+    post season field free throw attempted INT,
+    post season free throw made INT,
+    post season three point attempted INT,
+    post season three point made INT,
+    note TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team ID) REFERENCES teams(team ID)
+);
+
+CREATE TABLE series_post (
+    id INT,
+    year INT,
+    round TEXT,
+    series TEXT,
+    team id winner TEXT,
+    league id winner TEXT,
+    team id loser TEXT,
+    league id loser TEXT,
+    wins INT,
+    loses INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (year) REFERENCES teams(year),
+    FOREIGN KEY (team id winner) REFERENCES teams(team ID),
+    FOREIGN KEY (team id loser) REFERENCES teams(team ID)
+);
+
+
+-- Database: cars
+
+CREATE TABLE country (
+    origin INT,
+    country TEXT,
+    PRIMARY KEY (origin)
+);
+
+CREATE TABLE price (
+    ID INT,
+    price REAL,
+    PRIMARY KEY (ID)
+);
+
+CREATE TABLE data (
+    ID INT,
+    mileage per gallon REAL,
+    number of cylinders INT,
+    displacement REAL,
+    horse power INT,
+    weight INT,
+    acceleration REAL,
+    model INT,
+    car name TEXT,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (ID) REFERENCES price(ID)
+);
+
+CREATE TABLE production (
+    ID INT,
+    model year INT,
+    country INT,
+    PRIMARY KEY (ID, model year),
+    FOREIGN KEY (ID) REFERENCES data(ID),
+    FOREIGN KEY (country) REFERENCES country(origin)
+);
+
+
+-- Database: synthea
+
+CREATE TABLE all_prevalences (
+    ITEM TEXT,
+    population type TEXT,
+    OCCURRENCES INT,
+    population count INT,
+    prevalence rate REAL,
+    prevalence percentage REAL,
+    PRIMARY KEY (ITEM)
+);
+
+CREATE TABLE patients (
+    patient TEXT,
+    birth date TEXT,
+    death date TEXT,
+    social security number TEXT,
+    drivers TEXT,
+    passport TEXT,
+    prefix TEXT,
+    first TEXT,
+    last TEXT,
+    suffix TEXT,
+    maiden TEXT,
+    marital TEXT,
+    race TEXT,
+    ethnicity TEXT,
+    gender TEXT,
+    birth place TEXT,
+    address TEXT,
+    PRIMARY KEY (patient)
+);
+
+CREATE TABLE encounters (
+    ID TEXT,
+    DATE TEXT,
+    PATIENT TEXT,
+    CODE INT,
+    DESCRIPTION TEXT,
+    REASONCODE INT,
+    reason description TEXT,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (PATIENT) REFERENCES patients(patient)
+);
+
+CREATE TABLE allergies (
+    START TEXT,
+    STOP TEXT,
+    PATIENT TEXT,
+    ENCOUNTER TEXT,
+    CODE INT,
+    DESCRIPTION TEXT,
+    PRIMARY KEY (PATIENT, ENCOUNTER, CODE),
+    FOREIGN KEY (PATIENT) REFERENCES patients(patient),
+    FOREIGN KEY (ENCOUNTER) REFERENCES encounters(ID)
+);
+
+CREATE TABLE careplans (
+    ID TEXT,
+    START TEXT,
+    STOP TEXT,
+    PATIENT TEXT,
+    ENCOUNTER TEXT,
+    CODE REAL,
+    DESCRIPTION TEXT,
+    REASONCODE INT,
+    reason description TEXT,
+    FOREIGN KEY (PATIENT) REFERENCES patients(patient),
+    FOREIGN KEY (ENCOUNTER) REFERENCES encounters(ID)
+);
+
+CREATE TABLE conditions (
+    START TEXT,
+    STOP TEXT,
+    PATIENT TEXT,
+    ENCOUNTER TEXT,
+    CODE INT,
+    DESCRIPTION TEXT,
+    FOREIGN KEY (PATIENT) REFERENCES patients(patient),
+    FOREIGN KEY (ENCOUNTER) REFERENCES encounters(ID),
+    FOREIGN KEY (DESCRIPTION) REFERENCES all_prevalences(ITEM)
+);
+
+CREATE TABLE immunizations (
+    DATE TEXT,
+    PATIENT TEXT,
+    ENCOUNTER TEXT,
+    CODE INT,
+    DESCRIPTION TEXT,
+    PRIMARY KEY (DATE, PATIENT, ENCOUNTER, CODE),
+    FOREIGN KEY (PATIENT) REFERENCES patients(patient),
+    FOREIGN KEY (ENCOUNTER) REFERENCES encounters(ID)
+);
+
+CREATE TABLE medications (
+    START TEXT,
+    STOP TEXT,
+    PATIENT TEXT,
+    ENCOUNTER TEXT,
+    CODE INT,
+    DESCRIPTION TEXT,
+    REASONCODE INT,
+    reason description TEXT,
+    PRIMARY KEY (START, PATIENT, ENCOUNTER, CODE),
+    FOREIGN KEY (PATIENT) REFERENCES patients(patient),
+    FOREIGN KEY (ENCOUNTER) REFERENCES encounters(ID)
+);
+
+CREATE TABLE observations (
+    DATE TEXT,
+    PATIENT TEXT,
+    ENCOUNTER TEXT,
+    CODE TEXT,
+    DESCRIPTION TEXT,
+    VALUE REAL,
+    UNITS TEXT,
+    FOREIGN KEY (PATIENT) REFERENCES patients(patient),
+    FOREIGN KEY (ENCOUNTER) REFERENCES encounters(ID)
+);
+
+CREATE TABLE procedures (
+    DATE TEXT,
+    PATIENT TEXT,
+    ENCOUNTER TEXT,
+    CODE INT,
+    DESCRIPTION TEXT,
+    reason code INT,
+    reason description TEXT,
+    FOREIGN KEY (PATIENT) REFERENCES patients(patient),
+    FOREIGN KEY (ENCOUNTER) REFERENCES encounters(ID)
+);
+
+CREATE TABLE claims (
+    ID TEXT,
+    PATIENT TEXT,
+    billable period TEXT,
+    ORGANIZATION TEXT,
+    ENCOUNTER TEXT,
+    DIAGNOSIS TEXT,
+    TOTAL INT,
+    PRIMARY KEY (ID)
+);
+
+
+-- Database: genes
+
+CREATE TABLE classification (
+    gene id TEXT,
+    Localization TEXT,
+    PRIMARY KEY (gene id)
+);
+
+CREATE TABLE genes (
+    gene id TEXT,
+    Essential TEXT,
+    Class TEXT,
+    Complex TEXT,
+    Phenotype TEXT,
+    Motif TEXT,
+    Chromosome INT,
+    Function TEXT,
+    Localization TEXT,
+    FOREIGN KEY (gene id) REFERENCES classification(gene id)
+);
+
+CREATE TABLE interactions (
+    gene id 1 TEXT,
+    gene id 2 TEXT,
+    Type TEXT,
+    Expression correlation score REAL,
+    PRIMARY KEY (gene id 1, gene id 2),
+    FOREIGN KEY (gene id 1) REFERENCES classification(gene id),
+    FOREIGN KEY (gene id 2) REFERENCES classification(gene id)
+);
+
+
+-- Database: retails
+
+CREATE TABLE customer (
+    customer key INT,
+    customer market segment TEXT,
+    customer nation key INT,
+    customer name TEXT,
+    customer address TEXT,
+    customer phone TEXT,
+    customer account balance REAL,
+    customer comment TEXT,
+    PRIMARY KEY (customer key),
+    FOREIGN KEY (customer nation key) REFERENCES nation(nation key)
+);
+
+CREATE TABLE lineitem (
+    line item ship date TEXT,
+    line item order key INT,
+    line item discount REAL,
+    line item extended price REAL,
+    line item suppkey INT,
+    line item quantity INT,
+    line item return flag TEXT,
+    line item part key INT,
+    line item line status TEXT,
+    line item tax REAL,
+    line item commit date TEXT,
+    line item receipt date TEXT,
+    line item ship mode TEXT,
+    line item line number INT,
+    line item ship instruct TEXT,
+    line item comment TEXT,
+    PRIMARY KEY (line item order key, line item line number),
+    FOREIGN KEY (line item order key) REFERENCES orders(order key),
+    FOREIGN KEY (line item suppkey) REFERENCES partsupp(part supply supply key),
+    FOREIGN KEY (line item part key) REFERENCES partsupp(part supply part key)
+);
+
+CREATE TABLE nation (
+    nation key INT,
+    nation name TEXT,
+    nation region key INT,
+    nation comment TEXT,
+    PRIMARY KEY (nation key),
+    FOREIGN KEY (nation region key) REFERENCES region(region key)
+);
+
+CREATE TABLE orders (
+    order date TEXT,
+    order key INT,
+    order customer key INT,
+    order priority TEXT,
+    order ship priority INT,
+    order clerk TEXT,
+    order status TEXT,
+    order total price REAL,
+    order comment TEXT,
+    PRIMARY KEY (order key),
+    FOREIGN KEY (order customer key) REFERENCES customer(customer key)
+);
+
+CREATE TABLE part (
+    part key INT,
+    part type TEXT,
+    part size INT,
+    part brand TEXT,
+    part name TEXT,
+    part container TEXT,
+    part manufacturer TEXT,
+    part retail price REAL,
+    part comment TEXT,
+    PRIMARY KEY (part key)
+);
+
+CREATE TABLE partsupp (
+    part supply part key INT,
+    part supply supply key INT,
+    part supply cost REAL,
+    part supply available quantity INT,
+    part supply comment TEXT,
+    PRIMARY KEY (part supply part key, part supply supply key),
+    FOREIGN KEY (part supply part key) REFERENCES part(part key),
+    FOREIGN KEY (part supply supply key) REFERENCES supplier(supply key)
+);
+
+CREATE TABLE region (
+    region key INT,
+    region name TEXT,
+    region comment TEXT,
+    PRIMARY KEY (region key)
+);
+
+CREATE TABLE supplier (
+    supply key INT,
+    supplier nation key INT,
+    supplier comment TEXT,
+    supplier name TEXT,
+    supplier address TEXT,
+    supplier phone TEXT,
+    supplier account balance REAL,
+    PRIMARY KEY (supply key),
+    FOREIGN KEY (supplier nation key) REFERENCES nation(nation key)
+);
+
+
+-- Database: talkingdata
+
+CREATE TABLE app_all (
+    app_id INT,
+    PRIMARY KEY (app_id)
+);
+
+CREATE TABLE app_events (
+    event id INT,
+    app id INT,
+    is installed INT,
+    is active INT,
+    PRIMARY KEY (event id, app id),
+    FOREIGN KEY (event id) REFERENCES events(event id)
+);
+
+CREATE TABLE app_events_relevant (
+    event_id INT,
+    app_id INT,
+    is_installed INT,
+    is_active INT,
+    PRIMARY KEY (event_id, app_id),
+    FOREIGN KEY (event_id) REFERENCES events_relevant(event_id),
+    FOREIGN KEY (app_id) REFERENCES app_all(app_id)
+);
+
+CREATE TABLE app_labels (
+    app id INT,
+    label id INT,
+    FOREIGN KEY (app id) REFERENCES app_all(app_id),
+    FOREIGN KEY (label id) REFERENCES label_categories(label id)
+);
+
+CREATE TABLE events (
+    event id INT,
+    device id INT,
+    timestamp TEXT,
+    longitude REAL,
+    latitude REAL,
+    PRIMARY KEY (event id)
+);
+
+CREATE TABLE events_relevant (
+    event_id INT,
+    device_id INT,
+    timestamp TEXT,
+    longitude REAL,
+    latitude REAL,
+    PRIMARY KEY (event_id),
+    FOREIGN KEY (device_id) REFERENCES gender_age(device id)
+);
+
+CREATE TABLE gender_age (
+    device id INT,
+    gender TEXT,
+    age INT,
+    group TEXT,
+    PRIMARY KEY (device id),
+    FOREIGN KEY (device id) REFERENCES phone_brand_device_model2(device id)
+);
+
+CREATE TABLE gender_age_test (
+    device_id INT,
+    PRIMARY KEY (device_id)
+);
+
+CREATE TABLE gender_age_train (
+    device_id INT,
+    gender TEXT,
+    age INT,
+    group TEXT,
+    PRIMARY KEY (device_id)
+);
+
+CREATE TABLE label_categories (
+    label id INT,
+    category TEXT,
+    PRIMARY KEY (label id)
+);
+
+CREATE TABLE phone_brand_device_model2 (
+    device id INT,
+    phone brand TEXT,
+    device model TEXT,
+    PRIMARY KEY (device id, phone brand, device model)
+);
+
+CREATE TABLE sample_submission (
+    device_id INT,
+    F23- REAL,
+    F24-26 REAL,
+    F27-28 REAL,
+    F29-32 REAL,
+    F33-42 REAL,
+    F43+ REAL,
+    M22- REAL,
+    M23-26 REAL,
+    M27-28 REAL,
+    M29-31 REAL,
+    M32-38 REAL,
+    M39+ REAL,
+    PRIMARY KEY (device_id)
+);
+
+
+-- Database: beer_factory
+
+CREATE TABLE customers (
+    customer id INT,
+    first name TEXT,
+    last name TEXT,
+    street address TEXT,
+    City TEXT,
+    State TEXT,
+    zip code INT,
+    Email TEXT,
+    phone number TEXT,
+    first purchase date TEXT,
+    subscribed to email list TEXT,
+    Gender TEXT,
+    PRIMARY KEY (customer id)
+);
+
+CREATE TABLE geolocation (
+    location id INT,
+    Latitude REAL,
+    Longitude REAL,
+    PRIMARY KEY (location id),
+    FOREIGN KEY (location id) REFERENCES location(location id)
+);
+
+CREATE TABLE location (
+    location id INT,
+    location name TEXT,
+    street address TEXT,
+    City TEXT,
+    State TEXT,
+    zip code INT,
+    PRIMARY KEY (location id),
+    FOREIGN KEY (location id) REFERENCES geolocation(location id)
+);
+
+CREATE TABLE rootbeerbrand (
+    brand id INT,
+    brand name TEXT,
+    first brewed year INT,
+    brewery name TEXT,
+    City TEXT,
+    State TEXT,
+    Country TEXT,
+    Description TEXT,
+    cane sugar TEXT,
+    corn syrup TEXT,
+    Honey TEXT,
+    artificial sweetener TEXT,
+    Caffeinated TEXT,
+    Alcoholic TEXT,
+    available in cans TEXT,
+    available in bottles TEXT,
+    available in kegs TEXT,
+    Website TEXT,
+    facebook page TEXT,
+    Twitter TEXT,
+    wholesale cost REAL,
+    current retail price REAL,
+    PRIMARY KEY (brand id)
+);
+
+CREATE TABLE rootbeer (
+    root beer id INT,
+    brandid INT,
+    container type TEXT,
+    location id INT,
+    purchase date TEXT,
+    PRIMARY KEY (root beer id),
+    FOREIGN KEY (brandid) REFERENCES rootbeerbrand(brand id),
+    FOREIGN KEY (location id) REFERENCES geolocation(location id)
+);
+
+CREATE TABLE rootbeerreview (
+    customer id INT,
+    brand id INT,
+    star rating INT,
+    review date TEXT,
+    Review TEXT,
+    PRIMARY KEY (customer id, brand id),
+    FOREIGN KEY (customer id) REFERENCES customers(customer id),
+    FOREIGN KEY (brand id) REFERENCES rootbeerbrand(brand id)
+);
+
+CREATE TABLE transaction (
+    transaction id INT,
+    credit card number INT,
+    customer id INT,
+    transaction date TEXT,
+    credit card type TEXT,
+    location id INT,
+    root beer id INT,
+    purchase price REAL,
+    PRIMARY KEY (transaction id),
+    FOREIGN KEY (customer id) REFERENCES customers(customer id),
+    FOREIGN KEY (location id) REFERENCES location(location id),
+    FOREIGN KEY (root beer id) REFERENCES rootbeer(root beer id)
+);
+
+
+-- Database: chicago_crime
+
+CREATE TABLE community_area (
+    community area number INT,
+    community area name TEXT,
+    side TEXT,
+    population TEXT,
+    PRIMARY KEY (community area number)
+);
+
+CREATE TABLE district (
+    district number INT,
+    district name TEXT,
+    address TEXT,
+    zip code INT,
+    commander TEXT,
+    email TEXT,
+    phone TEXT,
+    fax TEXT,
+    tty TEXT,
+    twitter TEXT,
+    PRIMARY KEY (district number)
+);
+
+CREATE TABLE fbi_code (
+    fbi code number TEXT,
+    title TEXT,
+    description TEXT,
+    crime against TEXT,
+    PRIMARY KEY (fbi code number)
+);
+
+CREATE TABLE iucr (
+    iucr number TEXT,
+    primary description TEXT,
+    secondary description TEXT,
+    index code TEXT,
+    PRIMARY KEY (iucr number)
+);
+
+CREATE TABLE neighborhood (
+    neighborhood name TEXT,
+    community area number INT,
+    PRIMARY KEY (neighborhood name),
+    FOREIGN KEY (community area number) REFERENCES community_area(community area number)
+);
+
+CREATE TABLE ward (
+    ward_no INT,
+    alderman_first_name TEXT,
+    alderman_last_name TEXT,
+    alderman_name_suffix TEXT,
+    ward_office_address TEXT,
+    ward_office_zip TEXT,
+    ward_email TEXT,
+    ward_office_phone TEXT,
+    ward_office_fax TEXT,
+    city_hall_office_room INT,
+    city_hall_office_phone TEXT,
+    city_hall_office_fax TEXT,
+    Population INT,
+    PRIMARY KEY (ward_no)
+);
+
+CREATE TABLE crime (
+    report number INT,
+    case number TEXT,
+    date TEXT,
+    block TEXT,
+    Illinois Uniform Crime Reporting number TEXT,
+    location description TEXT,
+    arrest TEXT,
+    domestic TEXT,
+    beat INT,
+    district number INT,
+    ward number INT,
+    community area number INT,
+    fbi code number TEXT,
+    latitude TEXT,
+    longitude TEXT,
+    PRIMARY KEY (report number),
+    FOREIGN KEY (Illinois Uniform Crime Reporting number) REFERENCES iucr(iucr number),
+    FOREIGN KEY (district number) REFERENCES district(district number),
+    FOREIGN KEY (ward number) REFERENCES ward(ward_no),
+    FOREIGN KEY (community area number) REFERENCES community_area(community area number),
+    FOREIGN KEY (fbi code number) REFERENCES fbi_code(fbi code number)
+);
+
+
+-- Database: mondial_geo
+
+CREATE TABLE borders (
+    Country1 TEXT,
+    Country2 TEXT,
+    Length REAL,
+    PRIMARY KEY (Country1, Country2)
+);
+
+CREATE TABLE city (
+    Name TEXT,
+    Country TEXT,
+    Province TEXT,
+    Population INT,
+    Longitude REAL,
+    Latitude REAL,
+    PRIMARY KEY (Name, Province)
+);
+
+CREATE TABLE continent (
+    Name TEXT,
+    Area REAL,
+    PRIMARY KEY (Name)
+);
+
+CREATE TABLE country (
+    Name TEXT,
+    Code TEXT,
+    Capital TEXT,
+    Province TEXT,
+    Area REAL,
+    Population INT,
+    PRIMARY KEY (Code)
+);
+
+CREATE TABLE desert (
+    Name TEXT,
+    Area REAL,
+    Longitude REAL,
+    Latitude REAL,
+    PRIMARY KEY (Name)
+);
+
+CREATE TABLE economy (
+    Country TEXT,
+    gross domestic product REAL,
+    Agriculture REAL,
+    Service REAL,
+    Industry REAL,
+    Inflation REAL,
+    PRIMARY KEY (Country)
+);
+
+CREATE TABLE encompasses (
+    Country TEXT,
+    Continent TEXT,
+    Percentage REAL,
+    PRIMARY KEY (Country, Continent)
+);
+
+CREATE TABLE ethnicgroup (
+    Country TEXT,
+    Name TEXT,
+    Percentage REAL,
+    PRIMARY KEY (Country, Name)
+);
+
+CREATE TABLE geo_desert (
+    Desert TEXT,
+    Country TEXT,
+    Province TEXT,
+    PRIMARY KEY (Desert, Country, Province)
+);
+
+CREATE TABLE geo_estuary (
+    River TEXT,
+    Country TEXT,
+    Province TEXT,
+    PRIMARY KEY (River, Country, Province)
+);
+
+CREATE TABLE geo_island (
+    Island TEXT,
+    Country TEXT,
+    Province TEXT,
+    PRIMARY KEY (Island, Country, Province)
+);
+
+CREATE TABLE geo_lake (
+    Lake TEXT,
+    Country TEXT,
+    Province TEXT,
+    PRIMARY KEY (Lake, Country, Province)
+);
+
+CREATE TABLE geo_mountain (
+    Mountain TEXT,
+    Country TEXT,
+    Province TEXT,
+    PRIMARY KEY (Mountain, Country, Province)
+);
+
+CREATE TABLE geo_river (
+    River TEXT,
+    Country TEXT,
+    Province TEXT,
+    PRIMARY KEY (River, Country, Province)
+);
+
+CREATE TABLE geo_sea (
+    Sea TEXT,
+    Country TEXT,
+    Province TEXT,
+    PRIMARY KEY (Sea, Country, Province)
+);
+
+CREATE TABLE geo_source (
+    River TEXT,
+    Country TEXT,
+    Province TEXT,
+    PRIMARY KEY (River, Country, Province)
+);
+
+CREATE TABLE island (
+    Name TEXT,
+    Islands TEXT,
+    Area REAL,
+    Height REAL,
+    Type TEXT,
+    Longitude REAL,
+    Latitude REAL,
+    PRIMARY KEY (Name)
+);
+
+CREATE TABLE islandin (
+    Island TEXT,
+    Sea TEXT,
+    Lake TEXT,
+    River TEXT,
+);
+
+CREATE TABLE ismember (
+    Country TEXT,
+    Organization TEXT,
+    Type TEXT,
+    PRIMARY KEY (Country, Organization)
+);
+
+CREATE TABLE lake (
+    Name TEXT,
+    Area REAL,
+    Depth REAL,
+    Altitude REAL,
+    Type TEXT,
+    River TEXT,
+    Longitude REAL,
+    Latitude REAL,
+    PRIMARY KEY (Name)
+);
+
+CREATE TABLE language (
+    Country TEXT,
+    Name TEXT,
+    Percentage REAL,
+    PRIMARY KEY (Country, Name)
+);
+
+CREATE TABLE located (
+    City TEXT,
+    Province TEXT,
+    Country TEXT,
+    River TEXT,
+    Lake TEXT,
+    Sea TEXT,
+);
+
+CREATE TABLE locatedon (
+    City TEXT,
+    Province TEXT,
+    Country TEXT,
+    Island TEXT,
+    PRIMARY KEY (City, Province, Country, Island)
+);
+
+CREATE TABLE mergeswith (
+    Sea1 TEXT,
+    Sea2 TEXT,
+    PRIMARY KEY (Sea1, Sea2)
+);
+
+CREATE TABLE mountain (
+    Name TEXT,
+    Mountains TEXT,
+    Height REAL,
+    Type TEXT,
+    Longitude REAL,
+    Latitude REAL,
+    PRIMARY KEY (Name)
+);
+
+CREATE TABLE mountainonisland (
+    Mountain TEXT,
+    Island TEXT,
+    PRIMARY KEY (Mountain, Island)
+);
+
+CREATE TABLE organization (
+    Abbreviation TEXT,
+    Name TEXT,
+    City TEXT,
+    Country TEXT,
+    Province TEXT,
+    Established TEXT,
+    PRIMARY KEY (Abbreviation)
+);
+
+CREATE TABLE politics (
+    Country TEXT,
+    Independence TEXT,
+    Dependent TEXT,
+    Government TEXT,
+    PRIMARY KEY (Country)
+);
+
+CREATE TABLE population (
+    Country TEXT,
+    population growth REAL,
+    infant mortality REAL,
+    PRIMARY KEY (Country)
+);
+
+CREATE TABLE province (
+    Name TEXT,
+    Country TEXT,
+    Population INT,
+    Area REAL,
+    Capital TEXT,
+    capital province TEXT,
+    PRIMARY KEY (Name, Country)
+);
+
+CREATE TABLE religion (
+    Country TEXT,
+    Name TEXT,
+    Percentage REAL,
+    PRIMARY KEY (Country, Name)
+);
+
+CREATE TABLE river (
+    Name TEXT,
+    River TEXT,
+    Lake TEXT,
+    Sea TEXT,
+    Length REAL,
+    SourceLongitude REAL,
+    SourceLatitude REAL,
+    Mountains TEXT,
+    SourceAltitude REAL,
+    EstuaryLongitude REAL,
+    EstuaryLatitude REAL,
+    PRIMARY KEY (Name)
+);
+
+CREATE TABLE sea (
+    Name TEXT,
+    Depth REAL,
+    PRIMARY KEY (Name)
+);
+
+CREATE TABLE target (
+    Country TEXT,
+    Target TEXT,
+    PRIMARY KEY (Country)
+);
+
+
+-- Database: student_loan
+
+CREATE TABLE bool (
+    name TEXT,
+    PRIMARY KEY (name)
+);
+
+CREATE TABLE person (
+    name TEXT,
+    PRIMARY KEY (name)
+);
+
+CREATE TABLE disabled (
+    name TEXT,
+    PRIMARY KEY (name),
+    FOREIGN KEY (name) REFERENCES person(name)
+);
+
+CREATE TABLE enlist (
+    name TEXT,
+    organization TEXT,
+    FOREIGN KEY (name) REFERENCES person(name)
+);
+
+CREATE TABLE filed_for_bankruptcy (
+    name TEXT,
+    PRIMARY KEY (name),
+    FOREIGN KEY (name) REFERENCES person(name)
+);
+
+CREATE TABLE longest_absense_from_school (
+    name TEXT,
+    month INT,
+    PRIMARY KEY (name),
+    FOREIGN KEY (name) REFERENCES person(name)
+);
+
+CREATE TABLE male (
+    name TEXT,
+    PRIMARY KEY (name),
+    FOREIGN KEY (name) REFERENCES person(name)
+);
+
+CREATE TABLE no_payment_due (
+    name TEXT,
+    bool TEXT,
+    PRIMARY KEY (name),
+    FOREIGN KEY (name) REFERENCES person(name),
+    FOREIGN KEY (bool) REFERENCES bool(name)
+);
+
+CREATE TABLE unemployed (
+    name TEXT,
+    PRIMARY KEY (name),
+    FOREIGN KEY (name) REFERENCES person(name)
+);
+
+CREATE TABLE enrolled (
+    name TEXT,
+    school TEXT,
+    month INT,
+    PRIMARY KEY (name, school),
+    FOREIGN KEY (name) REFERENCES person(name)
+);
+
+
+-- Database: codebase_comments
+
+CREATE TABLE method (
+    Id INT,
+    Name TEXT,
+    Full Comment TEXT,
+    Summary TEXT,
+    Api Calls TEXT,
+    CommentIs Xml INT,
+    Sampled At INT,
+    Solution Id INT,
+    Language TEXT,
+    Name Tokenized TEXT,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE methodparameter (
+    Id INT,
+    Method Id TEXT,
+    Type TEXT,
+    Name TEXT,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE repo (
+    Id INT,
+    Url TEXT,
+    Stars INT,
+    Forks INT,
+    Watchers INT,
+    Processed Time INT,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE solution (
+    Id INT,
+    Repository Id INT,
+    Path TEXT,
+    Processed Time INT,
+    Was Compiled INT,
+    PRIMARY KEY (Id)
+);
+
+
+-- Database: retail_world
+
+CREATE TABLE categories (
+    Category ID INT,
+    Category Name TEXT,
+    Description TEXT,
+    PRIMARY KEY (Category ID)
+);
+
+CREATE TABLE customers (
+    Customer ID INT,
+    Customer Name TEXT,
+    Contact Name TEXT,
+    Address TEXT,
+    City TEXT,
+    Postal Code TEXT,
+    Country TEXT,
+    PRIMARY KEY (Customer ID)
+);
+
+CREATE TABLE employees (
+    Employee ID INT,
+    Last Name TEXT,
+    First Name TEXT,
+    Birth Date TEXT,
+    Photo TEXT,
+    Notes TEXT,
+    PRIMARY KEY (Employee ID)
+);
+
+CREATE TABLE shippers (
+    Shipper ID INT,
+    Shipper Name TEXT,
+    Phone TEXT,
+    PRIMARY KEY (Shipper ID)
+);
+
+CREATE TABLE suppliers (
+    Supplier ID INT,
+    Supplier Name TEXT,
+    Contact Name TEXT,
+    Address TEXT,
+    City TEXT,
+    Postal Code TEXT,
+    Country TEXT,
+    Phone TEXT,
+    PRIMARY KEY (Supplier ID)
+);
+
+CREATE TABLE products (
+    Product ID INT,
+    Product Name TEXT,
+    Supplier ID INT,
+    Category ID INT,
+    Unit TEXT,
+    Price REAL,
+    PRIMARY KEY (Product ID),
+    FOREIGN KEY (Supplier ID) REFERENCES suppliers(Supplier ID),
+    FOREIGN KEY (Category ID) REFERENCES categories(Category ID)
+);
+
+CREATE TABLE orders (
+    Order ID INT,
+    Customer ID INT,
+    Employee ID INT,
+    Order Date TEXT,
+    Shipper ID INT,
+    PRIMARY KEY (Order ID),
+    FOREIGN KEY (Customer ID) REFERENCES customers(Customer ID),
+    FOREIGN KEY (Employee ID) REFERENCES employees(Employee ID),
+    FOREIGN KEY (Shipper ID) REFERENCES shippers(Shipper ID)
+);
+
+CREATE TABLE orderdetails (
+    order detail id INT,
+    Order ID INT,
+    Product ID INT,
+    Quantity INT,
+    PRIMARY KEY (order detail id),
+    FOREIGN KEY (Order ID) REFERENCES orders(Order ID),
+    FOREIGN KEY (Product ID) REFERENCES products(Product ID)
+);
+
+
+-- Database: music_tracker
+
+CREATE TABLE torrents (
+    groupName TEXT,
+    totalSnatched INT,
+    artist TEXT,
+    groupYear INT,
+    releaseType TEXT,
+    groupId INT,
+    id INT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE tags (
+    index INT,
+    id INT,
+    tag TEXT,
+    PRIMARY KEY (index)
+);
+
+
+-- Database: disney
+
+CREATE TABLE characters (
+    movie title TEXT,
+    release date TEXT,
+    hero TEXT,
+    villian TEXT,
+    song TEXT,
+    PRIMARY KEY (movie title),
+    FOREIGN KEY (hero) REFERENCES voice-actors(character)
+);
+
+CREATE TABLE director (
+    name TEXT,
+    director TEXT,
+    PRIMARY KEY (name),
+    FOREIGN KEY (name) REFERENCES characters(movie title)
+);
+
+CREATE TABLE movies_total_gross (
+    movie title TEXT,
+    release date TEXT,
+    genre TEXT,
+    Motion Picture Association of America rating TEXT,
+    total gross TEXT,
+    inflation adjusted gross TEXT,
+    PRIMARY KEY (movie title, release date),
+    FOREIGN KEY (movie title) REFERENCES characters(movie title)
+);
+
+CREATE TABLE revenue (
+    Year INT,
+    Studio Entertainment[NI 1] REAL,
+    Disney Consumer Products[NI 2] REAL,
+    Disney Interactive[NI 3][Rev 1] INT,
+    Walt Disney Parks and Resorts REAL,
+    Disney Media Networks TEXT,
+    Total INT,
+    PRIMARY KEY (Year)
+);
+
+CREATE TABLE voice-actors (
+    character TEXT,
+    voice-actor TEXT,
+    movie TEXT,
+    PRIMARY KEY (character),
+    FOREIGN KEY (movie) REFERENCES characters(movie title)
+);
+
+
+-- Database: college_completion
+
+CREATE TABLE institution_details (
+    Unit ID number INT,
+    chronname TEXT,
+    city TEXT,
+    state TEXT,
+    level TEXT,
+    control TEXT,
+    basic TEXT,
+    Historically Black College and Universities TEXT,
+    flagship TEXT,
+    long_x REAL,
+    lat_y REAL,
+    site TEXT,
+    student count INT,
+    awards per value REAL,
+    awards per state value REAL,
+    awards per national value REAL,
+    expected award value INT,
+    expected award state value INT,
+    expected award national value INT,
+    exp_award_percentile INT,
+    Full-time percentage REAL,
+    Full-time percentage INT,
+    fte_percentile INT,
+    median SAT value TEXT,
+    median SAT percentile TEXT,
+    aid value INT,
+    aid percentile INT,
+    endow value TEXT,
+    endow percentile TEXT,
+    graduation 100 value REAL,
+    graduation 100 percentile INT,
+    graduation 150 value REAL,
+    graduation 150 percentile INT,
+    pell value REAL,
+    pell percentile INT,
+    retain value REAL,
+    retain percentile INT,
+    full time faculty value REAL,
+    full time faculty percentile INT,
+    voluntary system of accountability year TEXT,
+    voluntary system of accountability after 4 year first time TEXT,
+    voluntary system of accountability graduation elsewhere after 4 year first time TEXT,
+    voluntary system of accountability enrollment after 4 year first time TEXT,
+    voluntary system of accountability enrollment elsewhere after 4 year first time TEXT,
+    voluntary system of accountability graduation elsewhere after 6 year first time TEXT,
+    voluntary system of accountability graduation elsewhere after 6 year first time TEXT,
+    voluntary system of accountability enrollment after 6 year first time TEXT,
+    voluntary system of accountability enrollment elsewhere after 6 year first time TEXT,
+    voluntary system of accountability transfer after 6 year first time TEXT,
+    voluntary system of accountability graduation elsewhere after 4 year TEXT,
+    voluntary system of accountability enrollment after 4 years transfer TEXT,
+    voluntary system of accountability enrollment elsewhere after 4 years transfer TEXT,
+    voluntary system of accountability enrollment elsewhere after 6 years transfer TEXT,
+    voluntary system of accountability graduation elsewhere after 6 years transfer TEXT,
+    voluntary system of accountability enrollment after 6 years transfer TEXT,
+    voluntary system of accountability enrollment elsewhere after 6 years transfer TEXT,
+    similar TEXT,
+    state_sector_ct INT,
+    carnegie_ct INT,
+    counted_pct TEXT,
+    nicknames TEXT,
+    cohort_size INT,
+    PRIMARY KEY (Unit ID number)
+);
+
+CREATE TABLE institution_grads (
+    unit id INT,
+    year INT,
+    gender TEXT,
+    race TEXT,
+    cohort TEXT,
+    graduation cohort TEXT,
+    graduation 100 TEXT,
+    graduation 150 TEXT,
+    grad_100_rate TEXT,
+    grad_150_rate TEXT,
+    FOREIGN KEY (unit id) REFERENCES institution_details(Unit ID number)
+);
+
+CREATE TABLE state_sector_grads (
+    state id INT,
+    state name TEXT,
+    state_abbr TEXT,
+    control TEXT,
+    level TEXT,
+    year INT,
+    gender TEXT,
+    race TEXT,
+    cohort TEXT,
+    graduation cohort TEXT,
+    graduation 100 TEXT,
+    graduation 150 TEXT,
+    grad_100_rate TEXT,
+    grad_150_rate TEXT,
+    graduation cohort count INT,
+    FOREIGN KEY (state id) REFERENCES state_sector_details(state id),
+    FOREIGN KEY (state name) REFERENCES institution_details(state)
+);
+
+CREATE TABLE state_sector_details (
+    state id INT,
+    state name TEXT,
+    state_post TEXT,
+    level TEXT,
+    control TEXT,
+    schools_count INT,
+    counted percentage TEXT,
+    awards per state value TEXT,
+    awards per national value REAL,
+    expected award state value TEXT,
+    expected award national value INT,
+    state appropriation value TEXT,
+    state_appr_rank TEXT,
+    grad_rate_rank TEXT,
+    awards_per_rank TEXT,
+    PRIMARY KEY (state id, level, control),
+    FOREIGN KEY (state name) REFERENCES institution_details(state)
+);
+
+
+-- Database: ice_hockey_draft
+
+CREATE TABLE height_info (
+    height id INT,
+    height in cm INT,
+    height in inch TEXT,
+    PRIMARY KEY (height id)
+);
+
+CREATE TABLE weight_info (
+    weight id INT,
+    weight in kg INT,
+    weight in lbs INT,
+    PRIMARY KEY (weight id)
+);
+
+CREATE TABLE playerinfo (
+    ELITE ID INT,
+    Player Name TEXT,
+    birthdate TEXT,
+    birthyear TEXT,
+    birthmonth INT,
+    birthday INT,
+    birthplace TEXT,
+    nation TEXT,
+    height INT,
+    weight INT,
+    position information TEXT,
+    shoots TEXT,
+    draft year INT,
+    draft round INT,
+    overall INT,
+    overallby TEXT,
+    Central Scouting Service ranking INT,
+    sum 7-year game plays INT,
+    sum 7-year time on ice INT,
+    game play greater than 0 TEXT,
+    PRIMARY KEY (ELITE ID),
+    FOREIGN KEY (height) REFERENCES height_info(height id),
+    FOREIGN KEY (weight) REFERENCES weight_info(weight id)
+);
+
+CREATE TABLE seasonstatus (
+    ELITE ID INT,
+    SEASON TEXT,
+    TEAM TEXT,
+    LEAGUE TEXT,
+    GAME TYPE TEXT,
+    Game Plays INT,
+    G INT,
+    A INT,
+    P INT,
+    Penalty Minutes INT,
+    Plus Minutes INT,
+    FOREIGN KEY (ELITE ID) REFERENCES playerinfo(ELITE ID)
+);
+
+
+-- Database: world_development_indicators
+
+CREATE TABLE country (
+    Country Code TEXT,
+    Short Name TEXT,
+    Table Name TEXT,
+    Long Name TEXT,
+    Alpha to Code TEXT,
+    Currency Unit TEXT,
+    Special Notes TEXT,
+    Region TEXT,
+    Income Group TEXT,
+    world bank to code TEXT,
+    National Accounts Base Year TEXT,
+    National Accounts Reference Year TEXT,
+    SNA Price Valuation TEXT,
+    Lending Category TEXT,
+    Other groups TEXT,
+    System Of National Accounts TEXT,
+    Alternative Conversion Factor TEXT,
+    purchasing power parity survey year TEXT,
+    Balance Of Payments Manual In Use TEXT,
+    External Debt Reporting Status TEXT,
+    System Of Trade TEXT,
+    Government Accounting Concept TEXT,
+    International Monetory Fund Data Dissemination Standard TEXT,
+    Latest Population Census TEXT,
+    Latest Household Survey TEXT,
+    Source Of Most Recent Income And Expenditure Data TEXT,
+    Vital Registration Complete TEXT,
+    Latest Agricultural Census TEXT,
+    Latest Industrial Data INT,
+    Latest Trade Data INT,
+    Latest Water Withdrawal Data INT,
+    PRIMARY KEY (Country Code)
+);
+
+CREATE TABLE series (
+    Series Code TEXT,
+    Topic TEXT,
+    Indicator Name TEXT,
+    Short Definition TEXT,
+    Long Definition TEXT,
+    Unit Of Measure TEXT,
+    Periodicity TEXT,
+    Base Period TEXT,
+    Other Notes INT,
+    Aggregation Method TEXT,
+    Limitations And Exceptions TEXT,
+    Notes From Original Source TEXT,
+    General Comments TEXT,
+    Source TEXT,
+    Statistical Concept And Methodology TEXT,
+    Development Relevance TEXT,
+    Related Source Links TEXT,
+    Other Web Links INT,
+    Related Indicators INT,
+    License Type TEXT,
+    PRIMARY KEY (Series Code)
+);
+
+CREATE TABLE countrynotes (
+    Country code TEXT,
+    Series code TEXT,
+    Description TEXT,
+    PRIMARY KEY (Country code, Series code),
+    FOREIGN KEY (Country code) REFERENCES country(Country Code),
+    FOREIGN KEY (Series code) REFERENCES series(Series Code)
+);
+
+CREATE TABLE footnotes (
+    Country code TEXT,
+    Series code TEXT,
+    Year TEXT,
+    Description TEXT,
+    PRIMARY KEY (Country code, Series code, Year),
+    FOREIGN KEY (Country code) REFERENCES country(Country Code),
+    FOREIGN KEY (Series code) REFERENCES series(Series Code)
+);
+
+CREATE TABLE indicators (
+    Country code TEXT,
+    Series code TEXT,
+    Indicator Name TEXT,
+    Indicator Code TEXT,
+    Year INT,
+    Value INT,
+    PRIMARY KEY (Series code, Indicator Code, Year),
+    FOREIGN KEY (Series code) REFERENCES country(Country Code)
+);
+
+CREATE TABLE seriesnotes (
+    Series code TEXT,
+    Year TEXT,
+    Description TEXT,
+    PRIMARY KEY (Series code, Year),
+    FOREIGN KEY (Series code) REFERENCES series(Series Code)
+);
+
+
+-- Database: airline
+
+CREATE TABLE air carriers (
+    Code INT,
+    Description TEXT,
+    PRIMARY KEY (Code)
+);
+
+CREATE TABLE airports (
+    Code TEXT,
+    Description TEXT,
+    PRIMARY KEY (Code)
+);
+
+CREATE TABLE airlines (
+    flight date TEXT,
+    operator carrier airline id INT,
+    tail number TEXT,
+    operator carrier flight number INT,
+    origin airport id INT,
+    origin airport sequence id INT,
+    origin city market id INT,
+    ORIGIN TEXT,
+    destination airport id INT,
+    destination airport sequence id INT,
+    destination city market id INT,
+    destination TEXT,
+    scheduled local departure time INT,
+    departure time INT,
+    Departure delay INT,
+    departure delay new INT,
+    arrival time INT,
+    arrival delay INT,
+    arrival delay new INT,
+    CANCELLED INT,
+    cancellation code TEXT,
+    scheduled elapsed time INT,
+    actual elapsed time INT,
+    carrier delay INT,
+    weather delay INT,
+    National Aviavtion System delay INT,
+    security delay INT,
+    late aircraft delay INT,
+    FOREIGN KEY (operator carrier airline id) REFERENCES air carriers(Code),
+    FOREIGN KEY (ORIGIN) REFERENCES airports(Code),
+    FOREIGN KEY (destination) REFERENCES airports(Code)
+);
+
+
+-- Database: retail_complains
+
+CREATE TABLE state (
+    StateCode TEXT,
+    State TEXT,
+    Region TEXT,
+    PRIMARY KEY (StateCode)
+);
+
+CREATE TABLE callcenterlogs (
+    Date received TEXT,
+    Complaint ID TEXT,
+    rand client TEXT,
+    phone final TEXT,
+    voice response unit line TEXT,
+    call id INT,
+    priority INT,
+    type TEXT,
+    outcome TEXT,
+    server TEXT,
+    server start TEXT,
+    server exit TEXT,
+    server time TEXT,
+    PRIMARY KEY (Complaint ID),
+    FOREIGN KEY (rand client) REFERENCES client(client id)
+);
+
+CREATE TABLE client (
+    client id TEXT,
+    sex TEXT,
+    day INT,
+    month INT,
+    year INT,
+    age INT,
+    social TEXT,
+    first TEXT,
+    middle TEXT,
+    last TEXT,
+    phone TEXT,
+    email TEXT,
+    address_1 TEXT,
+    address_2 TEXT,
+    city TEXT,
+    state TEXT,
+    zipcode INT,
+    district id INT,
+    PRIMARY KEY (client id),
+    FOREIGN KEY (district id) REFERENCES district(district id)
+);
+
+CREATE TABLE district (
+    district id INT,
+    city TEXT,
+    state_abbrev TEXT,
+    division TEXT,
+    PRIMARY KEY (district id),
+    FOREIGN KEY (state_abbrev) REFERENCES state(StateCode)
+);
+
+CREATE TABLE events (
+    Date received TEXT,
+    Product TEXT,
+    Sub-product TEXT,
+    Issue TEXT,
+    Sub-issue TEXT,
+    Consumer complaint narrative TEXT,
+    Tags TEXT,
+    Tags Consumer consent provided? TEXT,
+    Submitted via TEXT,
+    Date sent to company TEXT,
+    Company response to consumer TEXT,
+    Timely response? TEXT,
+    Consumer disputed? TEXT,
+    Complaint ID TEXT,
+    Client ID TEXT,
+    PRIMARY KEY (Complaint ID, Client ID),
+    FOREIGN KEY (Complaint ID) REFERENCES callcenterlogs(Complaint ID),
+    FOREIGN KEY (Client ID) REFERENCES client(client id)
+);
+
+CREATE TABLE reviews (
+    Date TEXT,
+    Stars INT,
+    Reviews TEXT,
+    Product TEXT,
+    district_id INT,
+    PRIMARY KEY (Date),
+    FOREIGN KEY (district_id) REFERENCES district(district id)
+);
+
+
+-- Database: trains
+
+CREATE TABLE cars (
+    id INT,
+    train id INT,
+    position INT,
+    shape TEXT,
+    length TEXT,
+    sides TEXT,
+    roof TEXT,
+    wheels INT,
+    load_shape TEXT,
+    load number INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (train id) REFERENCES trains(id)
+);
+
+CREATE TABLE trains (
+    id INT,
+    direction TEXT,
+    PRIMARY KEY (id)
+);
+
+
+-- Database: public_review_platform
+
+CREATE TABLE attributes (
+    attribute id INT,
+    attribute name TEXT,
+    PRIMARY KEY (attribute id)
+);
+
+CREATE TABLE categories (
+    category id INT,
+    category name TEXT,
+    PRIMARY KEY (category id)
+);
+
+CREATE TABLE compliments (
+    compliment id INT,
+    compliment type TEXT,
+    PRIMARY KEY (compliment id)
+);
+
+CREATE TABLE days (
+    day id INT,
+    day of week TEXT,
+    PRIMARY KEY (day id)
+);
+
+CREATE TABLE years (
+    year id INT,
+    actual year INT,
+    PRIMARY KEY (year id)
+);
+
+CREATE TABLE business_attributes (
+    attribute id INT,
+    business id INT,
+    attribute value TEXT,
+    PRIMARY KEY (attribute id, business id)
+);
+
+CREATE TABLE business_categories (
+    business id INT,
+    category id INT,
+    PRIMARY KEY (business id, category id)
+);
+
+CREATE TABLE business_hours (
+    business id INT,
+    day id INT,
+    opening time TEXT,
+    closing time TEXT,
+    PRIMARY KEY (business id, day id)
+);
+
+CREATE TABLE checkins (
+    business id INT,
+    day id INT,
+    label_time_0 TEXT,
+    label_time_1 TEXT,
+    label_time_2 TEXT,
+    label_time_3 TEXT,
+    label_time_4 TEXT,
+    label_time_5 TEXT,
+    label_time_6 TEXT,
+    label_time_7 TEXT,
+    label_time_8 TEXT,
+    label_time_9 TEXT,
+    label_time_10 TEXT,
+    label_time_11 TEXT,
+    label_time_12 TEXT,
+    label_time_13 TEXT,
+    label_time_14 TEXT,
+    label_time_15 TEXT,
+    label_time_16 TEXT,
+    label_time_17 TEXT,
+    label_time_18 TEXT,
+    label_time_19 TEXT,
+    label_time_20 TEXT,
+    label_time_21 TEXT,
+    label_time_22 TEXT,
+    label_time_23 TEXT,
+    PRIMARY KEY (business id, day id)
+);
+
+CREATE TABLE elite (
+    user id INT,
+    year id INT,
+    PRIMARY KEY (user id, year id)
+);
+
+CREATE TABLE reviews (
+    business id INT,
+    user id INT,
+    review stars INT,
+    review votes funny TEXT,
+    review votes useful TEXT,
+    review votes cool TEXT,
+    review length TEXT,
+    PRIMARY KEY (business id, user id)
+);
+
+CREATE TABLE tips (
+    business id INT,
+    user id INT,
+    Likes INT,
+    tip length TEXT,
+    PRIMARY KEY (business id, user id)
+);
+
+CREATE TABLE users_compliments (
+    compliment id INT,
+    user id INT,
+    number of compliments TEXT,
+    PRIMARY KEY (compliment id, user id)
+);
+
+CREATE TABLE business (
+    business id INT,
+    active TEXT,
+    city TEXT,
+    state TEXT,
+    stars REAL,
+    review count TEXT,
+    PRIMARY KEY (business id)
+);
+
+CREATE TABLE users (
+    user id INT,
+    user yelping since year INT,
+    user average stars TEXT,
+    user votes funny TEXT,
+    user votes useful TEXT,
+    user votes cool TEXT,
+    user review count TEXT,
+    user fans TEXT,
+    PRIMARY KEY (user id)
+);
+
+
+-- Database: donor
+
+CREATE TABLE essays (
+    project id TEXT,
+    teacher acctid TEXT,
+    title TEXT,
+    short description TEXT,
+    need statement TEXT,
+    essay TEXT,
+);
+
+CREATE TABLE projects (
+    project id TEXT,
+    teacher_acctid TEXT,
+    schoolid TEXT,
+    school national center for education statistics id TEXT,
+    school latitude REAL,
+    school longitude REAL,
+    school city TEXT,
+    school state TEXT,
+    school zip INT,
+    school metro TEXT,
+    school district TEXT,
+    school county TEXT,
+    school charter TEXT,
+    school magnet TEXT,
+    school year round TEXT,
+    school Nonleafy Normal Stature TEXT,
+    school Knowledge Is Power Program TEXT,
+    school charter ready promise TEXT,
+    teacher prefix TEXT,
+    teachers teach for america TEXT,
+    teacher_new_york_teaching_fellow TEXT,
+    primary focus subject TEXT,
+    primary focus area TEXT,
+    secondary focus subject TEXT,
+    secondary focus area TEXT,
+    resource type TEXT,
+    poverty level TEXT,
+    grade level TEXT,
+    fulfillment labor materials REAL,
+    total price excluding optional support REAL,
+    total price including optional support REAL,
+    students reached INT,
+    eligible double your impact match TEXT,
+    eligible almost home match TEXT,
+    date posted TEXT,
+    PRIMARY KEY (project id)
+);
+
+CREATE TABLE donations (
+    donation id TEXT,
+    project id TEXT,
+    donor accid TEXT,
+    donor city TEXT,
+    donor state TEXT,
+    donor zip TEXT,
+    is teacher acct TEXT,
+    donation timestamp TEXT,
+    donation to project REAL,
+    donation optional support REAL,
+    donation total REAL,
+    dollar amount TEXT,
+    donation included optional support TEXT,
+    payment method TEXT,
+    payment included acct credit TEXT,
+    payment included campaign gift card TEXT,
+    payment included web purchased gift card TEXT,
+    payment was promo matched TEXT,
+    via giving page TEXT,
+    for honoree TEXT,
+    donation message TEXT,
+    PRIMARY KEY (donation id),
+    FOREIGN KEY (project id) REFERENCES projects(project id)
+);
+
+CREATE TABLE resources (
+    resource id TEXT,
+    project id TEXT,
+    vendor id INT,
+    vendor name TEXT,
+    project resource type TEXT,
+    item name TEXT,
+    item number TEXT,
+    item unit price REAL,
+    item quantity INT,
+    PRIMARY KEY (resource id),
+    FOREIGN KEY (project id) REFERENCES projects(project id)
+);
+
+
+-- Database: coinmarketcap
+
+CREATE TABLE coins (
+    id INT,
+    name TEXT,
+    slug TEXT,
+    symbol TEXT,
+    status TEXT,
+    category TEXT,
+    description TEXT,
+    subreddit TEXT,
+    notice TEXT,
+    tags TEXT,
+    tag_names TEXT,
+    website TEXT,
+    platform id INT,
+    date added TEXT,
+    date lanched TEXT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE historical (
+    date TEXT,
+    coin_id INT,
+    coinmarketcap rank INT,
+    Market capitalization REAL,
+    price REAL,
+    open REAL,
+    high REAL,
+    low REAL,
+    close REAL,
+    time_high TEXT,
+    time_low TEXT,
+    volume_24h REAL,
+    percent change 1h REAL,
+    percent change 24h REAL,
+    percent change 7d REAL,
+    circulating supply REAL,
+    total supply REAL,
+    max supply REAL,
+    number market pairs INT,
+);
+
+
+-- Database: simpson_episodes
+
+CREATE TABLE episode (
+    episode id TEXT,
+    season INT,
+    episode INT,
+    number in series INT,
+    title TEXT,
+    summary TEXT,
+    air date TEXT,
+    episode image TEXT,
+    rating REAL,
+    votes INT,
+    PRIMARY KEY (episode id)
+);
+
+CREATE TABLE person (
+    name TEXT,
+    birth date TEXT,
+    birth name TEXT,
+    birth place TEXT,
+    birth region TEXT,
+    birth country TEXT,
+    height meters REAL,
+    nickname TEXT,
+    PRIMARY KEY (name)
+);
+
+CREATE TABLE award (
+    award id INT,
+    organization TEXT,
+    year INT,
+    award_category TEXT,
+    award TEXT,
+    person TEXT,
+    role TEXT,
+    episode id TEXT,
+    season TEXT,
+    song TEXT,
+    result TEXT,
+    PRIMARY KEY (award id),
+    FOREIGN KEY (person) REFERENCES person(name),
+    FOREIGN KEY (episode id) REFERENCES episode(episode id)
+);
+
+CREATE TABLE character_award (
+    award id INT,
+    character TEXT,
+    FOREIGN KEY (award id) REFERENCES award(award id)
+);
+
+CREATE TABLE credit (
+    episode id TEXT,
+    category TEXT,
+    person TEXT,
+    role TEXT,
+    credited TEXT,
+    FOREIGN KEY (episode id) REFERENCES episode(episode id),
+    FOREIGN KEY (person) REFERENCES person(name)
+);
+
+CREATE TABLE keyword (
+    episode id TEXT,
+    keyword TEXT,
+    PRIMARY KEY (episode id, keyword),
+    FOREIGN KEY (episode id) REFERENCES episode(episode id)
+);
+
+CREATE TABLE vote (
+    episode id TEXT,
+    stars INT,
+    votes INT,
+    percent REAL,
+    FOREIGN KEY (episode id) REFERENCES episode(episode id)
+);
+
+
+-- Database: movie_3
+
+CREATE TABLE film_text (
+    film id INT,
+    title TEXT,
+    description TEXT,
+    PRIMARY KEY (film id)
+);
+
+CREATE TABLE actor (
+    actor id INT,
+    first name TEXT,
+    last name TEXT,
+    last update TEXT,
+    PRIMARY KEY (actor id)
+);
+
+CREATE TABLE address (
+    address id INT,
+    address TEXT,
+    address 2 TEXT,
+    district TEXT,
+    city_id INT,
+    postal code TEXT,
+    phone TEXT,
+    last update TEXT,
+    PRIMARY KEY (address id)
+);
+
+CREATE TABLE category (
+    category id INT,
+    name TEXT,
+    last update TEXT,
+    PRIMARY KEY (category id)
+);
+
+CREATE TABLE city (
+    city id INT,
+    city TEXT,
+    country id INT,
+    last update TEXT,
+    PRIMARY KEY (city id)
+);
+
+CREATE TABLE country (
+    country id INT,
+    the name of the country TEXT,
+    last update TEXT,
+    PRIMARY KEY (country id)
+);
+
+CREATE TABLE customer (
+    country id INT,
+    store id INT,
+    first name TEXT,
+    last name TEXT,
+    email TEXT,
+    address id INT,
+    active INT,
+    create date TEXT,
+    last update TEXT,
+    PRIMARY KEY (country id)
+);
+
+CREATE TABLE film (
+    film id INT,
+    title TEXT,
+    description TEXT,
+    release year TEXT,
+    language id INT,
+    original language id INT,
+    rental duration INT,
+    rental rate REAL,
+    length INT,
+    replacement cost REAL,
+    rating TEXT,
+    special features TEXT,
+    last update TEXT,
+    PRIMARY KEY (film id)
+);
+
+CREATE TABLE film_actor (
+    actor id INT,
+    film id INT,
+    last update TEXT,
+    PRIMARY KEY (actor id, film id)
+);
+
+CREATE TABLE film_category (
+    film id INT,
+    category id INT,
+    last update TEXT,
+    PRIMARY KEY (film id, category id)
+);
+
+CREATE TABLE inventory (
+    inventory id INT,
+    film id INT,
+    store id INT,
+    last update TEXT,
+    PRIMARY KEY (inventory id)
+);
+
+CREATE TABLE language (
+    language id INT,
+    name TEXT,
+    last update TEXT,
+    PRIMARY KEY (language id)
+);
+
+CREATE TABLE payment (
+    payment id INT,
+    customer id INT,
+    staff id INT,
+    rental id INT,
+    amount REAL,
+    payment date TEXT,
+    last update TEXT,
+    PRIMARY KEY (payment id)
+);
+
+CREATE TABLE rental (
+    rental id INT,
+    rental date TEXT,
+    inventory id INT,
+    customer id INT,
+    return date TEXT,
+    staff id INT,
+    last update TEXT,
+    PRIMARY KEY (rental id)
+);
+
+CREATE TABLE staff (
+    staff id INT,
+    first name TEXT,
+    last name TEXT,
+    address id INT,
+    picture of the staff BLOB,
+    email of the staff TEXT,
+    store id INT,
+    active INT,
+    username TEXT,
+    password TEXT,
+    last update TEXT,
+    PRIMARY KEY (staff id)
+);
+
+CREATE TABLE store (
+    store id INT,
+    manager staff id INT,
+    address id INT,
+    last update TEXT,
+    PRIMARY KEY (store id)
+);
+
+
+-- Database: shooting
+
+CREATE TABLE incidents (
+    case number TEXT,
+    date TEXT,
+    location TEXT,
+    subject statuses TEXT,
+    subject weapon TEXT,
+    subjects TEXT,
+    subject_count INT,
+    officers TEXT,
+    PRIMARY KEY (case number)
+);
+
+CREATE TABLE officers (
+    case number TEXT,
+    race TEXT,
+    gender TEXT,
+    last name TEXT,
+    first name TEXT,
+    full name TEXT,
+    FOREIGN KEY (case number) REFERENCES incidents(case number)
+);
+
+CREATE TABLE subjects (
+    case number TEXT,
+    race TEXT,
+    gender TEXT,
+    last name TEXT,
+    first name TEXT,
+    full name TEXT,
+    FOREIGN KEY (case number) REFERENCES incidents(case number)
+);
+
+
+-- Database: superstore
+
+CREATE TABLE people (
+    Customer ID TEXT,
+    Customer Name TEXT,
+    Segment TEXT,
+    Country TEXT,
+    City TEXT,
+    State TEXT,
+    Postal Code INT,
+    Region TEXT,
+    PRIMARY KEY (Customer ID, Region)
+);
+
+CREATE TABLE product (
+    Product ID TEXT,
+    Product Name TEXT,
+    Category TEXT,
+    Sub-Category TEXT,
+    Region TEXT,
+    PRIMARY KEY (Product ID, Region)
+);
+
+CREATE TABLE central_superstore (
+    row id INT,
+    order id TEXT,
+    order date TEXT,
+    ship date TEXT,
+    ship mode TEXT,
+    customer id TEXT,
+    Region TEXT,
+    product id TEXT,
+    Sales REAL,
+    Quantity INT,
+    Discount REAL,
+    Profit REAL,
+    PRIMARY KEY (row id),
+    FOREIGN KEY (customer id) REFERENCES people(Customer ID),
+    FOREIGN KEY (Region) REFERENCES people(Region),
+    FOREIGN KEY (product id) REFERENCES product(Product ID)
+);
+
+CREATE TABLE east_superstore (
+    row id INT,
+    order id TEXT,
+    order date TEXT,
+    ship date TEXT,
+    ship mode TEXT,
+    customer id TEXT,
+    Region TEXT,
+    product id TEXT,
+    Sales REAL,
+    Quantity INT,
+    Discount REAL,
+    Profit REAL,
+    PRIMARY KEY (row id),
+    FOREIGN KEY (customer id) REFERENCES people(Customer ID),
+    FOREIGN KEY (Region) REFERENCES people(Region),
+    FOREIGN KEY (product id) REFERENCES product(Product ID)
+);
+
+CREATE TABLE south_superstore (
+    row id INT,
+    order id TEXT,
+    order date TEXT,
+    ship date TEXT,
+    ship mode TEXT,
+    customer id TEXT,
+    Region TEXT,
+    product id TEXT,
+    Sales REAL,
+    Quantity INT,
+    Discount REAL,
+    Profit REAL,
+    PRIMARY KEY (row id),
+    FOREIGN KEY (customer id) REFERENCES people(Customer ID),
+    FOREIGN KEY (Region) REFERENCES people(Region),
+    FOREIGN KEY (product id) REFERENCES product(Product ID)
+);
+
+CREATE TABLE west_superstore (
+    row id INT,
+    order id TEXT,
+    order date TEXT,
+    ship date TEXT,
+    ship mode TEXT,
+    customer id TEXT,
+    Region TEXT,
+    product id TEXT,
+    Sales REAL,
+    Quantity INT,
+    Discount REAL,
+    Profit REAL,
+    PRIMARY KEY (row id),
+    FOREIGN KEY (customer id) REFERENCES people(Customer ID),
+    FOREIGN KEY (Region) REFERENCES people(Region),
+    FOREIGN KEY (product id) REFERENCES product(Product ID)
+);
+
+
+-- Database: movielens
+
+CREATE TABLE users (
+    user id INT,
+    age TEXT,
+    user gender TEXT,
+    occupation TEXT,
+    PRIMARY KEY (user id)
+);
+
+CREATE TABLE directors (
+    director id INT,
+    director quality INT,
+    average revenue INT,
+    PRIMARY KEY (director id)
+);
+
+CREATE TABLE actors (
+    actor id INT,
+    actor gender TEXT,
+    actor quality INT,
+    PRIMARY KEY (actor id)
+);
+
+CREATE TABLE movies (
+    movie id INT,
+    year INT,
+    is English TEXT,
+    country TEXT,
+    runningtime INT,
+    PRIMARY KEY (movie id)
+);
+
+CREATE TABLE movies2actors (
+    movie id INT,
+    actor id INT,
+    cast number INT,
+    PRIMARY KEY (movie id, actor id)
+);
+
+CREATE TABLE movies2directors (
+    movie id INT,
+    director id INT,
+    genre TEXT,
+    PRIMARY KEY (movie id, director id)
+);
+
+CREATE TABLE u2base (
+    user id INT,
+    movie id INT,
+    rating TEXT,
+    PRIMARY KEY (user id, movie id)
+);

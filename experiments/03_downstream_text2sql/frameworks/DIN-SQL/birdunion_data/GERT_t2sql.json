@@ -1,0 +1,2817 @@
+[
+  {
+    "question_id": 94,
+    "db_id": "financial",
+    "question": "List out the account numbers of female clients who are oldest and has lowest average salary, calculate the gap between this lowest average salary with the highest average salary?",
+    "SQL": "SELECT T1.account_id , ( SELECT MAX(A11) - MIN(A11) FROM district ) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.district_id = ( SELECT district_id FROM client WHERE gender = 'F' ORDER BY birth_date ASC LIMIT 1 ) ORDER BY T2.A11 DESC LIMIT 1",
+    "gold_schema": [
+      "financial.account",
+      "financial.district",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "financial.client",
+      "retail_complains.client",
+      "financial.account",
+      "financial.disp",
+      "books.customer",
+      "financial.district",
+      "software_company.customers",
+      "human_resources.employee",
+      "books.customer_address",
+      "retail_complains.district",
+      "retail_complains.callcenterlogs",
+      "retail_complains.events",
+      "financial.loan",
+      "sales.sales",
+      "books.address"
+    ]
+  },
+  {
+    "question_id": 95,
+    "db_id": "financial",
+    "question": "List out the account numbers of clients who are youngest and have highest average salary?",
+    "SQL": "SELECT T1.account_id FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.district_id = ( SELECT district_id FROM client ORDER BY birth_date DESC LIMIT 1 ) ORDER BY T2.A11 DESC LIMIT 1",
+    "gold_schema": [
+      "financial.account",
+      "financial.district",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "financial.client",
+      "financial.account",
+      "retail_complains.client",
+      "software_company.customers",
+      "financial.disp",
+      "books.customer",
+      "sales.sales",
+      "financial.district",
+      "sales.employees",
+      "books.customer_address",
+      "sales.customers",
+      "retail_complains.district",
+      "books.address",
+      "retail_complains.callcenterlogs",
+      "retail_complains.events"
+    ]
+  },
+  {
+    "question_id": 113,
+    "db_id": "financial",
+    "question": "For the client who applied 98832 USD loan in 1996/1/3, when was his/her birthday?",
+    "SQL": "SELECT T3.birth_date FROM loan AS T1 INNER JOIN account AS T2 ON T1.account_id = T2.account_id INNER JOIN client AS T3 ON T2.district_id = T3.district_id WHERE T1.date = '1996-01-03' AND T1.amount = 98832",
+    "gold_schema": [
+      "financial.loan",
+      "financial.account",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "financial.client",
+      "student_loan.person",
+      "financial.account",
+      "financial.loan",
+      "debit_card_specializing.yearmonth",
+      "financial.disp",
+      "financial.district",
+      "debit_card_specializing.customers",
+      "books.customer",
+      "movie_3.customer",
+      "student_loan.enrolled",
+      "student_loan.male",
+      "financial.card",
+      "financial.order",
+      "financial.trans"
+    ]
+  },
+  {
+    "question_id": 116,
+    "db_id": "financial",
+    "question": "For the client who first applied the loan in 1993/7/5, what is the increase rate of his/her account balance from 1993/3/22 to 1998/12/27?",
+    "SQL": "SELECT CAST((SUM(IIF(T3.date = '1998-12-27', T3.balance, 0)) - SUM(IIF(T3.date = '1993-03-22', T3.balance, 0))) AS REAL) * 100 / SUM(IIF(T3.date = '1993-03-22', T3.balance, 0)) FROM loan AS T1 INNER JOIN account AS T2 ON T1.account_id = T2.account_id INNER JOIN trans AS T3 ON T3.account_id = T2.account_id WHERE T1.date = '1993-07-05'",
+    "gold_schema": [
+      "financial.loan",
+      "financial.account",
+      "financial.trans"
+    ],
+    "predicted_schemas_at15": [
+      "financial.account",
+      "financial.loan",
+      "financial.district",
+      "financial.client",
+      "financial.disp",
+      "financial.order",
+      "financial.trans",
+      "student_loan.person",
+      "works_cycles.employeepayhistory",
+      "financial.card",
+      "movie_3.payment",
+      "works_cycles.currencyrate",
+      "coinmarketcap.historical",
+      "student_loan.male",
+      "debit_card_specializing.yearmonth"
+    ]
+  },
+  {
+    "question_id": 122,
+    "db_id": "financial",
+    "question": "State the district and region for loan ID '4990'.",
+    "SQL": "SELECT T2.A2, T2.A3 FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id INNER JOIN loan AS T3 ON T1.account_id = T3.account_id WHERE T3.loan_id = 4990",
+    "gold_schema": [
+      "financial.loan",
+      "financial.account",
+      "financial.district"
+    ],
+    "predicted_schemas_at15": [
+      "retail_complains.district",
+      "retails.region",
+      "retail_complains.state",
+      "retail_complains.client",
+      "financial.district",
+      "retails.nation",
+      "video_games.region",
+      "retail_complains.reviews",
+      "financial.account",
+      "law_episode.credit",
+      "retail_complains.callcenterlogs",
+      "retail_complains.events",
+      "student_loan.person",
+      "student_loan.bool",
+      "financial.disp"
+    ]
+  },
+  {
+    "question_id": 124,
+    "db_id": "financial",
+    "question": "List the loan ID, district and average salary for loan with duration of 60 months.",
+    "SQL": "SELECT T3.loan_id, T2.A2, T2.A11 FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id INNER JOIN loan AS T3 ON T1.account_id = T3.account_id WHERE T3.duration = 60",
+    "gold_schema": [
+      "financial.loan",
+      "financial.account",
+      "financial.district"
+    ],
+    "predicted_schemas_at15": [
+      "student_loan.person",
+      "financial.loan",
+      "student_loan.enrolled",
+      "financial.account",
+      "law_episode.credit",
+      "student_loan.unemployed",
+      "student_loan.enlist",
+      "student_loan.bool",
+      "student_loan.no_payment_due",
+      "law_episode.episode",
+      "student_loan.male",
+      "financial.district",
+      "financial.disp",
+      "student_loan.disabled",
+      "retail_complains.district"
+    ]
+  },
+  {
+    "question_id": 125,
+    "db_id": "financial",
+    "question": "For loans contracts which are still running where client are in debt, list the district of the and the state the percentage unemployment rate increment from year 1995 to 1996.",
+    "SQL": "SELECT CAST((T3.A13 - T3.A12) AS REAL) * 100 / T3.A12 FROM loan AS T1 INNER JOIN account AS T2 ON T1.account_id = T2.account_id INNER JOIN district AS T3 ON T2.district_id = T3.district_id WHERE T1.status = 'D'",
+    "gold_schema": [
+      "financial.loan",
+      "financial.account",
+      "financial.district"
+    ],
+    "predicted_schemas_at15": [
+      "financial.district",
+      "student_loan.person",
+      "retail_complains.district",
+      "financial.account",
+      "student_loan.unemployed",
+      "retail_complains.client",
+      "financial.loan",
+      "financial.client",
+      "student_loan.enrolled",
+      "financial.disp",
+      "student_loan.no_payment_due",
+      "student_loan.enlist",
+      "student_loan.disabled",
+      "student_loan.longest_absense_from_school",
+      "student_loan.filed_for_bankruptcy"
+    ]
+  },
+  {
+    "question_id": 130,
+    "db_id": "financial",
+    "question": "How many of the account holders in South Bohemia still do not own credit cards?",
+    "SQL": "SELECT COUNT(T3.account_id) FROM district AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id INNER JOIN disp AS T3 ON T2.client_id = T3.client_id WHERE T1.A3 = 'south Bohemia' AND T3.type != 'OWNER'",
+    "gold_schema": [
+      "financial.disp",
+      "financial.district",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "financial.district",
+      "financial.account",
+      "books.customer",
+      "debit_card_specializing.customers",
+      "debit_card_specializing.yearmonth",
+      "financial.disp",
+      "financial.card",
+      "books.customer_address",
+      "financial.client",
+      "books.address",
+      "address.zip_data",
+      "software_company.customers",
+      "financial.loan",
+      "financial.order",
+      "financial.trans"
+    ]
+  },
+  {
+    "question_id": 131,
+    "db_id": "financial",
+    "question": "Which district has highest active loan?",
+    "SQL": "SELECT T2.A3 FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id INNER JOIN loan AS T3 ON T1.account_id = T3.account_id WHERE T3.status IN ('C', 'D') GROUP BY T2.A3 ORDER BY SUM(T3.amount) DESC LIMIT 1",
+    "gold_schema": [
+      "financial.loan",
+      "financial.account",
+      "financial.district"
+    ],
+    "predicted_schemas_at15": [
+      "student_loan.person",
+      "financial.district",
+      "student_loan.bool",
+      "financial.account",
+      "student_loan.no_payment_due",
+      "student_loan.male",
+      "student_loan.disabled",
+      "student_loan.enrolled",
+      "student_loan.enlist",
+      "financial.disp",
+      "financial.loan",
+      "financial.client",
+      "student_loan.unemployed",
+      "student_loan.longest_absense_from_school",
+      "retail_complains.district"
+    ]
+  },
+  {
+    "question_id": 132,
+    "db_id": "financial",
+    "question": "What is the average loan amount by male borrowers?",
+    "SQL": "SELECT AVG(T3.amount) FROM client AS T1 INNER JOIN account AS T2 ON T1.district_id = T2.district_id INNER JOIN loan AS T3 ON T2.account_id = T3.account_id WHERE T1.gender = 'M'",
+    "gold_schema": [
+      "financial.loan",
+      "financial.account",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "student_loan.person",
+      "student_loan.male",
+      "financial.loan",
+      "student_loan.bool",
+      "financial.account",
+      "student_loan.no_payment_due",
+      "financial.client",
+      "student_loan.enrolled",
+      "student_loan.unemployed",
+      "student_loan.enlist",
+      "financial.disp",
+      "student_loan.disabled",
+      "student_loan.filed_for_bankruptcy",
+      "financial.district",
+      "student_loan.longest_absense_from_school"
+    ]
+  },
+  {
+    "question_id": 142,
+    "db_id": "financial",
+    "question": "Which accounts placed orders for household payment in Pisek?",
+    "SQL": "SELECT DISTINCT T2.account_id FROM trans AS T1 INNER JOIN account AS T2 ON T1.account_id = T2.account_id INNER JOIN district AS T3 ON T2.district_id = T3.district_id WHERE T1.k_symbol = 'SIPO' AND T3.A2 = 'Pisek'",
+    "gold_schema": [
+      "financial.account",
+      "financial.trans",
+      "financial.district"
+    ],
+    "predicted_schemas_at15": [
+      "financial.account",
+      "financial.order",
+      "financial.disp",
+      "car_retails.payments",
+      "car_retails.customers",
+      "financial.client",
+      "financial.district",
+      "financial.card",
+      "car_retails.employees",
+      "movie_3.payment",
+      "financial.loan",
+      "financial.trans",
+      "debit_card_specializing.customers",
+      "debit_card_specializing.transactions_1k",
+      "books.address"
+    ]
+  },
+  {
+    "question_id": 146,
+    "db_id": "financial",
+    "question": "Who are the female account holders who own credit cards and also have loans?",
+    "SQL": "SELECT T1.client_id FROM client AS T1 INNER JOIN disp AS T2 ON T1.client_id = T2.client_id INNER JOIN loan AS T3 ON T2.account_id = T3.account_id INNER JOIN card AS T4 ON T2.disp_id = T4.disp_id WHERE T1.gender = 'F'",
+    "gold_schema": [
+      "financial.loan",
+      "financial.disp",
+      "financial.card",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "financial.card",
+      "financial.account",
+      "financial.client",
+      "student_loan.person",
+      "financial.disp",
+      "financial.loan",
+      "debit_card_specializing.customers",
+      "financial.district",
+      "debit_card_specializing.yearmonth",
+      "student_loan.male",
+      "financial.order",
+      "works_cycles.personcreditcard",
+      "financial.trans",
+      "works_cycles.creditcard",
+      "student_loan.enlist"
+    ]
+  },
+  {
+    "question_id": 159,
+    "db_id": "financial",
+    "question": "List all the withdrawals in cash transactions that the client with the id 3356 makes.",
+    "SQL": "SELECT T4.trans_id FROM client AS T1 INNER JOIN disp AS T2 ON T1.client_id = T2.client_id INNER JOIN account AS T3 ON T2.account_id = T3.account_id INNER JOIN trans AS T4 ON T3.account_id = T4.account_id WHERE T1.client_id = 3356 AND T4.operation = 'VYBER'",
+    "gold_schema": [
+      "financial.disp",
+      "financial.account",
+      "financial.trans",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "financial.disp",
+      "financial.account",
+      "movie_3.payment",
+      "financial.client",
+      "financial.card",
+      "financial.district",
+      "financial.trans",
+      "financial.loan",
+      "debit_card_specializing.transactions_1k",
+      "financial.order",
+      "works_cycles.customer",
+      "movie_3.customer",
+      "works_cycles.transactionhistoryarchive",
+      "books.customer",
+      "debit_card_specializing.customers"
+    ]
+  },
+  {
+    "question_id": 161,
+    "db_id": "financial",
+    "question": "What type of credit card does the client with the id 13539 own?",
+    "SQL": "SELECT T3.type FROM disp AS T1 INNER JOIN client AS T2 ON T1.client_id = T2.client_id INNER JOIN card AS T3 ON T1.disp_id = T3.disp_id WHERE T2.client_id = 13539",
+    "gold_schema": [
+      "financial.client",
+      "financial.card",
+      "financial.disp"
+    ],
+    "predicted_schemas_at15": [
+      "financial.card",
+      "debit_card_specializing.customers",
+      "debit_card_specializing.yearmonth",
+      "books.customer",
+      "books.customer_address",
+      "financial.disp",
+      "works_cycles.personcreditcard",
+      "financial.account",
+      "books.address",
+      "financial.client",
+      "works_cycles.creditcard",
+      "works_cycles.person",
+      "movie_3.payment",
+      "financial.district",
+      "debit_card_specializing.products"
+    ]
+  },
+  {
+    "question_id": 169,
+    "db_id": "financial",
+    "question": "What was the growth rate of the total amount of loans across all accounts for a male client between 1996 and 1997?",
+    "SQL": "SELECT CAST((SUM(CASE WHEN STRFTIME('%Y', T1.date) = '1997' THEN T1.amount ELSE 0 END) - SUM(CASE WHEN STRFTIME('%Y', T1.date) = '1996' THEN T1.amount ELSE 0 END)) AS REAL) * 100 / SUM(CASE WHEN STRFTIME('%Y', T1.date) = '1996' THEN T1.amount ELSE 0 END) FROM loan AS T1 INNER JOIN account AS T2 ON T1.account_id = T2.account_id INNER JOIN disp AS T3 ON T3.account_id = T2.account_id INNER JOIN client AS T4 ON T4.client_id = T3.client_id WHERE T4.gender = 'M' AND T3.type = 'OWNER'",
+    "gold_schema": [
+      "financial.loan",
+      "financial.client",
+      "financial.account",
+      "financial.disp"
+    ],
+    "predicted_schemas_at15": [
+      "student_loan.male",
+      "financial.account",
+      "student_loan.person",
+      "financial.client",
+      "financial.district",
+      "financial.disp",
+      "financial.loan",
+      "books.customer",
+      "debit_card_specializing.customers",
+      "debit_card_specializing.yearmonth",
+      "books.customer_address",
+      "student_loan.no_payment_due",
+      "student_loan.bool",
+      "financial.order",
+      "financial.trans"
+    ]
+  },
+  {
+    "question_id": 174,
+    "db_id": "financial",
+    "question": "What year was account owner number 130 born?",
+    "SQL": "SELECT STRFTIME('%Y', T1.birth_date) FROM client AS T1 INNER JOIN disp AS T3 ON T1.client_id = T3.client_id INNER JOIN account AS T2 ON T3.account_id = T2.account_id WHERE T2.account_id = 130",
+    "gold_schema": [
+      "financial.disp",
+      "financial.account",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "financial.account",
+      "financial.client",
+      "financial.disp",
+      "books.customer",
+      "financial.district",
+      "books.customer_address",
+      "debit_card_specializing.customers",
+      "debit_card_specializing.yearmonth",
+      "movie_3.customer",
+      "books.address",
+      "beer_factory.customers",
+      "software_company.demog",
+      "student_loan.person",
+      "financial.loan",
+      "financial.order"
+    ]
+  },
+  {
+    "question_id": 176,
+    "db_id": "financial",
+    "question": "What is the amount of debt that client number 992 has, and how is this client doing with payments?",
+    "SQL": "SELECT T3.amount, T3.status FROM client AS T1 INNER JOIN account AS T2 ON T1.district_id = T2.district_id INNER JOIN loan AS T3 ON T2.account_id = T3.account_id WHERE T1.client_id = 992",
+    "gold_schema": [
+      "financial.loan",
+      "financial.account",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "movie_3.payment",
+      "debit_card_specializing.customers",
+      "student_loan.no_payment_due",
+      "student_loan.person",
+      "debit_card_specializing.yearmonth",
+      "financial.client",
+      "financial.account",
+      "financial.disp",
+      "books.customer",
+      "books.customer_address",
+      "financial.loan",
+      "student_loan.bool",
+      "car_retails.payments",
+      "financial.district",
+      "car_retails.customers"
+    ]
+  },
+  {
+    "question_id": 178,
+    "db_id": "financial",
+    "question": "Which kind of credit card does client number 9 possess?",
+    "SQL": "SELECT T3.type FROM client AS T1 INNER JOIN disp AS T2 ON T1.client_id = T2.client_id INNER JOIN card AS T3 ON T2.disp_id = T3.disp_id WHERE T1.client_id = 9",
+    "gold_schema": [
+      "financial.disp",
+      "financial.card",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "debit_card_specializing.customers",
+      "debit_card_specializing.yearmonth",
+      "books.customer",
+      "books.customer_address",
+      "financial.card",
+      "financial.client",
+      "financial.disp",
+      "financial.account",
+      "books.address",
+      "works_cycles.personcreditcard",
+      "financial.district",
+      "movie_3.customer",
+      "works_cycles.creditcard",
+      "books.country",
+      "movie_3.payment"
+    ]
+  },
+  {
+    "question_id": 179,
+    "db_id": "financial",
+    "question": "How much, in total, did client number 617 pay for all of the transactions in 1998?",
+    "SQL": "SELECT SUM(T3.amount) FROM client AS T1 INNER JOIN account AS T2 ON T1.district_id = T2.district_id INNER JOIN trans AS T3 ON T2.account_id = T3.account_id WHERE STRFTIME('%Y', T3.date)= '1998' AND T1.client_id = 617",
+    "gold_schema": [
+      "financial.account",
+      "financial.trans",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "debit_card_specializing.customers",
+      "debit_card_specializing.transactions_1k",
+      "debit_card_specializing.yearmonth",
+      "movie_3.payment",
+      "financial.client",
+      "works_cycles.customer",
+      "books.customer",
+      "financial.disp",
+      "financial.account",
+      "books.customer_address",
+      "shipping.customer",
+      "financial.district",
+      "shipping.shipment",
+      "books.address",
+      "car_retails.payments"
+    ]
+  },
+  {
+    "question_id": 181,
+    "db_id": "financial",
+    "question": "Please provide the IDs of the 3 female clients with the largest loans.",
+    "SQL": "SELECT T1.client_id FROM client AS T1 INNER JOIN account AS T2 ON T1.district_id = T2.district_id INNER JOIN loan AS T3 ON T2.account_id = T3.account_id WHERE T1.gender = 'F' ORDER BY T3.amount DESC LIMIT 3",
+    "gold_schema": [
+      "financial.loan",
+      "financial.account",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "student_loan.person",
+      "financial.client",
+      "student_loan.bool",
+      "financial.account",
+      "student_loan.no_payment_due",
+      "financial.disp",
+      "student_loan.male",
+      "financial.district",
+      "student_loan.enlist",
+      "financial.loan",
+      "student_loan.disabled",
+      "movie_3.payment",
+      "student_loan.unemployed",
+      "books.customer",
+      "student_loan.enrolled"
+    ]
+  },
+  {
+    "question_id": 182,
+    "db_id": "financial",
+    "question": "How many male customers who were born between 1974 and 1976 have made a payment on their home in excess of $4000?",
+    "SQL": "SELECT COUNT(T1.account_id) FROM trans AS T1 INNER JOIN account AS T2 ON T1.account_id = T2.account_id INNER JOIN client AS T3 ON T2.district_id = T3.district_id WHERE STRFTIME('%Y', T3.birth_date) BETWEEN '1974' AND '1976' AND T3.gender = 'M' AND T1.amount > 4000 AND T1.k_symbol = 'SIPO'",
+    "gold_schema": [
+      "financial.account",
+      "financial.trans",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "software_company.customers",
+      "books.customer",
+      "sales.sales",
+      "books.customer_address",
+      "sales.customers",
+      "books.address",
+      "regional_sales.customers",
+      "regional_sales.sales orders",
+      "sales.products",
+      "movie_3.customer",
+      "car_retails.payments",
+      "movie_3.payment",
+      "car_retails.customers",
+      "sales.employees",
+      "books.country"
+    ]
+  },
+  {
+    "question_id": 184,
+    "db_id": "financial",
+    "question": "How many female customers have a junior credit card?",
+    "SQL": "SELECT COUNT(T1.client_id) FROM client AS T1 INNER JOIN disp AS T2 ON T1.client_id = T2.client_id INNER JOIN card AS T3 ON T2.disp_id = T3.disp_id WHERE T1.gender = 'F' AND T3.type = 'junior'",
+    "gold_schema": [
+      "financial.disp",
+      "financial.card",
+      "financial.client"
+    ],
+    "predicted_schemas_at15": [
+      "debit_card_specializing.customers",
+      "debit_card_specializing.yearmonth",
+      "financial.client",
+      "books.customer",
+      "software_company.customers",
+      "financial.account",
+      "financial.disp",
+      "books.customer_address",
+      "retail_complains.client",
+      "financial.district",
+      "financial.card",
+      "student_loan.person",
+      "books.address",
+      "student_loan.male",
+      "movie_3.customer"
+    ]
+  },
+  {
+    "question_id": 193,
+    "db_id": "financial",
+    "question": "List all ID and district for clients that can only have the right to issue permanent orders or apply for loans.",
+    "SQL": "SELECT T3.client_id, T2.district_id, T2.A2 FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id INNER JOIN disp AS T3 ON T1.account_id = T3.account_id WHERE T3.type = 'OWNER'",
+    "gold_schema": [
+      "financial.account",
+      "financial.district",
+      "financial.disp"
+    ],
+    "predicted_schemas_at15": [
+      "debit_card_specializing.customers",
+      "debit_card_specializing.yearmonth",
+      "retail_complains.district",
+      "student_loan.person",
+      "retail_complains.client",
+      "debit_card_specializing.products",
+      "financial.disp",
+      "student_loan.disabled",
+      "student_loan.enlist",
+      "regional_sales.customers",
+      "financial.account",
+      "retail_complains.reviews",
+      "retail_complains.state",
+      "retail_complains.callcenterlogs",
+      "retail_complains.events"
+    ]
+  },
+  {
+    "question_id": 198,
+    "db_id": "toxicology",
+    "question": "On average how many carcinogenic molecules are single bonded?",
+    "SQL": "SELECT AVG(single_bond_count) FROM (SELECT T3.molecule_id, COUNT(T1.bond_type) AS single_bond_count FROM bond AS T1  INNER JOIN atom AS T2 ON T1.molecule_id = T2.molecule_id INNER JOIN molecule AS T3 ON T3.molecule_id = T2.molecule_id WHERE T1.bond_type = '-' AND T3.label = '+' GROUP BY T3.molecule_id) AS subquery",
+    "gold_schema": [
+      "toxicology.atom",
+      "toxicology.molecule",
+      "toxicology.bond"
+    ],
+    "predicted_schemas_at15": [
+      "toxicology.connected",
+      "toxicology.bond",
+      "toxicology.atom",
+      "toxicology.molecule",
+      "thrombosis_prediction.patient",
+      "thrombosis_prediction.laboratory",
+      "cookbook.quantity",
+      "thrombosis_prediction.examination",
+      "cookbook.nutrition",
+      "cookbook.recipe",
+      "cookbook.ingredient",
+      "genes.genes",
+      "formula_1.status",
+      "card_games.sets",
+      "formula_1.qualifying"
+    ]
+  },
+  {
+    "question_id": 209,
+    "db_id": "toxicology",
+    "question": "Tellurium is in what type of bond?",
+    "SQL": "SELECT DISTINCT T1.bond_type FROM bond AS T1 INNER JOIN connected AS T2 ON T1.bond_id = T2.bond_id INNER JOIN atom AS T3 ON T2.atom_id = T3.atom_id WHERE T3.element = 'te'",
+    "gold_schema": [
+      "toxicology.connected",
+      "toxicology.atom",
+      "toxicology.bond"
+    ],
+    "predicted_schemas_at15": [
+      "toxicology.bond",
+      "toxicology.connected",
+      "toxicology.molecule",
+      "toxicology.atom",
+      "sales_in_weather.relation",
+      "sales.products",
+      "sales_in_weather.sales_in_weather",
+      "sales_in_weather.weather",
+      "sales.sales",
+      "formula_1.status",
+      "superhero.gender",
+      "superhero.superhero",
+      "superhero.colour",
+      "debit_card_specializing.products",
+      "soccer_2016.team"
+    ]
+  },
+  {
+    "question_id": 215,
+    "db_id": "toxicology",
+    "question": "How many atoms with iodine and sulfur type elements are there in single bond molecules?",
+    "SQL": "SELECT COUNT(DISTINCT CASE WHEN T1.element = 'i' THEN T1.atom_id ELSE NULL END) AS iodine_nums , COUNT(DISTINCT CASE WHEN T1.element = 's' THEN T1.atom_id ELSE NULL END) AS sulfur_nums FROM atom AS T1 INNER JOIN connected AS T2 ON T1.atom_id = T2.atom_id INNER JOIN bond AS T3 ON T2.bond_id = T3.bond_id WHERE T3.bond_type = '-'",
+    "gold_schema": [
+      "toxicology.atom",
+      "toxicology.connected",
+      "toxicology.bond"
+    ],
+    "predicted_schemas_at15": [
+      "toxicology.connected",
+      "toxicology.bond",
+      "toxicology.atom",
+      "toxicology.molecule",
+      "cookbook.quantity",
+      "cookbook.ingredient",
+      "cookbook.recipe",
+      "cookbook.nutrition",
+      "thrombosis_prediction.laboratory",
+      "sales.products",
+      "thrombosis_prediction.patient",
+      "olympics.medal",
+      "thrombosis_prediction.examination",
+      "sales.sales",
+      "university.university"
+    ]
+  },
+  {
+    "question_id": 253,
+    "db_id": "toxicology",
+    "question": "List the elements of all the triple bonds.",
+    "SQL": "SELECT DISTINCT T3.element FROM bond AS T1 INNER JOIN connected AS T2 ON T1.bond_id = T2.bond_id INNER JOIN atom AS T3 ON T2.atom_id = T3.atom_id WHERE T1.bond_type = '#'",
+    "gold_schema": [
+      "toxicology.connected",
+      "toxicology.atom",
+      "toxicology.bond"
+    ],
+    "predicted_schemas_at15": [
+      "toxicology.connected",
+      "toxicology.bond",
+      "toxicology.atom",
+      "toxicology.molecule",
+      "student_loan.enlist",
+      "student_loan.person",
+      "olympics.person",
+      "movie_3.actor",
+      "sales.products",
+      "movie_3.address",
+      "cs_semester.course",
+      "movie_3.film_text",
+      "sales.sales",
+      "olympics.person_region",
+      "olympics.games_competitor"
+    ]
+  },
+  {
+    "question_id": 258,
+    "db_id": "toxicology",
+    "question": "What are the bond type for atoms with element Tin?",
+    "SQL": "SELECT DISTINCT T3.bond_type FROM atom AS T1 INNER JOIN connected AS T2 ON T1.atom_id = T2.atom_id INNER JOIN bond AS T3 ON T3.bond_id = T2.bond_id WHERE T1.element = 'sn'",
+    "gold_schema": [
+      "toxicology.atom",
+      "toxicology.connected",
+      "toxicology.bond"
+    ],
+    "predicted_schemas_at15": [
+      "toxicology.bond",
+      "toxicology.connected",
+      "toxicology.atom",
+      "toxicology.molecule",
+      "thrombosis_prediction.laboratory",
+      "thrombosis_prediction.patient",
+      "address.zip_data",
+      "student_club.zip_code",
+      "thrombosis_prediction.examination",
+      "student_club.member",
+      "cookbook.nutrition",
+      "trains.trains",
+      "address.country",
+      "bike_share_1.weather",
+      "address.state"
+    ]
+  },
+  {
+    "question_id": 269,
+    "db_id": "toxicology",
+    "question": "How many bond id have element iodine?",
+    "SQL": "SELECT COUNT(T3.bond_id) FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id INNER JOIN bond AS T3 ON T2.molecule_id = T3.molecule_id WHERE T1.element = 'i'",
+    "gold_schema": [
+      "toxicology.atom",
+      "toxicology.molecule",
+      "toxicology.bond"
+    ],
+    "predicted_schemas_at15": [
+      "toxicology.connected",
+      "toxicology.bond",
+      "toxicology.atom",
+      "toxicology.molecule",
+      "cookbook.ingredient",
+      "cookbook.quantity",
+      "olympics.medal",
+      "sales.products",
+      "olympics.event",
+      "trains.trains",
+      "olympics.competitor_event",
+      "cookbook.recipe",
+      "sales.sales",
+      "music_platform_2.podcasts",
+      "olympics.sport"
+    ]
+  },
+  {
+    "question_id": 285,
+    "db_id": "toxicology",
+    "question": "Name chemical elements that form a bond TR001_10_11.",
+    "SQL": "SELECT T1.element FROM atom AS T1 INNER JOIN connected AS T2 ON T1.atom_id = T2.atom_id INNER JOIN bond AS T3 ON T2.bond_id = T3.bond_id WHERE T3.bond_id = 'TR001_10_11'",
+    "gold_schema": [
+      "toxicology.atom",
+      "toxicology.connected",
+      "toxicology.bond"
+    ],
+    "predicted_schemas_at15": [
+      "toxicology.bond",
+      "toxicology.connected",
+      "toxicology.atom",
+      "toxicology.molecule",
+      "sales_in_weather.relation",
+      "formula_1.seasons",
+      "formula_1.races",
+      "formula_1.constructors",
+      "formula_1.status",
+      "synthea.encounters",
+      "formula_1.results",
+      "trains.trains",
+      "formula_1.constructorstandings",
+      "formula_1.drivers",
+      "address.state"
+    ]
+  },
+  {
+    "question_id": 630,
+    "db_id": "codebase_community",
+    "question": "What is the name of tags used by John Stauffer's?",
+    "SQL": "SELECT T3.Tags FROM users AS T1 INNER JOIN postHistory AS T2 ON T1.Id = T2.UserId INNER JOIN posts AS T3 ON T2.PostId = T3.Id WHERE T1.DisplayName = 'John Salvatier'",
+    "gold_schema": [
+      "codebase_community.users",
+      "codebase_community.posthistory",
+      "codebase_community.posts"
+    ],
+    "predicted_schemas_at15": [
+      "music_tracker.tags",
+      "card_games.cards",
+      "codebase_community.tags",
+      "citeseer.paper",
+      "codebase_community.posts",
+      "citeseer.content",
+      "codebase_community.users",
+      "cookbook.ingredient",
+      "card_games.ruling",
+      "sales.products",
+      "card_games.foreign_data",
+      "cookbook.quantity",
+      "sales.sales",
+      "card_games.legalities",
+      "codebase_community.badges"
+    ]
+  },
+  {
+    "question_id": 633,
+    "db_id": "codebase_community",
+    "question": "Which post by slashnick has the most answers count? State the post ID.",
+    "SQL": "SELECT T2.PostId FROM users AS T1 INNER JOIN postHistory AS T2 ON T1.Id = T2.UserId INNER JOIN posts AS T3 ON T2.PostId = T3.Id WHERE T1.DisplayName = 'slashnick' ORDER BY T3.AnswerCount DESC LIMIT 1",
+    "gold_schema": [
+      "codebase_community.users",
+      "codebase_community.posthistory",
+      "codebase_community.posts"
+    ],
+    "predicted_schemas_at15": [
+      "codebase_community.posts",
+      "codebase_community.users",
+      "codebase_community.comments",
+      "mental_health_survey.answer",
+      "codebase_community.postlinks",
+      "codebase_community.posthistory",
+      "hockey.master",
+      "codebase_community.votes",
+      "hockey.scoringsup",
+      "codebase_community.tags",
+      "codebase_comments.solution",
+      "hockey.teams",
+      "codebase_community.badges",
+      "student_club.income",
+      "hockey.scoringsc"
+    ]
+  },
+  {
+    "question_id": 634,
+    "db_id": "codebase_community",
+    "question": "Among posts by Harvey Motulsky and Noah Snyder, which one has higher popularity?",
+    "SQL": "SELECT T1.DisplayName FROM users AS T1 INNER JOIN postHistory AS T2 ON T1.Id = T2.UserId INNER JOIN posts AS T3 ON T2.PostId = T3.Id WHERE T1.DisplayName = 'Harvey Motulsky' OR T1.DisplayName = 'Noah Snyder' GROUP BY T1.DisplayName ORDER BY SUM(T3.ViewCount) DESC LIMIT 1",
+    "gold_schema": [
+      "codebase_community.users",
+      "codebase_community.posthistory",
+      "codebase_community.posts"
+    ],
+    "predicted_schemas_at15": [
+      "codebase_community.posts",
+      "public_review_platform.users",
+      "hockey.master",
+      "social_media.twitter",
+      "legislator.current",
+      "codebase_community.users",
+      "legislator.social-media",
+      "codebase_community.posthistory",
+      "public_review_platform.reviews",
+      "hockey.teams",
+      "codebase_community.comments",
+      "codebase_community.votes",
+      "legislator.current-terms",
+      "social_media.location",
+      "social_media.user"
+    ]
+  },
+  {
+    "question_id": 637,
+    "db_id": "codebase_community",
+    "question": "State all the tags used by Mark Meckes in his posts that doesn't have comments.",
+    "SQL": "SELECT T3.Tags FROM users AS T1 INNER JOIN postHistory AS T2 ON T1.Id = T2.UserId INNER JOIN posts AS T3 ON T3.Id = T2.PostId WHERE T1.DisplayName = 'Mark Meckes' AND T3.CommentCount = 0",
+    "gold_schema": [
+      "codebase_community.users",
+      "codebase_community.posthistory",
+      "codebase_community.posts"
+    ],
+    "predicted_schemas_at15": [
+      "codebase_community.posts",
+      "codebase_community.tags",
+      "codebase_community.comments",
+      "codebase_community.users",
+      "music_tracker.tags",
+      "codebase_community.posthistory",
+      "codebase_community.votes",
+      "coinmarketcap.coins",
+      "codebase_community.postlinks",
+      "card_games.cards",
+      "codebase_community.badges",
+      "codebase_comments.repo",
+      "shipping.truck",
+      "shipping.shipment",
+      "public_review_platform.checkins"
+    ]
+  },
+  {
+    "question_id": 639,
+    "db_id": "codebase_community",
+    "question": "Based on posts posted by Community, calculate the percentage of posts that use the R language.",
+    "SQL": "SELECT CAST(SUM(IIF(T3.TagName = 'r', 1, 0)) AS REAL) * 100 / COUNT(T1.Id) FROM users AS T1 INNER JOIN postHistory AS T2 ON T1.Id = T2.UserId INNER JOIN tags AS T3 ON T3.ExcerptPostId = T2.PostId WHERE T1.DisplayName = 'Community'",
+    "gold_schema": [
+      "codebase_community.tags",
+      "codebase_community.users",
+      "codebase_community.posthistory"
+    ],
+    "predicted_schemas_at15": [
+      "codebase_community.posts",
+      "codebase_community.users",
+      "codebase_community.comments",
+      "mondial_geo.language",
+      "codebase_community.votes",
+      "codebase_community.tags",
+      "codebase_community.posthistory",
+      "public_review_platform.users",
+      "codebase_community.postlinks",
+      "codebase_comments.repo",
+      "world.countrylanguage",
+      "codebase_community.badges",
+      "social_media.twitter",
+      "world.country",
+      "law_episode.vote"
+    ]
+  },
+  {
+    "question_id": 640,
+    "db_id": "codebase_community",
+    "question": "Calculate the difference in view count from post posted by mornington and view count from posts posted by Amos.",
+    "SQL": "SELECT SUM(IIF(T1.DisplayName = 'Mornington', T3.ViewCount, 0)) - SUM(IIF(T1.DisplayName = 'Amos', T3.ViewCount, 0)) AS diff FROM users AS T1 INNER JOIN postHistory AS T2 ON T1.Id = T2.UserId INNER JOIN posts AS T3 ON T3.Id = T2.PostId",
+    "gold_schema": [
+      "codebase_community.users",
+      "codebase_community.posthistory",
+      "codebase_community.posts"
+    ],
+    "predicted_schemas_at15": [
+      "public_review_platform.days",
+      "codebase_community.posts",
+      "simpson_episodes.vote",
+      "simpson_episodes.episode",
+      "social_media.twitter",
+      "codebase_community.users",
+      "codebase_community.comments",
+      "public_review_platform.checkins",
+      "codebase_community.votes",
+      "simpson_episodes.award",
+      "simpson_episodes.credit",
+      "social_media.user",
+      "codebase_community.posthistory",
+      "simpson_episodes.person",
+      "social_media.location"
+    ]
+  },
+  {
+    "question_id": 717,
+    "db_id": "superhero",
+    "question": "Please list all the superpowers of 3-D Man.",
+    "SQL": "SELECT T3.power_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T1.superhero_name = '3-D Man'",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.superpower",
+      "superhero.hero_power",
+      "superhero.attribute",
+      "superhero.hero_attribute",
+      "superhero.gender",
+      "superhero.colour",
+      "superhero.race",
+      "superhero.alignment",
+      "superhero.publisher",
+      "olympics.person",
+      "movie_3.actor",
+      "movie_3.staff",
+      "movie_3.city",
+      "movie_3.address"
+    ]
+  },
+  {
+    "question_id": 719,
+    "db_id": "superhero",
+    "question": "Among the superheroes with the super power of \"Super Strength\", how many of them have a height of over 200cm?",
+    "SQL": "SELECT COUNT(T1.id) FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T3.power_name = 'Super Strength' AND T1.height_cm > 200",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.superpower",
+      "superhero.hero_power",
+      "superhero.colour",
+      "superhero.hero_attribute",
+      "superhero.attribute",
+      "superhero.gender",
+      "superhero.alignment",
+      "superhero.race",
+      "superhero.publisher",
+      "ice_hockey_draft.playerinfo",
+      "ice_hockey_draft.height_info",
+      "european_football_2.player_attributes",
+      "olympics.person",
+      "european_football_2.player"
+    ]
+  },
+  {
+    "question_id": 723,
+    "db_id": "superhero",
+    "question": "Among the superheroes with blue eyes, how many of them have the super power of \"Agility\"?",
+    "SQL": "SELECT COUNT(T1.id) FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id INNER JOIN colour AS T4 ON T1.eye_colour_id = T4.id WHERE T3.power_name = 'Agility' AND T4.colour = 'Blue'",
+    "gold_schema": [
+      "superhero.colour",
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.colour",
+      "superhero.hero_attribute",
+      "superhero.attribute",
+      "superhero.hero_power",
+      "superhero.superpower",
+      "superhero.alignment",
+      "superhero.race",
+      "european_football_2.player_attributes",
+      "superhero.gender",
+      "superhero.publisher",
+      "european_football_2.player",
+      "european_football_2.match",
+      "european_football_2.team_attributes",
+      "disney.characters"
+    ]
+  },
+  {
+    "question_id": 730,
+    "db_id": "superhero",
+    "question": "Among the superheroes from Marvel Comics, what is the percentage of those who have the super power of \"Super Strength\"?",
+    "SQL": "SELECT CAST(COUNT(CASE WHEN T3.power_name = 'Super Strength' THEN T1.id ELSE NULL END) AS REAL) * 100 / COUNT(T1.id) FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id INNER JOIN publisher AS T4 ON T1.publisher_id = T4.id WHERE T4.publisher_name = 'Marvel Comics'",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.publisher",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.superpower",
+      "superhero.hero_power",
+      "superhero.gender",
+      "superhero.hero_attribute",
+      "superhero.attribute",
+      "superhero.race",
+      "superhero.colour",
+      "superhero.alignment",
+      "superhero.publisher",
+      "european_football_2.player_attributes",
+      "thrombosis_prediction.laboratory",
+      "address.zip_data",
+      "cookbook.nutrition",
+      "card_games.cards"
+    ]
+  },
+  {
+    "question_id": 732,
+    "db_id": "superhero",
+    "question": "Which publisher published the slowest superhero?",
+    "SQL": "SELECT T2.publisher_name FROM superhero AS T1 INNER JOIN publisher AS T2 ON T1.publisher_id = T2.id INNER JOIN hero_attribute AS T3 ON T1.id = T3.hero_id INNER JOIN attribute AS T4 ON T3.attribute_id = T4.id WHERE T4.attribute_name = 'Speed' ORDER BY T3.attribute_value LIMIT 1",
+    "gold_schema": [
+      "superhero.attribute",
+      "superhero.superhero",
+      "superhero.hero_attribute",
+      "superhero.publisher"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.publisher",
+      "superhero.attribute",
+      "superhero.hero_attribute",
+      "superhero.hero_power",
+      "superhero.race",
+      "superhero.superpower",
+      "superhero.alignment",
+      "superhero.gender",
+      "superhero.colour",
+      "books.publisher",
+      "video_games.publisher",
+      "book_publishing_company.titleauthor",
+      "book_publishing_company.roysched",
+      "disney.characters"
+    ]
+  },
+  {
+    "question_id": 739,
+    "db_id": "superhero",
+    "question": "What are the names of the superheroes with the power of death touch?",
+    "SQL": "SELECT T1.superhero_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T3.power_name = 'Death Touch'",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.superpower",
+      "superhero.hero_power",
+      "superhero.attribute",
+      "superhero.hero_attribute",
+      "superhero.colour",
+      "superhero.gender",
+      "superhero.race",
+      "superhero.publisher",
+      "superhero.alignment",
+      "european_football_2.player_attributes",
+      "european_football_2.team_attributes",
+      "european_football_2.player",
+      "disney.characters",
+      "european_football_2.team"
+    ]
+  },
+  {
+    "question_id": 749,
+    "db_id": "superhero",
+    "question": "Provide the superpowers of the superhero called Deathlok.",
+    "SQL": "SELECT T3.power_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T1.superhero_name = 'Deathlok'",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.superpower",
+      "superhero.hero_power",
+      "superhero.colour",
+      "superhero.hero_attribute",
+      "superhero.attribute",
+      "superhero.race",
+      "superhero.gender",
+      "superhero.publisher",
+      "superhero.alignment",
+      "european_football_2.team_attributes",
+      "european_football_2.player_attributes",
+      "european_football_2.team",
+      "card_games.cards",
+      "european_football_2.player"
+    ]
+  },
+  {
+    "question_id": 751,
+    "db_id": "superhero",
+    "question": "List down at least five superpowers of male superheroes.",
+    "SQL": "SELECT T3.power_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T3.id = T2.power_id INNER JOIN gender AS T4 ON T4.id = T1.gender_id WHERE T4.gender = 'Male' LIMIT 5",
+    "gold_schema": [
+      "superhero.gender",
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.gender",
+      "superhero.hero_power",
+      "superhero.superpower",
+      "superhero.hero_attribute",
+      "superhero.attribute",
+      "superhero.race",
+      "superhero.colour",
+      "superhero.alignment",
+      "superhero.publisher",
+      "movie.characters",
+      "movielens.actors",
+      "european_football_2.player_attributes",
+      "disney.characters",
+      "movie.actor"
+    ]
+  },
+  {
+    "question_id": 771,
+    "db_id": "superhero",
+    "question": "List the name of superheroes with flight power.",
+    "SQL": "SELECT T1.superhero_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T3.power_name = 'Flight'",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.superpower",
+      "superhero.hero_power",
+      "superhero.race",
+      "superhero.colour",
+      "superhero.hero_attribute",
+      "superhero.gender",
+      "superhero.attribute",
+      "superhero.alignment",
+      "superhero.publisher",
+      "disney.characters",
+      "disney.voice-actors",
+      "european_football_2.player_attributes",
+      "movie.characters",
+      "airline.airlines"
+    ]
+  },
+  {
+    "question_id": 778,
+    "db_id": "superhero",
+    "question": "Provide superheroes' names who have the adaptation power.",
+    "SQL": "SELECT T1.superhero_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T3.power_name = 'Adaptation'",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.superpower",
+      "superhero.hero_power",
+      "superhero.attribute",
+      "superhero.hero_attribute",
+      "superhero.gender",
+      "superhero.alignment",
+      "superhero.race",
+      "superhero.colour",
+      "superhero.publisher",
+      "disney.characters",
+      "european_football_2.team_attributes",
+      "european_football_2.player_attributes",
+      "disney.voice-actors",
+      "movielens.actors"
+    ]
+  },
+  {
+    "question_id": 780,
+    "db_id": "superhero",
+    "question": "List the powers of Hunter Zolomon.",
+    "SQL": "SELECT T3.power_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T1.full_name = 'Hunter Zolomon'",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower",
+      "superhero.hero_attribute",
+      "superhero.attribute",
+      "superhero.gender",
+      "superhero.colour",
+      "superhero.race",
+      "superhero.alignment",
+      "superhero.publisher",
+      "hockey.master",
+      "hockey.teams",
+      "card_games.cards",
+      "hockey.hof",
+      "movielens.actors"
+    ]
+  },
+  {
+    "question_id": 792,
+    "db_id": "superhero",
+    "question": "What is Abomination's superpower?",
+    "SQL": "SELECT T3.power_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T1.superhero_name = 'Abomination'",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.superpower",
+      "superhero.hero_power",
+      "superhero.gender",
+      "superhero.attribute",
+      "superhero.hero_attribute",
+      "card_games.cards",
+      "european_football_2.player_attributes",
+      "superhero.race",
+      "superhero.colour",
+      "superhero.alignment",
+      "superhero.publisher",
+      "european_football_2.player",
+      "european_football_2.team_attributes",
+      "address.zip_data"
+    ]
+  },
+  {
+    "question_id": 807,
+    "db_id": "superhero",
+    "question": "What is the superpowers of the superhero has Helen Parr as their full name?",
+    "SQL": "SELECT T3.power_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T1.full_name = 'Helen Parr'",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower",
+      "superhero.gender",
+      "superhero.hero_attribute",
+      "superhero.attribute",
+      "superhero.colour",
+      "superhero.race",
+      "superhero.publisher",
+      "superhero.alignment",
+      "olympics.person",
+      "disney.characters",
+      "european_football_2.player_attributes",
+      "superstore.people",
+      "superstore.product"
+    ]
+  },
+  {
+    "question_id": 811,
+    "db_id": "superhero",
+    "question": "Give the alignment and superpowers of the superhero named Atom IV.",
+    "SQL": "SELECT T3.power_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T3.id = T2.power_id WHERE T1.superhero_name = 'Atom IV'",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.alignment",
+      "superhero.attribute",
+      "superhero.hero_attribute",
+      "superhero.hero_power",
+      "superhero.gender",
+      "superhero.superpower",
+      "superhero.colour",
+      "superhero.race",
+      "superhero.publisher",
+      "movies_4.person",
+      "movies_4.department",
+      "movies_4.movie_cast",
+      "movies_4.gender",
+      "movies_4.keyword"
+    ]
+  },
+  {
+    "question_id": 821,
+    "db_id": "superhero",
+    "question": "List down Ajax's superpowers.",
+    "SQL": "SELECT T3.power_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T1.superhero_name = 'Ajax'",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "european_football_2.player_attributes",
+      "superhero.superhero",
+      "superhero.superpower",
+      "european_football_2.player",
+      "superhero.hero_power",
+      "superhero.attribute",
+      "european_football_2.match",
+      "european_football_2.team_attributes",
+      "superhero.hero_attribute",
+      "european_football_2.team",
+      "superhero.race",
+      "superhero.gender",
+      "address.alias",
+      "superhero.colour",
+      "superhero.alignment"
+    ]
+  },
+  {
+    "question_id": 824,
+    "db_id": "superhero",
+    "question": "Identify superheroes who can control wind and list their names in alphabetical order.",
+    "SQL": "SELECT T1.superhero_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T3.power_name = 'Wind Control' ORDER BY T1.superhero_name",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.superpower",
+      "superhero.hero_power",
+      "superhero.attribute",
+      "superhero.hero_attribute",
+      "superhero.gender",
+      "superhero.race",
+      "superhero.publisher",
+      "superhero.alignment",
+      "superhero.colour",
+      "disney.characters",
+      "bike_share_1.weather",
+      "books.author",
+      "movie.characters",
+      "disney.director"
+    ]
+  },
+  {
+    "question_id": 825,
+    "db_id": "superhero",
+    "question": "Identify the gender of the superhero who has the ability of Phoenix Force.",
+    "SQL": "SELECT T4.gender FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id INNER JOIN gender AS T4 ON T1.gender_id = T4.id WHERE T3.power_name = 'Phoenix Force'",
+    "gold_schema": [
+      "superhero.gender",
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.gender",
+      "superhero.race",
+      "superhero.hero_power",
+      "superhero.hero_attribute",
+      "superhero.superpower",
+      "superhero.colour",
+      "superhero.attribute",
+      "movies_4.gender",
+      "superhero.publisher",
+      "superhero.alignment",
+      "movies_4.movie_cast",
+      "olympics.person",
+      "shooting.officers",
+      "movies_4.movie"
+    ]
+  },
+  {
+    "question_id": 845,
+    "db_id": "superhero",
+    "question": "List the power of superheroes with height greater than 80% of the average height of all superheroes.",
+    "SQL": "SELECT T3.power_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T1.height_cm * 100 > ( SELECT AVG(height_cm) FROM superhero ) * 80",
+    "gold_schema": [
+      "superhero.superhero",
+      "superhero.hero_power",
+      "superhero.superpower"
+    ],
+    "predicted_schemas_at15": [
+      "superhero.superhero",
+      "superhero.superpower",
+      "superhero.hero_power",
+      "superhero.hero_attribute",
+      "superhero.attribute",
+      "superhero.alignment",
+      "superhero.gender",
+      "superhero.race",
+      "superhero.colour",
+      "superhero.publisher",
+      "movie.actor",
+      "movie.characters",
+      "european_football_2.player_attributes",
+      "ice_hockey_draft.playerinfo",
+      "olympics.person"
+    ]
+  },
+  {
+    "question_id": 893,
+    "db_id": "formula_1",
+    "question": "Name the top 3 drivers and the points they scored in the 2017 Chinese Grand Prix.",
+    "SQL": "SELECT T3.forename, T3.surname, T2.points FROM races AS T1 INNER JOIN driverStandings AS T2 ON T2.raceId = T1.raceId INNER JOIN drivers AS T3 ON T3.driverId = T2.driverId WHERE T1.name = 'Chinese Grand Prix' AND T1.year = 2017 ORDER BY T2.points DESC LIMIT 3",
+    "gold_schema": [
+      "formula_1.drivers",
+      "formula_1.races",
+      "formula_1.driverstandings"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.results",
+      "formula_1.races",
+      "formula_1.drivers",
+      "formula_1.driverstandings",
+      "formula_1.laptimes",
+      "formula_1.qualifying",
+      "formula_1.constructors",
+      "formula_1.pitstops",
+      "shipping.driver",
+      "shipping.shipment",
+      "formula_1.constructorstandings",
+      "formula_1.constructorresults",
+      "cars.data",
+      "formula_1.circuits",
+      "cars.production"
+    ]
+  },
+  {
+    "question_id": 896,
+    "db_id": "formula_1",
+    "question": "Calculate the percentage whereby Hamilton was not at the 1st track of the the f1 circuit since 2010.",
+    "SQL": "SELECT CAST(COUNT(CASE WHEN T2.position <> 1 THEN T2.position END) AS REAL) * 100 / COUNT(T2.driverStandingsId) FROM races AS T1 INNER JOIN driverStandings AS T2 ON T2.raceId = T1.raceId INNER JOIN drivers AS T3 ON T3.driverId = T2.driverId WHERE T3.surname = 'Hamilton' AND T1.year >= 2010",
+    "gold_schema": [
+      "formula_1.drivers",
+      "formula_1.races",
+      "formula_1.driverstandings"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.races",
+      "formula_1.laptimes",
+      "formula_1.results",
+      "formula_1.drivers",
+      "formula_1.qualifying",
+      "formula_1.pitstops",
+      "formula_1.constructors",
+      "formula_1.seasons",
+      "formula_1.driverstandings",
+      "formula_1.circuits",
+      "formula_1.constructorresults",
+      "formula_1.constructorstandings",
+      "hockey.teamsplits",
+      "formula_1.status",
+      "thrombosis_prediction.laboratory"
+    ]
+  },
+  {
+    "question_id": 902,
+    "db_id": "formula_1",
+    "question": "Which race was Alex Yoong in when he was in track number less than 10?",
+    "SQL": "SELECT T1.name FROM races AS T1 INNER JOIN driverStandings AS T2 ON T2.raceId = T1.raceId INNER JOIN drivers AS T3 ON T3.driverId = T2.driverId WHERE T3.forename = 'Alex' AND T3.surname = 'Yoong' AND T2.position < 10",
+    "gold_schema": [
+      "formula_1.drivers",
+      "formula_1.races",
+      "formula_1.driverstandings"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.races",
+      "formula_1.qualifying",
+      "formula_1.results",
+      "formula_1.drivers",
+      "formula_1.laptimes",
+      "formula_1.constructors",
+      "formula_1.pitstops",
+      "formula_1.seasons",
+      "formula_1.driverstandings",
+      "formula_1.constructorstandings",
+      "sales_in_weather.relation",
+      "formula_1.constructorresults",
+      "olympics.event",
+      "olympics.sport",
+      "formula_1.circuits"
+    ]
+  },
+  {
+    "question_id": 906,
+    "db_id": "formula_1",
+    "question": "Which was Lewis Hamilton first race? What was his points recorded for his first race event?",
+    "SQL": "SELECT T1.name, T2.points FROM races AS T1 INNER JOIN driverStandings AS T2 ON T2.raceId = T1.raceId INNER JOIN drivers AS T3 ON T3.driverId = T2.driverId WHERE T3.forename = 'Lewis' AND T3.surname = 'Hamilton' ORDER BY T1.year ASC LIMIT 1",
+    "gold_schema": [
+      "formula_1.drivers",
+      "formula_1.races",
+      "formula_1.driverstandings"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.races",
+      "formula_1.laptimes",
+      "formula_1.results",
+      "formula_1.drivers",
+      "formula_1.pitstops",
+      "formula_1.qualifying",
+      "formula_1.constructors",
+      "formula_1.driverstandings",
+      "formula_1.seasons",
+      "formula_1.constructorstandings",
+      "formula_1.constructorresults",
+      "cars.data",
+      "formula_1.circuits",
+      "formula_1.status",
+      "bike_share_1.weather"
+    ]
+  },
+  {
+    "question_id": 929,
+    "db_id": "formula_1",
+    "question": "Please list the Formula_1 races that Lewis Hamilton participated.",
+    "SQL": "SELECT T1.name FROM races AS T1 INNER JOIN results AS T2 ON T2.raceId = T1.raceId INNER JOIN drivers AS T3 ON T3.driverId = T2.driverId WHERE T3.forename = 'Lewis' AND T3.surname = 'Hamilton'",
+    "gold_schema": [
+      "formula_1.drivers",
+      "formula_1.results",
+      "formula_1.races"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.races",
+      "formula_1.laptimes",
+      "formula_1.drivers",
+      "formula_1.results",
+      "formula_1.seasons",
+      "formula_1.qualifying",
+      "formula_1.constructors",
+      "formula_1.pitstops",
+      "formula_1.driverstandings",
+      "formula_1.constructorstandings",
+      "formula_1.constructorresults",
+      "formula_1.status",
+      "formula_1.circuits",
+      "european_football_1.matchs",
+      "superhero.race"
+    ]
+  },
+  {
+    "question_id": 932,
+    "db_id": "formula_1",
+    "question": "In which years did Lewis Hamilton participate in a Formula_1 race?",
+    "SQL": "SELECT DISTINCT T1.year FROM races AS T1 INNER JOIN results AS T2 ON T2.raceId = T1.raceId INNER JOIN drivers AS T3 ON T3.driverId = T2.driverId WHERE T3.forename = 'Lewis' AND T3.surname = 'Hamilton'",
+    "gold_schema": [
+      "formula_1.drivers",
+      "formula_1.results",
+      "formula_1.races"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.races",
+      "formula_1.drivers",
+      "formula_1.laptimes",
+      "formula_1.results",
+      "formula_1.qualifying",
+      "formula_1.seasons",
+      "formula_1.constructors",
+      "formula_1.pitstops",
+      "formula_1.driverstandings",
+      "formula_1.constructorstandings",
+      "formula_1.constructorresults",
+      "formula_1.circuits",
+      "formula_1.status",
+      "shipping.truck",
+      "cars.production"
+    ]
+  },
+  {
+    "question_id": 939,
+    "db_id": "formula_1",
+    "question": "How many drivers from the USA participated in the 2008 Australian Grand Prix?",
+    "SQL": "SELECT COUNT(*) FROM drivers AS T1 INNER JOIN results AS T2 ON T1.driverId = T2.driverId INNER JOIN races AS T3 ON T3.raceId = T2.raceId WHERE T3.name = 'Australian GrAND Prix' AND T1.nationality = 'American' AND T3.year = 2008",
+    "gold_schema": [
+      "formula_1.drivers",
+      "formula_1.results",
+      "formula_1.races"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.drivers",
+      "cars.production",
+      "shipping.driver",
+      "formula_1.races",
+      "cars.country",
+      "shipping.shipment",
+      "formula_1.results",
+      "cars.data",
+      "formula_1.qualifying",
+      "formula_1.laptimes",
+      "formula_1.driverstandings",
+      "formula_1.pitstops",
+      "formula_1.constructors",
+      "cars.price",
+      "car_retails.customers"
+    ]
+  },
+  {
+    "question_id": 982,
+    "db_id": "formula_1",
+    "question": "How many American drivers have been disqualified from the race.",
+    "SQL": "SELECT COUNT(T1.driverId) FROM drivers AS T1 INNER JOIN results AS T2 on T1.driverId = T2.driverId INNER JOIN status AS T3 on T2.statusId = T3.statusId WHERE T3.status = 2 AND T1.nationality = 'American'",
+    "gold_schema": [
+      "formula_1.drivers",
+      "formula_1.results",
+      "formula_1.status"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.qualifying",
+      "formula_1.races",
+      "formula_1.drivers",
+      "formula_1.results",
+      "formula_1.pitstops",
+      "formula_1.laptimes",
+      "formula_1.constructors",
+      "formula_1.driverstandings",
+      "formula_1.constructorresults",
+      "formula_1.constructorstandings",
+      "formula_1.seasons",
+      "cars.production",
+      "cars.country",
+      "cars.data",
+      "shipping.driver"
+    ]
+  },
+  {
+    "question_id": 995,
+    "db_id": "formula_1",
+    "question": "What is the average score of Lewis Hamilton among all the Turkish Grand Prix?",
+    "SQL": "SELECT AVG(T2.points) FROM drivers AS T1 INNER JOIN driverStandings AS T2 ON T1.driverId = T2.driverId INNER JOIN races AS T3 ON T3.raceId = T2.raceId WHERE T1.forename = 'Lewis' AND T1.surname = 'Hamilton' AND T3.name = 'Turkish Grand Prix'",
+    "gold_schema": [
+      "formula_1.drivers",
+      "formula_1.races",
+      "formula_1.driverstandings"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.results",
+      "formula_1.races",
+      "formula_1.laptimes",
+      "formula_1.drivers",
+      "formula_1.qualifying",
+      "formula_1.pitstops",
+      "formula_1.constructors",
+      "bike_share_1.weather",
+      "formula_1.driverstandings",
+      "cars.data",
+      "formula_1.constructorresults",
+      "formula_1.constructorstandings",
+      "formula_1.seasons",
+      "disney.movies_total_gross",
+      "formula_1.status"
+    ]
+  },
+  {
+    "question_id": 1001,
+    "db_id": "formula_1",
+    "question": "What is full name of the racer who ranked 1st in the 3rd qualifying race held in the Marina Bay Street Circuit in 2008?",
+    "SQL": "SELECT T2.forename, T2.surname FROM qualifying AS T1 INNER JOIN drivers AS T2 on T1.driverId = T2.driverId INNER JOIN races AS T3 ON T1.raceid = T3.raceid WHERE q3 IS NOT NULL AND T3.year = 2008 AND T3.circuitId IN ( SELECT circuitId FROM circuits WHERE name = 'Marina Bay Street Circuit' ) ORDER BY CAST(SUBSTR(q3, 1, INSTR(q3, ':') - 1) AS INTEGER) * 60 + CAST(SUBSTR(q3, INSTR(q3, ':') + 1, INSTR(q3, '.') - INSTR(q3, ':') - 1) AS REAL) + CAST(SUBSTR(q3, INSTR(q3, '.') + 1) AS REAL) / 1000 ASC LIMIT 1",
+    "gold_schema": [
+      "formula_1.qualifying",
+      "formula_1.drivers",
+      "formula_1.races",
+      "formula_1.circuits"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.races",
+      "formula_1.qualifying",
+      "formula_1.drivers",
+      "formula_1.results",
+      "formula_1.laptimes",
+      "formula_1.pitstops",
+      "formula_1.constructors",
+      "formula_1.driverstandings",
+      "formula_1.constructorresults",
+      "formula_1.constructorstandings",
+      "formula_1.seasons",
+      "movie_3.actor",
+      "formula_1.circuits",
+      "movie_3.customer",
+      "movie_3.inventory"
+    ]
+  },
+  {
+    "question_id": 1002,
+    "db_id": "formula_1",
+    "question": "As of the present, what is the full name of the youngest racer? Indicate her nationality and the name of the race to which he/she first joined.",
+    "SQL": "SELECT T1.forename, T1.surname, T1.nationality, T3.name FROM drivers AS T1 INNER JOIN driverStandings AS T2 on T1.driverId = T2.driverId INNER JOIN races AS T3 on T2.raceId = T3.raceId ORDER BY JULIANDAY(T1.dob) DESC LIMIT 1",
+    "gold_schema": [
+      "formula_1.drivers",
+      "formula_1.races",
+      "formula_1.driverstandings"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.races",
+      "formula_1.results",
+      "formula_1.drivers",
+      "shipping.driver",
+      "shipping.shipment",
+      "formula_1.laptimes",
+      "formula_1.constructors",
+      "formula_1.qualifying",
+      "olympics.person",
+      "formula_1.pitstops",
+      "formula_1.seasons",
+      "professional_basketball.players",
+      "formula_1.driverstandings",
+      "formula_1.constructorresults",
+      "formula_1.constructorstandings"
+    ]
+  },
+  {
+    "question_id": 1014,
+    "db_id": "formula_1",
+    "question": "Please list the lap records for the circuits in Italy.",
+    "SQL": "WITH fastest_lap_times AS (SELECT T1.raceId, T1.FastestLapTime, (CAST(SUBSTR(T1.FastestLapTime, 1, INSTR(T1.FastestLapTime, ':') - 1) AS REAL) * 60) + (CAST(SUBSTR(T1.FastestLapTime, INSTR(T1.FastestLapTime, ':') + 1, INSTR(T1.FastestLapTime, '.') - INSTR(T1.FastestLapTime, ':') - 1) AS REAL)) + (CAST(SUBSTR(T1.FastestLapTime, INSTR(T1.FastestLapTime, '.') + 1) AS REAL) / 1000) as time_in_seconds FROM results AS T1 WHERE T1.FastestLapTime IS NOT NULL ) SELECT T1.FastestLapTime as lap_record FROM results AS T1 INNER JOIN races AS T2 on T1.raceId = T2.raceId INNER JOIN circuits AS T3 on T2.circuitId = T3.circuitId INNER JOIN (SELECT MIN(fastest_lap_times.time_in_seconds) as min_time_in_seconds FROM fastest_lap_times INNER JOIN races AS T2 on fastest_lap_times.raceId = T2.raceId INNER JOIN circuits AS T3 on T2.circuitId = T3.circuitId WHERE T3.country = 'Italy' ) AS T4 ON (CAST(SUBSTR(T1.FastestLapTime, 1, INSTR(T1.FastestLapTime, ':') - 1) AS REAL) * 60) + (CAST(SUBSTR(T1.FastestLapTime, INSTR(T1.FastestLapTime, ':') + 1, INSTR(T1.FastestLapTime, '.') - INSTR(T1.FastestLapTime, ':') - 1) AS REAL)) + (CAST(SUBSTR(T1.FastestLapTime, INSTR(T1.FastestLapTime, '.') + 1) AS REAL) / 1000) = T4.min_time_in_seconds LIMIT 1",
+    "gold_schema": [
+      "formula_1.results",
+      "formula_1.races",
+      "formula_1.circuits"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.races",
+      "formula_1.laptimes",
+      "formula_1.results",
+      "formula_1.drivers",
+      "formula_1.pitstops",
+      "formula_1.qualifying",
+      "formula_1.constructors",
+      "formula_1.circuits",
+      "formula_1.driverstandings",
+      "formula_1.seasons",
+      "cars.production",
+      "formula_1.constructorresults",
+      "formula_1.constructorstandings",
+      "cars.data",
+      "formula_1.status"
+    ]
+  },
+  {
+    "question_id": 1016,
+    "db_id": "formula_1",
+    "question": "In the race a driver set the lap record for the Austrian Grand Prix Circuit, how long did he spent at the pit stop at that same race?",
+    "SQL": "WITH fastest_lap_times AS ( SELECT T1.raceId, T1.driverId, T1.FastestLapTime, (CAST(SUBSTR(T1.FastestLapTime, 1, INSTR(T1.FastestLapTime, ':') - 1) AS REAL) * 60) + (CAST(SUBSTR(T1.FastestLapTime, INSTR(T1.FastestLapTime, ':') + 1, INSTR(T1.FastestLapTime, '.') - INSTR(T1.FastestLapTime, ':') - 1) AS REAL)) + (CAST(SUBSTR(T1.FastestLapTime, INSTR(T1.FastestLapTime, '.') + 1) AS REAL) / 1000) as time_in_seconds FROM results AS T1 WHERE T1.FastestLapTime IS NOT NULL), lap_record_race AS ( SELECT T1.raceId, T1.driverId FROM results AS T1 INNER JOIN races AS T2 on T1.raceId = T2.raceId INNER JOIN circuits AS T3 on T2.circuitId = T3.circuitId INNER JOIN ( SELECT MIN(fastest_lap_times.time_in_seconds) as min_time_in_seconds FROM fastest_lap_times INNER JOIN races AS T2 on fastest_lap_times.raceId = T2.raceId INNER JOIN circuits AS T3 on T2.circuitId = T3.circuitId WHERE T2.name = 'Austrian Grand Prix') AS T4 ON (CAST(SUBSTR(T1.FastestLapTime, 1, INSTR(T1.FastestLapTime, ':') - 1) AS REAL) * 60) + (CAST(SUBSTR(T1.FastestLapTime, INSTR(T1.FastestLapTime, ':') + 1, INSTR(T1.FastestLapTime, '.') - INSTR(T1.FastestLapTime, ':') - 1) AS REAL)) + (CAST(SUBSTR(T1.FastestLapTime, INSTR(T1.FastestLapTime, '.') + 1) AS REAL) / 1000) = T4.min_time_in_seconds WHERE T2.name = 'Austrian Grand Prix') SELECT T4.duration FROM lap_record_race INNER JOIN pitStops AS T4 on lap_record_race.raceId = T4.raceId AND lap_record_race.driverId = T4.driverId",
+    "gold_schema": [
+      "formula_1.results",
+      "formula_1.races",
+      "formula_1.pitstops",
+      "formula_1.circuits"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.races",
+      "formula_1.pitstops",
+      "formula_1.drivers",
+      "formula_1.results",
+      "formula_1.laptimes",
+      "formula_1.qualifying",
+      "formula_1.driverstandings",
+      "formula_1.constructors",
+      "formula_1.constructorstandings",
+      "formula_1.seasons",
+      "formula_1.constructorresults",
+      "formula_1.circuits",
+      "cars.data",
+      "bike_share_1.trip",
+      "formula_1.status"
+    ]
+  },
+  {
+    "question_id": 1017,
+    "db_id": "formula_1",
+    "question": "Please list the location coordinates of the circuits whose lap record is 1:29.488.",
+    "SQL": "SELECT T3.lat, T3.lng FROM lapTimes AS T1 INNER JOIN races AS T2 on T1.raceId = T2.raceId INNER JOIN circuits AS T3 on T2.circuitId = T3.circuitId WHERE T1.time = '1:29.488'",
+    "gold_schema": [
+      "formula_1.laptimes",
+      "formula_1.races",
+      "formula_1.circuits"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.races",
+      "formula_1.circuits",
+      "formula_1.results",
+      "formula_1.laptimes",
+      "formula_1.drivers",
+      "formula_1.pitstops",
+      "formula_1.qualifying",
+      "formula_1.constructors",
+      "formula_1.driverstandings",
+      "formula_1.seasons",
+      "works_cycles.location",
+      "formula_1.constructorresults",
+      "formula_1.constructorstandings",
+      "bike_share_1.station",
+      "bike_share_1.trip"
+    ]
+  },
+  {
+    "question_id": 1019,
+    "db_id": "formula_1",
+    "question": "What is the average lap time in milliseconds of all the lap records set on the various circuits in Italy?",
+    "SQL": "SELECT CAST(SUM(T1.milliseconds) AS REAL) / COUNT(T1.lap) FROM lapTimes AS T1 INNER JOIN races AS T2 on T1.raceId = T2.raceId INNER JOIN circuits AS T3 on T2.circuitId = T3.circuitId WHERE T3.country = 'Italy'",
+    "gold_schema": [
+      "formula_1.laptimes",
+      "formula_1.races",
+      "formula_1.circuits"
+    ],
+    "predicted_schemas_at15": [
+      "formula_1.races",
+      "formula_1.laptimes",
+      "formula_1.results",
+      "formula_1.pitstops",
+      "formula_1.drivers",
+      "formula_1.qualifying",
+      "formula_1.constructors",
+      "formula_1.circuits",
+      "cars.data",
+      "cars.production",
+      "formula_1.driverstandings",
+      "formula_1.constructorresults",
+      "formula_1.constructorstandings",
+      "formula_1.seasons",
+      "bike_share_1.weather"
+    ]
+  },
+  {
+    "question_id": 1126,
+    "db_id": "european_football_2",
+    "question": "State the name of players who came from Belgium.",
+    "SQL": "SELECT t3.player_name FROM Country AS t1 INNER JOIN Match AS t2 ON t1.id = t2.country_id INNER JOIN Player AS t3 ON t2.home_player_1 = t3.player_api_id WHERE t1.name = 'Belgium'",
+    "gold_schema": [
+      "european_football_2.player",
+      "european_football_2.country",
+      "european_football_2.match"
+    ],
+    "predicted_schemas_at15": [
+      "european_football_2.country",
+      "soccer_2016.player",
+      "european_football_2.league",
+      "european_football_2.player",
+      "european_football_2.match",
+      "european_football_2.player_attributes",
+      "european_football_2.team",
+      "soccer_2016.match",
+      "soccer_2016.country",
+      "professional_basketball.players",
+      "soccer_2016.umpire",
+      "soccer_2016.player_match",
+      "european_football_2.team_attributes",
+      "soccer_2016.wicket_taken",
+      "soccer_2016.team"
+    ]
+  },
+  {
+    "question_id": 1127,
+    "db_id": "european_football_2",
+    "question": "Locate players with vision scores of 90 and above, state the country of these players.",
+    "SQL": "SELECT DISTINCT t4.name FROM Player_Attributes AS t1 INNER JOIN Player AS t2 ON t1.player_api_id = t2.player_api_id INNER JOIN Match AS t3 ON t2.player_api_id = t3.home_player_8 INNER JOIN Country AS t4 ON t3.country_id = t4.id WHERE t1.vision > 89",
+    "gold_schema": [
+      "european_football_2.player_attributes",
+      "european_football_2.country",
+      "european_football_2.player",
+      "european_football_2.match"
+    ],
+    "predicted_schemas_at15": [
+      "soccer_2016.player",
+      "ice_hockey_draft.playerinfo",
+      "hockey.awardsplayers",
+      "european_football_2.league",
+      "hockey.master",
+      "soccer_2016.umpire",
+      "soccer_2016.match",
+      "professional_basketball.players",
+      "soccer_2016.country",
+      "european_football_2.country",
+      "hockey.teams",
+      "european_football_2.match",
+      "european_football_2.player",
+      "professional_basketball.awards_players",
+      "hockey.scoringshootout"
+    ]
+  },
+  {
+    "question_id": 1128,
+    "db_id": "european_football_2",
+    "question": "Which country's players have the heaviest average weights?",
+    "SQL": "SELECT t1.name FROM Country AS t1 INNER JOIN Match AS t2 ON t1.id = t2.country_id INNER JOIN Player AS t3 ON t2.home_player_1 = t3.player_api_id GROUP BY t1.name ORDER BY AVG(t3.weight) DESC LIMIT 1",
+    "gold_schema": [
+      "european_football_2.player",
+      "european_football_2.country",
+      "european_football_2.match"
+    ],
+    "predicted_schemas_at15": [
+      "european_football_2.player",
+      "soccer_2016.player",
+      "ice_hockey_draft.playerinfo",
+      "olympics.person",
+      "european_football_2.match",
+      "ice_hockey_draft.weight_info",
+      "european_football_2.player_attributes",
+      "professional_basketball.players",
+      "soccer_2016.country",
+      "european_football_2.team",
+      "soccer_2016.match",
+      "soccer_2016.umpire",
+      "european_football_2.team_attributes",
+      "olympics.person_region",
+      "ice_hockey_draft.height_info"
+    ]
+  },
+  {
+    "question_id": 1131,
+    "db_id": "european_football_2",
+    "question": "What is the average heights of Italy players?",
+    "SQL": "SELECT CAST(SUM(T1.height) AS REAL) / COUNT(T1.id) FROM Player AS T1 INNER JOIN Match AS T2 ON T1.id = T2.id INNER JOIN Country AS T3 ON T2.country_id = T3.ID WHERE T3.NAME = 'Italy'",
+    "gold_schema": [
+      "european_football_2.player",
+      "european_football_2.country",
+      "european_football_2.match"
+    ],
+    "predicted_schemas_at15": [
+      "european_football_2.player",
+      "european_football_2.match",
+      "european_football_2.player_attributes",
+      "ice_hockey_draft.playerinfo",
+      "european_football_2.team",
+      "european_football_2.team_attributes",
+      "professional_basketball.players",
+      "ice_hockey_draft.height_info",
+      "soccer_2016.player",
+      "european_football_2.league",
+      "european_football_2.country",
+      "professional_basketball.player_allstar",
+      "ice_hockey_draft.seasonstatus",
+      "ice_hockey_draft.weight_info",
+      "olympics.person"
+    ]
+  },
+  {
+    "question_id": 1252,
+    "db_id": "thrombosis_prediction",
+    "question": "Among the patients with a normal Ig G level, how many of them have symptoms?",
+    "SQL": "SELECT COUNT(T1.ID) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID INNER JOIN Examination AS T3 ON T3.ID = T2.ID WHERE T2.IGG BETWEEN 900 AND 2000 AND T3.Symptoms IS NOT NULL",
+    "gold_schema": [
+      "thrombosis_prediction.patient",
+      "thrombosis_prediction.examination",
+      "thrombosis_prediction.laboratory"
+    ],
+    "predicted_schemas_at15": [
+      "thrombosis_prediction.patient",
+      "thrombosis_prediction.examination",
+      "thrombosis_prediction.laboratory",
+      "college_completion.institution_details",
+      "synthea.all_prevalences",
+      "synthea.patients",
+      "european_football_2.player_attributes",
+      "synthea.conditions",
+      "synthea.encounters",
+      "synthea.claims",
+      "european_football_2.player",
+      "computer_student.course",
+      "college_completion.state_sector_details",
+      "college_completion.state_sector_grads",
+      "mental_health_survey.answer"
+    ]
+  },
+  {
+    "question_id": 1293,
+    "db_id": "thrombosis_prediction",
+    "question": "What is the highest anti-nucleus antibody concentration level of a patient with a normal creatinine level?",
+    "SQL": "SELECT T2.ANA FROM Patient AS T1 INNER JOIN Examination AS T2 ON T1.ID = T2.ID INNER JOIN Laboratory AS T3 ON T1.ID = T3.ID WHERE T3.CRE < 1.5 ORDER BY T2.ANA DESC LIMIT 1",
+    "gold_schema": [
+      "thrombosis_prediction.patient",
+      "thrombosis_prediction.examination",
+      "thrombosis_prediction.laboratory"
+    ],
+    "predicted_schemas_at15": [
+      "thrombosis_prediction.patient",
+      "thrombosis_prediction.laboratory",
+      "thrombosis_prediction.examination",
+      "synthea.patients",
+      "synthea.allergies",
+      "synthea.encounters",
+      "cookbook.nutrition",
+      "synthea.conditions",
+      "european_football_2.player_attributes",
+      "synthea.all_prevalences",
+      "cookbook.recipe",
+      "synthea.medications",
+      "college_completion.institution_details",
+      "synthea.observations",
+      "european_football_2.player"
+    ]
+  },
+  {
+    "question_id": 1316,
+    "db_id": "student_club",
+    "question": "Please list the phone numbers of the students from the Student_Club that has attended the event \"Women's Soccer\".",
+    "SQL": "SELECT T3.phone FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event INNER JOIN member AS T3 ON T2.link_to_member = T3.member_id WHERE T1.event_name = 'Women''s Soccer'",
+    "gold_schema": [
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.member"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.member",
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.budget",
+      "student_club.expense",
+      "student_club.income",
+      "student_club.major",
+      "student_loan.person",
+      "student_club.zip_code",
+      "student_loan.bool",
+      "student_loan.enlist",
+      "student_loan.unemployed",
+      "student_loan.no_payment_due",
+      "student_loan.enrolled",
+      "student_loan.disabled"
+    ]
+  },
+  {
+    "question_id": 1317,
+    "db_id": "student_club",
+    "question": "Among the students from the Student_Club who attended the event \"Women's Soccer\", how many of them want a T-shirt that's in medium size?",
+    "SQL": "SELECT COUNT(T1.event_id) FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event INNER JOIN member AS T3 ON T2.link_to_member = T3.member_id WHERE T1.event_name = 'Women''s Soccer' AND T3.t_shirt_size = 'Medium'",
+    "gold_schema": [
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.member"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.member",
+      "student_club.attendance",
+      "student_club.major",
+      "student_club.event",
+      "student_club.budget",
+      "student_club.expense",
+      "student_club.income",
+      "student_club.zip_code",
+      "student_loan.person",
+      "university.university_year",
+      "student_loan.male",
+      "student_loan.bool",
+      "university.university",
+      "student_loan.enlist",
+      "college_completion.institution_details"
+    ]
+  },
+  {
+    "question_id": 1320,
+    "db_id": "student_club",
+    "question": "Please list the event names of all the events attended by Maya Mclean.",
+    "SQL": "SELECT T1.event_name FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event INNER JOIN member AS T3 ON T2.link_to_member = T3.member_id WHERE T3.first_name = 'Maya' AND T3.last_name = 'Mclean'",
+    "gold_schema": [
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.member"
+    ],
+    "predicted_schemas_at15": [
+      "talkingdata.events",
+      "talkingdata.app_events",
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.member",
+      "olympics.event",
+      "retail_complains.events",
+      "olympics.competitor_event",
+      "student_club.budget",
+      "student_loan.person",
+      "student_loan.enlist",
+      "student_club.expense",
+      "talkingdata.events_relevant",
+      "retail_complains.client",
+      "student_loan.disabled"
+    ]
+  },
+  {
+    "question_id": 1321,
+    "db_id": "student_club",
+    "question": "How many events of the Student_Club did Sacha Harrison attend in 2019?",
+    "SQL": "SELECT COUNT(T1.event_id) FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event INNER JOIN member AS T3 ON T2.link_to_member = T3.member_id WHERE T3.first_name = 'Sacha' AND T3.last_name = 'Harrison' AND SUBSTR(T1.event_date, 1, 4) = '2019'",
+    "gold_schema": [
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.member"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.event",
+      "student_club.member",
+      "student_club.attendance",
+      "student_club.budget",
+      "student_club.expense",
+      "student_loan.person",
+      "student_club.income",
+      "student_club.major",
+      "student_loan.enlist",
+      "student_club.zip_code",
+      "cs_semester.ra",
+      "student_loan.male",
+      "cs_semester.student",
+      "cs_semester.registration",
+      "student_loan.enrolled"
+    ]
+  },
+  {
+    "question_id": 1327,
+    "db_id": "student_club",
+    "question": "List the full name of all the members of the Student_Club who attended the \"Laugh Out Loud\" event.",
+    "SQL": "SELECT T1.first_name, T1.last_name FROM member AS T1 INNER JOIN attendance AS T2 ON T1.member_id = T2.link_to_member INNER JOIN event AS T3 ON T2.link_to_event = T3.event_id WHERE T3.event_name = 'Laugh Out Loud'",
+    "gold_schema": [
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.member"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.attendance",
+      "student_club.member",
+      "student_loan.person",
+      "student_club.event",
+      "student_loan.male",
+      "student_club.budget",
+      "student_club.expense",
+      "student_club.major",
+      "student_club.income",
+      "student_loan.bool",
+      "student_club.zip_code",
+      "student_loan.no_payment_due",
+      "student_loan.enlist",
+      "student_loan.enrolled",
+      "student_loan.disabled"
+    ]
+  },
+  {
+    "question_id": 1338,
+    "db_id": "student_club",
+    "question": "Was each expense in October Meeting on October 8, 2019 approved?",
+    "SQL": "SELECT T3.approved FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget WHERE T1.event_name = 'October Meeting' AND T1.event_date LIKE '2019-10-08%'",
+    "gold_schema": [
+      "student_club.budget",
+      "student_club.event",
+      "student_club.expense"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.expense",
+      "student_club.budget",
+      "student_club.member",
+      "student_loan.person",
+      "student_loan.enlist",
+      "student_club.event",
+      "student_club.attendance",
+      "movie_3.payment",
+      "student_club.income",
+      "financial.order",
+      "donor.donations",
+      "financial.account",
+      "financial.disp",
+      "donor.projects",
+      "student_club.major"
+    ]
+  },
+  {
+    "question_id": 1366,
+    "db_id": "student_club",
+    "question": "List all the members who attended the event \"October Meeting\".",
+    "SQL": "SELECT DISTINCT T3.member_id FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event INNER JOIN member AS T3 ON T2.link_to_member = T3.member_id WHERE T1.event_name = 'October Meeting'",
+    "gold_schema": [
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.member"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.attendance",
+      "student_club.member",
+      "student_loan.person",
+      "student_loan.enlist",
+      "student_club.event",
+      "authors.conference",
+      "student_club.budget",
+      "student_club.expense",
+      "olympics.person",
+      "authors.paper",
+      "shooting.officers",
+      "student_club.income",
+      "student_loan.enrolled",
+      "shooting.incidents",
+      "talkingdata.events"
+    ]
+  },
+  {
+    "question_id": 1382,
+    "db_id": "student_club",
+    "question": "Among the students majored in interior design, who have attended the Community Theater event?",
+    "SQL": "SELECT T2.first_name, T2.last_name FROM major AS T1 INNER JOIN member AS T2 ON T1.major_id = T2.link_to_major INNER JOIN attendance AS T3 ON T2.member_id = T3.link_to_member INNER JOIN event AS T4 ON T3.link_to_event = T4.event_id WHERE T4.event_name = 'Community Theater' AND T1.major_name = 'Interior Design'",
+    "gold_schema": [
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.member",
+      "student_club.major"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.member",
+      "computer_student.taughtby",
+      "computer_student.person",
+      "student_club.budget",
+      "computer_student.course",
+      "student_club.major",
+      "student_club.expense",
+      "computer_student.advisedby",
+      "college_completion.institution_details",
+      "student_club.income",
+      "student_club.zip_code",
+      "student_loan.person",
+      "cs_semester.ra"
+    ]
+  },
+  {
+    "question_id": 1386,
+    "db_id": "student_club",
+    "question": "What is the total expense for the Yearly Kickoff?",
+    "SQL": "SELECT SUM(T3.cost) FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget WHERE T1.event_name = 'Yearly Kickoff'",
+    "gold_schema": [
+      "student_club.budget",
+      "student_club.event",
+      "student_club.expense"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.expense",
+      "student_club.budget",
+      "student_club.member",
+      "student_club.event",
+      "student_club.income",
+      "student_club.attendance",
+      "disney.revenue",
+      "menu.menu",
+      "movie_3.payment",
+      "donor.projects",
+      "student_club.major",
+      "student_club.zip_code",
+      "menu.menupage",
+      "olympics.games",
+      "bike_share_1.trip"
+    ]
+  },
+  {
+    "question_id": 1387,
+    "db_id": "student_club",
+    "question": "Which student has been entrusted to manage the budget for the Yearly Kickoff?",
+    "SQL": "SELECT T4.first_name, T4.last_name FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget INNER JOIN member AS T4 ON T3.link_to_member = T4.member_id WHERE T1.event_name = 'Yearly Kickoff'",
+    "gold_schema": [
+      "student_club.budget",
+      "student_club.event",
+      "student_club.member",
+      "student_club.expense"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.budget",
+      "student_club.expense",
+      "student_loan.person",
+      "student_club.member",
+      "student_loan.male",
+      "student_club.event",
+      "student_loan.enrolled",
+      "student_club.attendance",
+      "student_club.income",
+      "cs_semester.ra",
+      "student_loan.bool",
+      "cs_semester.student",
+      "student_loan.enlist",
+      "student_loan.no_payment_due",
+      "student_loan.disabled"
+    ]
+  },
+  {
+    "question_id": 1389,
+    "db_id": "student_club",
+    "question": "Which event has the lowest cost?",
+    "SQL": "SELECT T1.event_name FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget ORDER BY T3.cost LIMIT 1",
+    "gold_schema": [
+      "student_club.budget",
+      "student_club.event",
+      "student_club.expense"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.expense",
+      "student_club.budget",
+      "student_club.member",
+      "olympics.event",
+      "student_club.event",
+      "student_club.attendance",
+      "talkingdata.events",
+      "olympics.competitor_event",
+      "talkingdata.app_events",
+      "talkingdata.events_relevant",
+      "olympics.sport",
+      "menu.menu",
+      "student_club.income",
+      "student_club.major",
+      "student_club.zip_code"
+    ]
+  },
+  {
+    "question_id": 1390,
+    "db_id": "student_club",
+    "question": "Based on the total cost for all event, what is the percentage of cost for Yearly Kickoff event?",
+    "SQL": "SELECT CAST(SUM(CASE WHEN T1.event_name = 'Yearly Kickoff' THEN T3.cost ELSE 0 END) AS REAL) * 100 / SUM(T3.cost) FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget",
+    "gold_schema": [
+      "student_club.budget",
+      "student_club.event",
+      "student_club.expense"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.budget",
+      "student_club.expense",
+      "student_club.member",
+      "student_club.event",
+      "donor.projects",
+      "student_club.attendance",
+      "disney.revenue",
+      "menu.menu",
+      "donor.donations",
+      "donor.resources",
+      "menu.menupage",
+      "student_club.income",
+      "olympics.event",
+      "software_company.sales",
+      "student_club.major"
+    ]
+  },
+  {
+    "question_id": 1396,
+    "db_id": "student_club",
+    "question": "Provide the number of events attended by Luisa Guidi. What is her major?",
+    "SQL": "SELECT COUNT(T3.link_to_event), T1.major_name FROM major AS T1 INNER JOIN member AS T2 ON T1.major_id = T2.link_to_major INNER JOIN attendance AS T3 ON T2.member_id = T3.link_to_member WHERE T2.first_name = 'Luisa' AND T2.last_name = 'Guidi'",
+    "gold_schema": [
+      "student_club.attendance",
+      "student_club.member",
+      "student_club.major"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.major",
+      "student_club.member",
+      "student_club.attendance",
+      "student_club.budget",
+      "student_club.event",
+      "university.university",
+      "student_club.expense",
+      "computer_student.course",
+      "computer_student.taughtby",
+      "cs_semester.registration",
+      "talkingdata.events",
+      "student_club.income",
+      "student_club.zip_code",
+      "computer_student.person",
+      "cs_semester.course"
+    ]
+  },
+  {
+    "question_id": 1399,
+    "db_id": "student_club",
+    "question": "Did Maya Mclean attend the 'Women's Soccer' event?",
+    "SQL": "SELECT CASE WHEN T3.event_name = 'Women''s Soccer' THEN 'YES' END AS result FROM member AS T1 INNER JOIN attendance AS T2 ON T1.member_id = T2.link_to_member INNER JOIN event AS T3 ON T2.link_to_event = T3.event_id WHERE T1.first_name = 'Maya' AND T1.last_name = 'Mclean'",
+    "gold_schema": [
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.member"
+    ],
+    "predicted_schemas_at15": [
+      "soccer_2016.venue",
+      "soccer_2016.match",
+      "european_football_2.match",
+      "soccer_2016.city",
+      "soccer_2016.team",
+      "soccer_2016.player_match",
+      "soccer_2016.player",
+      "european_football_2.player",
+      "european_football_2.team",
+      "talkingdata.events",
+      "student_club.attendance",
+      "soccer_2016.country",
+      "soccer_2016.wicket_taken",
+      "soccer_2016.rolee",
+      "student_club.event"
+    ]
+  },
+  {
+    "question_id": 1401,
+    "db_id": "student_club",
+    "question": "Indicate the cost of posters for 'September Speaker' event.",
+    "SQL": "SELECT T3.cost FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget WHERE T1.event_name = 'September Speaker' AND T3.expense_description = 'Posters'",
+    "gold_schema": [
+      "student_club.budget",
+      "student_club.event",
+      "student_club.expense"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.expense",
+      "donor.projects",
+      "student_club.budget",
+      "student_club.member",
+      "donor.donations",
+      "donor.resources",
+      "student_club.attendance",
+      "student_club.event",
+      "cs_semester.ra",
+      "student_club.income",
+      "card_games.cards",
+      "student_club.major",
+      "student_club.zip_code",
+      "menu.menu",
+      "cs_semester.student"
+    ]
+  },
+  {
+    "question_id": 1404,
+    "db_id": "student_club",
+    "question": "Identify the type of expenses and their total value approved for 'October Meeting' event.",
+    "SQL": "SELECT T1.type, SUM(T3.cost) FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget WHERE T1.event_name = 'October Meeting'",
+    "gold_schema": [
+      "student_club.budget",
+      "student_club.event",
+      "student_club.expense"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.expense",
+      "student_club.budget",
+      "student_club.member",
+      "student_club.event",
+      "student_club.attendance",
+      "student_loan.person",
+      "student_loan.enlist",
+      "student_club.income",
+      "movie_3.payment",
+      "software_company.sales",
+      "student_club.major",
+      "student_club.zip_code",
+      "beer_factory.transaction",
+      "car_retails.payments",
+      "menu.menu"
+    ]
+  },
+  {
+    "question_id": 1429,
+    "db_id": "student_club",
+    "question": "What is the name of the social event that was attended by the vice president of the Student_Club located at 900 E. Washington St.?",
+    "SQL": "SELECT T2.event_name FROM attendance AS T1 INNER JOIN event AS T2 ON T2.event_id = T1.link_to_event INNER JOIN member AS T3 ON T1.link_to_member = T3.member_id WHERE T3.position = 'Vice President' AND T2.location = '900 E. Washington St.' AND T2.type = 'Social'",
+    "gold_schema": [
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.member"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.member",
+      "student_club.event",
+      "student_club.attendance",
+      "student_club.budget",
+      "student_club.expense",
+      "student_club.income",
+      "student_club.major",
+      "student_club.zip_code",
+      "student_loan.person",
+      "student_loan.male",
+      "student_loan.enlist",
+      "student_loan.bool",
+      "student_loan.disabled",
+      "student_loan.unemployed",
+      "computer_student.course"
+    ]
+  },
+  {
+    "question_id": 1431,
+    "db_id": "student_club",
+    "question": "List the last name of the members of the club that attended the women's soccer event.",
+    "SQL": "SELECT T3.last_name FROM attendance AS T1 INNER JOIN event AS T2 ON T2.event_id = T1.link_to_event INNER JOIN member AS T3 ON T1.link_to_member = T3.member_id WHERE T2.event_name = 'Women''s Soccer' AND T3.position = 'Member'",
+    "gold_schema": [
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.member"
+    ],
+    "predicted_schemas_at15": [
+      "soccer_2016.venue",
+      "soccer_2016.match",
+      "student_club.attendance",
+      "student_club.member",
+      "soccer_2016.city",
+      "soccer_2016.team",
+      "student_club.event",
+      "student_loan.person",
+      "soccer_2016.player_match",
+      "soccer_2016.player",
+      "olympics.person",
+      "student_club.budget",
+      "soccer_2016.wicket_taken",
+      "student_club.expense",
+      "soccer_2016.out_type"
+    ]
+  },
+  {
+    "question_id": 1448,
+    "db_id": "student_club",
+    "question": "Find the name and date of events with expenses for pizza that were more than fifty dollars but less than a hundred dollars.",
+    "SQL": "SELECT T1.event_name, T1.event_date FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget WHERE T3.expense_description = 'Pizza' AND T3.cost > 50 AND T3.cost < 100",
+    "gold_schema": [
+      "student_club.budget",
+      "student_club.event",
+      "student_club.expense"
+    ],
+    "predicted_schemas_at15": [
+      "menu.dish",
+      "menu.menuitem",
+      "student_club.expense",
+      "menu.menupage",
+      "menu.menu",
+      "student_club.budget",
+      "student_club.member",
+      "student_club.event",
+      "student_club.attendance",
+      "movie_3.payment",
+      "retail_complains.events",
+      "food_inspection.inspections",
+      "student_club.income",
+      "food_inspection.businesses",
+      "beer_factory.transaction"
+    ]
+  },
+  {
+    "question_id": 1450,
+    "db_id": "student_club",
+    "question": "In the events with more than forty incomes, list the city and country in which the event is happening.",
+    "SQL": "SELECT DISTINCT T3.city, T3.county FROM income AS T1 INNER JOIN member AS T2 ON T1.link_to_member = T2.member_id INNER JOIN zip_code AS T3 ON T3.zip_code = T2.zip WHERE T1.amount > 40",
+    "gold_schema": [
+      "student_club.zip_code",
+      "student_club.member",
+      "student_club.income"
+    ],
+    "predicted_schemas_at15": [
+      "world.city",
+      "world.country",
+      "talkingdata.events",
+      "soccer_2016.city",
+      "soccer_2016.venue",
+      "social_media.location",
+      "talkingdata.app_events",
+      "world.countrylanguage",
+      "soccer_2016.match",
+      "social_media.twitter",
+      "shipping.city",
+      "olympics.city",
+      "shipping.shipment",
+      "olympics.event",
+      "books.address"
+    ]
+  },
+  {
+    "question_id": 1451,
+    "db_id": "student_club",
+    "question": "Among the members who incurred expenses in more than one event, who paid the most amount?",
+    "SQL": "SELECT T2.member_id FROM expense AS T1 INNER JOIN member AS T2 ON T1.link_to_member = T2.member_id INNER JOIN budget AS T3 ON T1.link_to_budget = T3.budget_id INNER JOIN event AS T4 ON T3.link_to_event = T4.event_id GROUP BY T2.member_id HAVING COUNT(DISTINCT T4.event_id) > 1 ORDER BY SUM(T1.cost) DESC LIMIT 1",
+    "gold_schema": [
+      "student_club.budget",
+      "student_club.event",
+      "student_club.member",
+      "student_club.expense"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.expense",
+      "student_club.member",
+      "student_club.budget",
+      "student_club.attendance",
+      "student_club.event",
+      "student_club.income",
+      "student_loan.person",
+      "movie_3.payment",
+      "student_club.major",
+      "student_club.zip_code",
+      "student_loan.enlist",
+      "olympics.event",
+      "talkingdata.events",
+      "olympics.competitor_event",
+      "student_loan.male"
+    ]
+  },
+  {
+    "question_id": 1454,
+    "db_id": "student_club",
+    "question": "What is the percentage of the cost for the game events?",
+    "SQL": "SELECT SUM(CASE WHEN T1.type = 'Game' THEN T3.cost ELSE 0 END) * 100 / SUM(T3.cost) FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget",
+    "gold_schema": [
+      "student_club.budget",
+      "student_club.event",
+      "student_club.expense"
+    ],
+    "predicted_schemas_at15": [
+      "card_games.cards",
+      "student_club.budget",
+      "card_games.sets",
+      "student_club.expense",
+      "student_club.member",
+      "card_games.set_translations",
+      "card_games.ruling",
+      "student_club.event",
+      "video_games.game",
+      "card_games.foreign_data",
+      "card_games.legalities",
+      "olympics.event",
+      "student_club.attendance",
+      "olympics.games",
+      "european_football_2.match"
+    ]
+  },
+  {
+    "question_id": 1456,
+    "db_id": "student_club",
+    "question": "List the full name of the top five members who spend the most money in the descending order of spending.",
+    "SQL": "SELECT T3.first_name, T3.last_name FROM expense AS T1 INNER JOIN budget AS T2 ON T1.link_to_budget = T2.budget_id INNER JOIN member AS T3 ON T1.link_to_member = T3.member_id ORDER BY T2.spent DESC LIMIT 5",
+    "gold_schema": [
+      "student_club.budget",
+      "student_club.member",
+      "student_club.expense"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.expense",
+      "student_loan.person",
+      "student_club.member",
+      "student_club.budget",
+      "student_loan.enlist",
+      "financial.order",
+      "student_club.income",
+      "student_club.attendance",
+      "student_club.event",
+      "financial.account",
+      "student_loan.male",
+      "financial.disp",
+      "student_club.major",
+      "student_club.zip_code",
+      "student_loan.no_payment_due"
+    ]
+  },
+  {
+    "question_id": 1464,
+    "db_id": "student_club",
+    "question": "Write the full names of students who received funds on the date of 9/9/2019 and include the amount received.",
+    "SQL": "SELECT DISTINCT T3.first_name, T3.last_name, T4.amount FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event INNER JOIN member AS T3 ON T3.member_id = T2.link_to_member INNER JOIN income AS T4 ON T4.link_to_member = T3.member_id WHERE T4.date_received = '2019-09-09'",
+    "gold_schema": [
+      "student_club.attendance",
+      "student_club.income",
+      "student_club.event",
+      "student_club.member"
+    ],
+    "predicted_schemas_at15": [
+      "student_club.income",
+      "student_loan.person",
+      "student_club.member",
+      "student_loan.bool",
+      "donor.projects",
+      "donor.donations",
+      "student_club.budget",
+      "student_loan.no_payment_due",
+      "college_completion.institution_details",
+      "student_club.expense",
+      "donor.resources",
+      "student_club.event",
+      "student_club.attendance",
+      "student_loan.enrolled",
+      "student_loan.enlist"
+    ]
+  },
+  {
+    "question_id": 1500,
+    "db_id": "debit_card_specializing",
+    "question": "Please list the product description of the products consumed in September, 2013.",
+    "SQL": "SELECT T3.Description FROM transactions_1k AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID INNER JOIN products AS T3 ON T1.ProductID = T3.ProductID WHERE T2.Date = '201309'",
+    "gold_schema": [
+      "debit_card_specializing.transactions_1k",
+      "debit_card_specializing.products",
+      "debit_card_specializing.yearmonth"
+    ],
+    "predicted_schemas_at15": [
+      "sales.products",
+      "sales.sales",
+      "car_retails.products",
+      "car_retails.productlines",
+      "debit_card_specializing.products",
+      "regional_sales.products",
+      "regional_sales.sales orders",
+      "retail_world.products",
+      "works_cycles.productmodelproductdescriptionculture",
+      "sales.customers",
+      "sales.employees",
+      "works_cycles.productdescription",
+      "cookbook.nutrition",
+      "regional_sales.store locations",
+      "superstore.product"
+    ]
+  }
+]

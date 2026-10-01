@@ -1,0 +1,66 @@
+{
+  "experiment": {
+    "name": "macsql_selector_vs_gert_birdunion_100",
+    "conditions": [
+      "mac_selector",
+      "gert_selector"
+    ]
+  },
+  "protocol": {
+    "protocol_version": "macsql_selector_vs_frozen_gert_k15_v2",
+    "k": 15,
+    "full_schema_tokens_estimate": 40954,
+    "primary_total_tokens": "Full pipeline: Selector + Decomposer + optional Refiner for MAC; Decomposer + optional Refiner for frozen GERT",
+    "context_reduction": "End-to-end: zero for MAC because its Selector reads the full union schema; GERT is measured against the full union schema",
+    "downstream_context_reduction": "Diagnostic only: candidate schema reduction after selection",
+    "gert_routing_cost": "Excluded because GERT predictions are frozen inputs",
+    "model_parameters": "Provider defaults; no sampling parameters sent",
+    "selector_db_id": "Gold db_id hidden; used only for SQLite execution/evaluation"
+  },
+  "metrics": {
+    "mac_selector": {
+      "n": 100,
+      "execution_accuracy": 0.34,
+      "invalid_sql_rate": 0.06999999999999995,
+      "normalized_exact_match": 0.0,
+      "context_reduction": 0.0,
+      "downstream_context_reduction": 0.9644325340626069,
+      "avg_schema_tokens_estimate": 1456.63,
+      "avg_selected_table_count": 15,
+      "avg_total_tokens": 4692.42,
+      "avg_selector_tokens": 63039.62,
+      "avg_pipeline_tokens": 67732.04,
+      "gold_table_complete_rate": 0.92,
+      "refiner_call_rate": 0.26,
+      "avg_selector_fill_count": 0.84,
+      "avg_selector_call_count": 1.59,
+      "selector_below_minimum_rate": 0.03
+    },
+    "gert_selector": {
+      "n": 100,
+      "execution_accuracy": 0.34,
+      "invalid_sql_rate": 0.14,
+      "normalized_exact_match": 0.0,
+      "context_reduction": 0.9640779899399327,
+      "downstream_context_reduction": 0.9640779899399327,
+      "avg_schema_tokens_estimate": 1471.15,
+      "avg_selected_table_count": 15,
+      "avg_total_tokens": 4992.46,
+      "avg_selector_tokens": 0,
+      "avg_pipeline_tokens": 4992.46,
+      "gold_table_complete_rate": 0.89,
+      "refiner_call_rate": 0.33,
+      "avg_selector_fill_count": 0,
+      "avg_selector_call_count": 0,
+      "selector_below_minimum_rate": 0.0
+    }
+  },
+  "paired_comparison": {
+    "n": 100,
+    "both_correct": 29,
+    "mac_only_correct": 5,
+    "gert_only_correct": 5,
+    "neither_correct": 61,
+    "mcnemar_exact_p_two_sided": 1.0
+  }
+}

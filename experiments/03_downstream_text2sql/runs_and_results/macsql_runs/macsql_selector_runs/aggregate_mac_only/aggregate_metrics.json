@@ -1,0 +1,95 @@
+{
+  "protocol_version": "macsql_selector_vs_frozen_gert_k15_v2",
+  "round_count": 3,
+  "std_definition": "sample standard deviation (n-1)",
+  "result_dirs": [
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\macsql_selector_runs\\run1\\results_mac_only",
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\macsql_selector_runs\\run2\\results_mac_only",
+    "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\macsql_selector_runs\\run3\\results_mac_only"
+  ],
+  "metrics": {
+    "mac_selector": {
+      "execution_accuracy": {
+        "values": [
+          0.34,
+          0.33,
+          0.3
+        ],
+        "mean": 0.32333333333333336,
+        "sample_std": 0.020816659994661344
+      },
+      "invalid_sql_rate": {
+        "values": [
+          0.06999999999999995,
+          0.10999999999999999,
+          0.07999999999999996
+        ],
+        "mean": 0.08666666666666663,
+        "sample_std": 0.020816659994661344
+      },
+      "context_reduction": {
+        "values": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean": 0.0,
+        "sample_std": 0.0
+      },
+      "downstream_context_reduction": {
+        "values": [
+          0.9644325340626069,
+          0.9638892415881233,
+          0.9630832153147434
+        ],
+        "mean": 0.9638016636551578,
+        "sample_std": 0.0006789091924483287
+      },
+      "avg_pipeline_tokens": {
+        "values": [
+          67732.04,
+          70727.5,
+          71795.49
+        ],
+        "mean": 70085.01,
+        "sample_std": 2106.5378054286193
+      },
+      "avg_selector_tokens": {
+        "values": [
+          63039.62,
+          65918.43,
+          66940.96
+        ],
+        "mean": 65299.67,
+        "sample_std": 2022.9338600409062
+      },
+      "avg_total_tokens": {
+        "values": [
+          4692.42,
+          4809.07,
+          4854.53
+        ],
+        "mean": 4785.34,
+        "sample_std": 83.61966096558852
+      },
+      "gold_table_complete_rate": {
+        "values": [
+          0.92,
+          0.86,
+          0.91
+        ],
+        "mean": 0.8966666666666667,
+        "sample_std": 0.03214550253664321
+      },
+      "avg_selected_table_count": {
+        "values": [
+          15.0,
+          15.0,
+          15.0
+        ],
+        "mean": 15.0,
+        "sample_std": 0.0
+      }
+    }
+  }
+}

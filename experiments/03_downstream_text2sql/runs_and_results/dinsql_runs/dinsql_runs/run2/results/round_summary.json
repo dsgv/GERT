@@ -1,0 +1,149 @@
+{
+  "protocol_version": "dinsql_full_schema_vs_frozen_gert_k15_v2",
+  "generated_at": "2026-09-04T15:54:48.928264+08:00",
+  "output_dir": "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\dinsql_runs\\run2\\outputs",
+  "result_dir": "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\dinsql_runs\\run2\\results",
+  "metrics": {
+    "din_linker": {
+      "n": 100,
+      "bird_execution_accuracy": 0.09,
+      "strict_execution_accuracy": 0.08,
+      "invalid_sql_rate": 0.73,
+      "normalized_exact_match": 0.0,
+      "context_reduction": 0.0,
+      "avg_schema_tokens_estimate": 40954,
+      "avg_linker_tokens": 44844.19,
+      "avg_downstream_tokens": 123650.35,
+      "avg_pipeline_tokens": 168494.54,
+      "gold_table_complete_rate": 1.0,
+      "avg_linker_fill_count": 0,
+      "avg_linker_call_count": 1.06,
+      "classification_parse_rate": 1.0
+    },
+    "gert_selector": {
+      "n": 100,
+      "bird_execution_accuracy": 0.34,
+      "strict_execution_accuracy": 0.29,
+      "invalid_sql_rate": 0.09999999999999998,
+      "normalized_exact_match": 0.05,
+      "context_reduction": 0.9640779899399327,
+      "avg_schema_tokens_estimate": 1471.15,
+      "avg_linker_tokens": 6139.23,
+      "avg_downstream_tokens": 14450.85,
+      "avg_pipeline_tokens": 20590.08,
+      "gold_table_complete_rate": 0.89,
+      "avg_linker_fill_count": 0,
+      "avg_linker_call_count": 1.06,
+      "classification_parse_rate": 1.0
+    }
+  },
+  "paired_comparison": {
+    "bird_ex": {
+      "n": 100,
+      "both_correct": 9,
+      "din_only_correct": 0,
+      "gert_only_correct": 25,
+      "neither_correct": 66,
+      "mcnemar_exact_p_two_sided": 5.960464477539063e-08
+    },
+    "strict_ex": {
+      "n": 100,
+      "both_correct": 8,
+      "din_only_correct": 0,
+      "gert_only_correct": 21,
+      "neither_correct": 71,
+      "mcnemar_exact_p_two_sided": 9.5367431640625e-07
+    }
+  },
+  "token_usage": {
+    "protocol_version": "dinsql_full_schema_vs_frozen_gert_k15_v2",
+    "generated_at": "2026-09-04T15:53:37.247299+08:00",
+    "run_name": "run2",
+    "output_dir": "D:\\paper_modify\\GERT_ICDM\\Text2sql_ex\\dinsql_runs\\run2\\outputs",
+    "model": "deepseek-v3.2",
+    "model_parameters": "provider_defaults",
+    "token_definition": "Provider-reported prompt + completion tokens across schema linking, classification, SQL generation, and self-correction",
+    "conditions": {
+      "din_linker": {
+        "label": "DIN-SQL（全量 union schema）",
+        "completed_questions": 100,
+        "expected_questions": 100,
+        "complete": true,
+        "prompt_tokens": 16657798,
+        "completion_tokens": 191656,
+        "total_tokens": 16849454,
+        "avg_prompt_tokens_per_question": 166577.98,
+        "avg_completion_tokens_per_question": 1916.56,
+        "avg_total_tokens_per_question": 168494.54,
+        "avg_wall_time_seconds": 40.718634408000945,
+        "api_calls": 406,
+        "stage_usage": {
+          "schema_linking": {
+            "prompt_tokens": 4415092,
+            "completion_tokens": 69327,
+            "total_tokens": 4484419,
+            "avg_tokens_per_question": 44844.19
+          },
+          "classification": {
+            "prompt_tokens": 4235203,
+            "completion_tokens": 24908,
+            "total_tokens": 4260111,
+            "avg_tokens_per_question": 42601.11
+          },
+          "sql_generation": {
+            "prompt_tokens": 4086102,
+            "completion_tokens": 36973,
+            "total_tokens": 4123075,
+            "avg_tokens_per_question": 41230.75
+          },
+          "self_correction": {
+            "prompt_tokens": 3921401,
+            "completion_tokens": 60448,
+            "total_tokens": 3981849,
+            "avg_tokens_per_question": 39818.49
+          }
+        }
+      },
+      "gert_selector": {
+        "label": "DIN-SQL + GERT (ours)",
+        "completed_questions": 100,
+        "expected_questions": 100,
+        "complete": true,
+        "prompt_tokens": 1890476,
+        "completion_tokens": 168532,
+        "total_tokens": 2059008,
+        "avg_prompt_tokens_per_question": 18904.76,
+        "avg_completion_tokens_per_question": 1685.32,
+        "avg_total_tokens_per_question": 20590.08,
+        "avg_wall_time_seconds": 35.64937080700009,
+        "api_calls": 406,
+        "stage_usage": {
+          "schema_linking": {
+            "prompt_tokens": 560137,
+            "completion_tokens": 53786,
+            "total_tokens": 613923,
+            "avg_tokens_per_question": 6139.23
+          },
+          "classification": {
+            "prompt_tokens": 599480,
+            "completion_tokens": 24610,
+            "total_tokens": 624090,
+            "avg_tokens_per_question": 6240.9
+          },
+          "sql_generation": {
+            "prompt_tokens": 446070,
+            "completion_tokens": 35716,
+            "total_tokens": 481786,
+            "avg_tokens_per_question": 4817.86
+          },
+          "self_correction": {
+            "prompt_tokens": 284789,
+            "completion_tokens": 54420,
+            "total_tokens": 339209,
+            "avg_tokens_per_question": 3392.09
+          }
+        }
+      }
+    }
+  }
+}

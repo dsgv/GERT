@@ -1,0 +1,24 @@
+{
+  "protocol_version": "macsql_selector_vs_frozen_gert_k15_v2",
+  "metrics": {
+    "mac_selector": {
+      "n": 100,
+      "execution_accuracy": 0.33,
+      "invalid_sql_rate": 0.10999999999999999,
+      "normalized_exact_match": 0.01,
+      "context_reduction": 0.0,
+      "downstream_context_reduction": 0.9638892415881233,
+      "avg_schema_tokens_estimate": 1478.88,
+      "avg_selected_table_count": 15,
+      "avg_total_tokens": 4809.07,
+      "avg_selector_tokens": 65918.43,
+      "avg_pipeline_tokens": 70727.5,
+      "gold_table_complete_rate": 0.86,
+      "refiner_call_rate": 0.27,
+      "avg_selector_fill_count": 1.02,
+      "avg_selector_call_count": 1.66,
+      "selector_below_minimum_rate": 0.08
+    }
+  },
+  "token_definition": "Provider-reported prompt + completion tokens for the full pipeline"
+}
