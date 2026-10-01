@@ -1,4 +1,4 @@
-# GERT: Graph-Enhanced Schema Routing for Text-to-SQL
+#GERT: Graph-Enhanced Retrieval of Tables over Complex Multi-Database Candidate Spaces
 
 Code and experiment artifacts for GERT, a training-free table retrieval method for multi-database Text-to-SQL. GERT combines semantic retrieval with Personalized PageRank over schema foreign-key links.
 
