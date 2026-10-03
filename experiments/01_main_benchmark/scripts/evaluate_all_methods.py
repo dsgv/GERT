@@ -27,7 +27,7 @@ def evaluate_dir(gold, dir_path, ds_name):
             "Dataset": ds_name,
             "Method": method_name,
             "Table Rec.": f"{overall['Table Rec.']:.4f}",
-            "Perfect Recall (PR)": f"{overall['Table CR']:.4f}",
+            "Table CR": f"{overall['Table CR']:.4f}",
             "Precision": f"{overall['Precision']:.4f}",
             "F1": f"{overall['F1']:.4f}",
         })

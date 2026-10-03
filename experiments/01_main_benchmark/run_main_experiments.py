@@ -20,39 +20,26 @@ import pandas as pd
 
 from baselines.GERT_1hop import SchemaLinkingRetriever1Hop
 from baselines.GERT_2hop import SchemaLinkingRetriever2Hop
-try:
-    from core.schemakg.schemakg_search_ppr import BaseSchemaLinkingRetrieverPPR
-except ImportError:
-    from core.schemakg_search_ppr import BaseSchemaLinkingRetrieverPPR
-try:
-    from core.pipeline.common import TABLE_VECTOR_INDEX_NAME, driver
-except ImportError:
-    from pipeline.common import TABLE_VECTOR_INDEX_NAME, driver
-try:
-    from core.pipeline.kg_construction import build_knowledge_graph
-except ImportError:
-    from pipeline.kg_construction import build_knowledge_graph
-try:
-    from core.pipeline.retrieval import OpenAIEmbedder
-except ImportError:
-    from pipeline.retrieval import OpenAIEmbedder
+from core.schemakg.schemakg_search_ppr import BaseSchemaLinkingRetrieverPPR
+from core.pipeline.common import TABLE_VECTOR_INDEX_NAME, driver
+from core.pipeline.kg_construction import build_knowledge_graph
+from core.pipeline.retrieval import OpenAIEmbedder
 
 
-ROUTING_ROOT = REPO_ROOT
 OUTPUT_ROOT = HERE / "main_experiment_test"
 
 DATASETS = {
     "spider": {
-        "schema": ROUTING_ROOT / "data/spider/spider_union_schema_FK.csv",
-        "test": ROUTING_ROOT / "data/spider/murre_spider_dev.json",
+        "schema": REPO_ROOT / "data/spider/spider_union_schema_FK.csv",
+        "test": REPO_ROOT / "data/spider/murre_spider_dev.json",
     },
     "bird": {
-        "schema": ROUTING_ROOT / "data/bird/bird_union_schema_FK.csv",
-        "test": ROUTING_ROOT / "data/bird/murre_bird_dev.json",
+        "schema": REPO_ROOT / "data/bird/bird_union_schema_FK.csv",
+        "test": REPO_ROOT / "data/bird/murre_bird_dev.json",
     },
     "synlink": {
-        "schema": ROUTING_ROOT / "data/SynLink/SynSQL_schema_csv_300.csv",
-        "test": ROUTING_ROOT / "data/SynLink/Formal_moderate_1k_gd.json",
+        "schema": REPO_ROOT / "data/SynLink/SynSQL_schema_csv_300.csv",
+        "test": REPO_ROOT / "data/SynLink/Formal_moderate_1k_gd.json",
     },
 }
 

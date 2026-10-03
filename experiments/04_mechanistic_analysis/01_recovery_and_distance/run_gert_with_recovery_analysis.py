@@ -181,9 +181,6 @@ def run_dataset_pipeline(
 
     bucket_omitted = defaultdict(int)
     bucket_recovered = defaultdict(int)
-    bucket_all_total = defaultdict(int)
-    bucket_all_dense_hit = defaultdict(int)
-    bucket_all_gert_hit = defaultdict(int)
 
     start_time = time.time()
     for idx in tqdm(range(total_samples), desc=f"Evaluating {dataset_name}"):
@@ -309,30 +306,13 @@ def run_dataset_pipeline(
             elif dist == 2:
                 b_name = "2-hop"
             elif dist >= 3:
-                b_name = "3-hop+"
+                b_name = "3+ hops"
             else:
-                b_name = "disconnected"
+                b_name = "N/A"
 
             bucket_omitted[b_name] += 1
             if t in s_k:
                 bucket_recovered[b_name] += 1
-
-        for t in gt_tables:
-            dist_seed = get_distance(graph, t, d_k)
-            if dist_seed == 1:
-                b_s = "1-hop"
-            elif dist_seed == 2:
-                b_s = "2-hop"
-            elif dist_seed >= 3:
-                b_s = "3-hop+"
-            else:
-                b_s = "disconnected"
-
-            bucket_all_total[b_s] += 1
-            if t in d_k:
-                bucket_all_dense_hit[b_s] += 1
-            if t in s_k:
-                bucket_all_gert_hit[b_s] += 1
 
     elapsed = time.time() - start_time
     print(f"\nInference completed in {elapsed:.2f} s ({elapsed/total_samples:.3f} s/query).")
@@ -354,7 +334,7 @@ def run_dataset_pipeline(
             "Dataset": dataset_name,
             "Method": m,
             "Table Rec.": overall["Table Rec."],
-            "Perfect Recall (PR)": overall["Table CR"],
+            "Table CR": overall["Table CR"],
             "Precision": overall["Precision"],
             "F1": overall["F1"],
         })
@@ -369,21 +349,21 @@ def run_dataset_pipeline(
 
     recovery_summary = {
         "Dataset": dataset_name,
-        "Dense PR (w/o PPR)": f"{pr_dense:.2%}",
-        "GERT PR (Full)": f"{pr_gert:.2%}",
-        "Absolute PR gain": f"+{pr_gert - pr_dense:.2%}",
+        "DR Table CR (w/o PPR)": f"{pr_dense:.2%}",
+        "GERT Table CR (Full)": f"{pr_gert:.2%}",
+        "ΔCR": f"+{pr_gert - pr_dense:.2%}",
         "Total gold tables missed by dense retrieval": total_omitted,
         "Tables recovered by PPR": recovered_omitted,
-        f"Recovery@{eval_k}": f"{rec_rate:.2%}",
+        f"Table Recovery@{eval_k}": f"{rec_rate:.2%}",
         "Dense retrieval failures": dense_fail_queries,
         "Queries rescued by GERT": rescued_queries,
-        f"RescueRate@{eval_k}": f"{rescue_rate:.2%}",
-        f"DamageRate@{eval_k}": f"{damage_rate:.2%}",
+        f"Query Gain@{eval_k}": f"{rescue_rate:.2%}",
+        f"Query Loss@{eval_k}": f"{damage_rate:.2%}",
     }
 
-    # Stratification table (Recovery rate on omitted tables)
+    # Stratification table (Recovery rate on omitted tables - Table 8)
     strat_omitted = []
-    for b in ["1-hop", "2-hop", "3-hop+", "disconnected"]:
+    for b in ["1-hop", "2-hop", "3+ hops", "N/A"]:
         tot = bucket_omitted[b]
         rec = bucket_recovered[b]
         r = rec / tot if tot else 0.0
@@ -394,29 +374,11 @@ def run_dataset_pipeline(
             "Recovery rate": f"{r:.2%}",
         })
 
-    # Stratification table (Recall gain across all gold tables)
-    strat_all = []
-    for b in ["1-hop", "2-hop", "3-hop+", "disconnected"]:
-        tot = bucket_all_total[b]
-        dh = bucket_all_dense_hit[b]
-        gh = bucket_all_gert_hit[b]
-        dr = dh / tot if tot else 0.0
-        gr = gh / tot if tot else 0.0
-        gain = gr - dr
-        strat_all.append({
-            "Foreign-key distance": b,
-            "Total gold tables": tot,
-            "Dense Recall": f"{dr:.2%}",
-            "GERT Recall": f"{gr:.2%}",
-            "Absolute gain": f"+{gain:.2%}" if gain >= 0 else f"{gain:.2%}",
-        })
-
     return {
         "dataset_name": dataset_name,
         "method_metrics": method_metrics,
         "recovery_summary": recovery_summary,
         "strat_omitted": strat_omitted,
-        "strat_all": strat_all,
         "output_files": output_files,
     }
 
@@ -494,30 +456,31 @@ def main():
     df_main = pd.DataFrame(all_method_metrics)
     df_rec = pd.DataFrame(all_recovery_summaries)
 
-    report = []
-    report.append("# GERT Comprehensive Evaluation & In-Depth Analysis (dataset_v2)\n")
-    report.append(f"Evaluated with candidate budget Top-K = {args.eval_k}\n")
-    report.append("## 1. Main & Ablation Performance (Macro-averaged metrics)\n")
-    report.append(df_main.to_markdown(index=False))
-    report.append("\n\n## 2. In-Depth Analysis: Table Recovery & Query Rescue (Table recovery and query rescue)\n")
-    report.append(df_rec.to_markdown(index=False))
+    print("\n" + "=" * 80)
+    print("EVALUATION RESULTS SUMMARY")
+    print("=" * 80)
+    print("\n### 1. Main & Ablation Performance")
+    print(df_main.to_markdown(index=False))
+    print("\n### 2. Table Recovery & Query Rescue (Tables 6 & 7)")
+    print(df_rec.to_markdown(index=False))
 
     for name, r in all_results.items():
-        report.append(f"\n\n## 3. {name} Structural Distance Stratification (Stratification by foreign-key distance)\n")
-        report.append("### (a) Recovery of gold tables missed by dense retrieval (Omitted Tables Recovery by FK Distance to Recalled Tables)\n")
-        report.append(pd.DataFrame(r["strat_omitted"]).to_markdown(index=False))
-        report.append("\n\n### (b) Gold-table recall gain by distance (Recall Gain by FK Distance to Nearest Seed)\n")
-        report.append(pd.DataFrame(r["strat_all"]).to_markdown(index=False))
-
-    full_md = "\n".join(report)
-    print("\n" + "=" * 80)
-    print("FINAL EVALUATION REPORT")
-    print("=" * 80)
-    print(full_md)
+        print(f"\n### 3. {name} Recovery by FK Distance (Table 8)")
+        print(pd.DataFrame(r["strat_omitted"]).to_markdown(index=False))
 
     summary_file = os.path.join(project_root, "output/gert_recovery_analysis_summary.md")
+    report_sections = [
+        f"# GERT Comprehensive Evaluation & In-Depth Analysis\nEvaluated with candidate budget Top-K = {args.eval_k}\n",
+        "## 1. Main & Ablation Performance\n" + df_main.to_markdown(index=False),
+        "## 2. In-Depth Analysis: Table Recovery & Query Rescue\n" + df_rec.to_markdown(index=False),
+    ]
+    for name, r in all_results.items():
+        report_sections.append(
+            f"## 3. {name} Recovery by FK Distance (Table 8)\n"
+            + pd.DataFrame(r["strat_omitted"]).to_markdown(index=False)
+        )
     with open(summary_file, "w", encoding="utf-8") as f:
-        f.write(full_md + "\n")
+        f.write("\n\n".join(report_sections) + "\n")
     print(f"\nReport successfully written to {summary_file}")
 
 

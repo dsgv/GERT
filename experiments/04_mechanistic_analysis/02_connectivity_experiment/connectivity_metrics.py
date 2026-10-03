@@ -45,10 +45,12 @@ def evaluate_query_connectivity(
 
     return {
         "table_rec": rec,
-        "precision": prec,
-        "f1": f1,
+        "table_cr": path_cov,
+        "conn": conn,
         "path_coverage": path_cov,
         "connectivity": conn,
+        "precision": prec,
+        "f1": f1,
     }
 
 

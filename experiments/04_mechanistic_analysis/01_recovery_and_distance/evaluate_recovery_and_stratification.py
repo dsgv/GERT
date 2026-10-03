@@ -160,34 +160,17 @@ def analyze_dataset_recovery(schema_csv, gold_path, dense_path, gert_path, k=15)
     pr_dense_overall = dense_succ_queries / total_queries
     pr_gert_overall = (total_queries - dense_fail_queries + rescued_queries - damaged_queries) / total_queries
 
-    # Stratification on omitted gold tables
+    # Stratification on omitted gold tables (Table 8)
     omitted_strat = []
-    for b in ["1-hop", "2-hop", "3-hop+", "disconnected"]:
+    for b in ["1-hop", "2-hop", "3+ hops", "N/A"]:
         tot = bucket_omitted[b]
         rec = bucket_recovered[b]
         rec_rate = rec / tot if tot else 0.0
         omitted_strat.append({
-            "Structural distance": b,
-            "Omitted gold tables": tot,
-            "Tables recovered by PPR": rec,
-            "Recovery rate": f"{rec_rate:.2%}",
-        })
-
-    # Stratification across all gold tables (Dense Recall vs GERT Recall vs Gain)
-    all_strat = []
-    for b in ["1-hop", "2-hop", "3-hop+", "disconnected"]:
-        tot = bucket_all_total[b]
-        d_hit = bucket_all_dense_hit[b]
-        s_hit = bucket_all_gert_hit[b]
-        d_rec = d_hit / tot if tot else 0.0
-        s_rec = s_hit / tot if tot else 0.0
-        gain = s_rec - d_rec
-        all_strat.append({
-            "Structural distance": b,
-            "Total gold tables": tot,
-            "Dense Recall": f"{d_rec:.2%}",
-            "GERT Recall": f"{s_rec:.2%}",
-            "Gain": f"+{gain:.2%}" if gain >= 0 else f"{gain:.2%}",
+            "Dist.": b,
+            "Missed": tot,
+            "Recovered": rec,
+            "Rate (%)": f"{rec_rate * 100:.2f}%",
         })
 
     return {
@@ -203,7 +186,6 @@ def analyze_dataset_recovery(schema_csv, gold_path, dense_path, gert_path, k=15)
         "rescue_rate": rescue_rate,
         "damage_rate": damage_rate,
         "omitted_strat": omitted_strat,
-        "all_strat": all_strat,
     }
 
 
@@ -243,7 +225,7 @@ def main():
     datasets = [d for d in all_ds if os.path.exists(d["gert"]) and os.path.exists(d["dense"])]
 
     print("=" * 80)
-    print("GOLD TABLE RECOVERY & STRUCTURAL DISTANCE ANALYSIS (Section 4.8.1 & 4.8.2)")
+    print("GOLD TABLE RECOVERY & STRUCTURAL DISTANCE ANALYSIS (Section 4.6, Tables 6, 7, 8)")
     print("=" * 80)
 
     summary_rows = []
@@ -253,40 +235,33 @@ def main():
         res = analyze_dataset_recovery(d["schema"], d["gold"], d["dense"], d["gert"], k=15)
         summary_rows.append({
             "Dataset": d["name"],
-            "Dense PR": f"{res['pr_dense']:.2%}",
-            "GERT PR": f"{res['pr_gert']:.2%}",
-            "PR Gain": f"+{res['pr_gain']:.2%}",
-            "Recovery@15": f"{res['recovery_rate']:.2%}",
-            "RescueRate@15": f"{res['rescue_rate']:.2%}",
-            "DamageRate@15": f"{res['damage_rate']:.2%}",
+            "DR Table CR": f"{res['pr_dense']:.2%}",
+            "GERT Table CR": f"{res['pr_gert']:.2%}",
+            "ΔCR": f"+{res['pr_gain']:.2%}",
+            "Table Recovery": f"{res['recovery_rate']:.2%}",
+            "Query Gain": f"{res['rescue_rate']:.2%}",
+            "Query Loss": f"{res['damage_rate']:.2%}",
         })
         all_strats[d["name"]] = res
 
     df_summary = pd.DataFrame(summary_rows)
-    print("\n### 1. Overall Perfect Recall, Recovery & Rescue Analysis (Table 6 & Table 7)")
+    print("\n### 1. Overall Table CR Transition & Recovery (Table 6 & Table 7)")
     print(to_markdown_str(df_summary))
 
     report_lines = [
-        "# GERT Mechanistic Recovery & Stratification Analysis (Paper Section 4.8)\n",
+        "# GERT Mechanistic Recovery & Stratification Analysis (Paper Section 4.6)\n",
         "Evaluated with candidate budget Top-K = 15 across SpiderUnion, BirdUnion, and SynLink.\n",
-        "## 1. Overall Perfect Recall, Recovery & Rescue Analysis (Table 6 & Table 7)\n",
+        "## 1. Overall Table CR Transition & Recovery (Table 6 & Table 7)\n",
         to_markdown_str(df_summary),
     ]
 
     for name, res in all_strats.items():
-        print(f"\n### 2. {name} Structural distance stratification (Table 8: Structural Distance Stratification)")
-        print(f"#### (a) Recovery of gold tables missed by dense retrieval (Omitted Tables Recovery by Distance to Recalled Tables)")
+        print(f"\n### 2. {name} Recovery by FK Distance (Table 8)")
         df_omitted = pd.DataFrame(res["omitted_strat"])
         print(to_markdown_str(df_omitted))
-        print(f"\n#### (b) Gold-table recall by structural distance (Recall & Gain by Structural Distance to Nearest Seed)")
-        df_all = pd.DataFrame(res["all_strat"])
-        print(to_markdown_str(df_all))
 
-        report_lines.append(f"\n\n## 2. {name} Structural Distance Stratification (Table 8)\n")
-        report_lines.append("### (a) Recovery of gold tables missed by dense retrieval (Omitted Tables Recovery by Distance to Recalled Tables)\n")
+        report_lines.append(f"\n\n## 2. {name} Recovery by FK Distance (Table 8)\n")
         report_lines.append(to_markdown_str(df_omitted))
-        report_lines.append("\n\n### (b) Gold-table recall gain by distance (Recall Gain by Distance to Nearest Seed)\n")
-        report_lines.append(to_markdown_str(df_all))
 
     report_dir = os.path.join(current_dir, "reports")
     os.makedirs(report_dir, exist_ok=True)

@@ -6,7 +6,7 @@ query embeddings are produced by the local SGPT-1.3B sentence encoder that
 also backs the SingleDPR (SGPT) baseline. Responds to the reviewer request
 to disentangle the encoder difference from the PPR contribution.
 
-Metrics at K=15: Table Recall, Perfect Recall, Precision, F1, and the
+Metrics at K=15: Table Recall, Table CR, Precision, F1, and the
 average per-query routing time (query embedding + retrieval + PPR + fusion;
 graph construction is excluded from the timing).
 
@@ -241,7 +241,7 @@ def write_report(key: str, metrics: dict) -> None:
     lines = [
         f"# GERT encoder ablation ({label}, K={METRICS_K})",
         "",
-        "| Dataset | Method | Table Recall | Perfect Recall | Precision | F1 | avg(query_time) |",
+        "| Dataset | Method | Table Recall | Table CR | Precision | F1 | avg(query_time) |",
         "|---|---|---:|---:|---:|---:|---:|",
         f"| {label} | GERT_PPR(SGPT-1.3B) | {metrics['table_recall']:.4f} | "
         f"{metrics['table_cr']:.4f} | {metrics['precision']:.4f} | {metrics['f1']:.4f} | "

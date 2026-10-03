@@ -10,9 +10,11 @@ from collections import defaultdict, deque
 import pandas as pd
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = current_dir
-if project_root not in sys.path:
-    sys.path.append(project_root)
+repo_root = os.path.abspath(os.path.join(current_dir, "../../.."))
+if repo_root not in sys.path:
+    sys.path.append(repo_root)
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
 
 from calculate_overall_metrics_from_path import strict_name
 
@@ -153,34 +155,17 @@ def analyze_dataset_recovery(schema_csv, gold_path, dense_path, gert_path, k=15)
     pr_dense_overall = dense_succ_queries / total_queries
     pr_gert_overall = (total_queries - dense_fail_queries + rescued_queries - damaged_queries) / total_queries
 
-    # Stratification on omitted gold tables
+    # Stratification on omitted gold tables (Table 8)
     omitted_strat = []
-    for b in ["1-hop", "2-hop", "3-hop+", "disconnected"]:
+    for b in ["1-hop", "2-hop", "3+ hops", "N/A"]:
         tot = bucket_omitted[b]
         rec = bucket_recovered[b]
         rec_rate = rec / tot if tot else 0.0
         omitted_strat.append({
-            "Structural distance": b,
-            "Omitted gold tables": tot,
-            "Tables recovered by PPR": rec,
-            "Recovery rate": f"{rec_rate:.2%}",
-        })
-
-    # Stratification across all gold tables (Dense Recall vs GERT Recall vs Gain)
-    all_strat = []
-    for b in ["1-hop", "2-hop", "3-hop+", "disconnected"]:
-        tot = bucket_all_total[b]
-        d_hit = bucket_all_dense_hit[b]
-        s_hit = bucket_all_gert_hit[b]
-        d_rec = d_hit / tot if tot else 0.0
-        s_rec = s_hit / tot if tot else 0.0
-        gain = s_rec - d_rec
-        all_strat.append({
-            "Structural distance": b,
-            "Total gold tables": tot,
-            "Dense Recall": f"{d_rec:.2%}",
-            "GERT Recall": f"{s_rec:.2%}",
-            "Gain": f"+{gain:.2%}" if gain >= 0 else f"{gain:.2%}",
+            "Dist.": b,
+            "Missed": tot,
+            "Recovered": rec,
+            "Rate (%)": f"{rec_rate * 100:.2f}%",
         })
 
     return {
@@ -196,38 +181,40 @@ def analyze_dataset_recovery(schema_csv, gold_path, dense_path, gert_path, k=15)
         "rescue_rate": rescue_rate,
         "damage_rate": damage_rate,
         "omitted_strat": omitted_strat,
-        "all_strat": all_strat,
     }
 
 
 def main():
+    ablation_res = os.path.join(repo_root, "experiments/02_ablation_study/01_component_ablation/archive_results")
+    data_dir = os.path.join(repo_root, "data") if os.path.exists(os.path.join(repo_root, "data")) else os.path.join(repo_root, "dataset_v2")
+
     all_ds = [
         {
             "name": "SpiderUnion",
-            "schema": os.path.join(project_root, "dataset_v2/spider/spider_union_schema_FK.csv"),
-            "gold": os.path.join(project_root, "dataset_v2/spider/murre_spider_dev.json"),
-            "dense": os.path.join(project_root, "output/spider_results/SpiderUnion_w_o_PPR.json"),
-            "gert": os.path.join(project_root, "output/spider_results/SpiderUnion_GERT_Full.json"),
+            "schema": os.path.join(data_dir, "spider/spider_union_schema_FK.csv"),
+            "gold": os.path.join(data_dir, "spider/murre_spider_dev.json"),
+            "dense": os.path.join(ablation_res, "spider_results/SpiderUnion_w_o_PPR.json"),
+            "gert": os.path.join(ablation_res, "spider_results/SpiderUnion_GERT_Full.json"),
         },
         {
             "name": "BirdUnion",
-            "schema": os.path.join(project_root, "dataset_v2/bird/bird_union_schema_FK.csv"),
-            "gold": os.path.join(project_root, "dataset_v2/bird/murre_bird_dev.json"),
-            "dense": os.path.join(project_root, "output/bird_results/BirdUnion_w_o_PPR.json"),
-            "gert": os.path.join(project_root, "output/bird_results/BirdUnion_GERT_Full.json"),
+            "schema": os.path.join(data_dir, "bird/bird_union_schema_FK.csv"),
+            "gold": os.path.join(data_dir, "bird/murre_bird_dev.json"),
+            "dense": os.path.join(ablation_res, "bird_results/BirdUnion_w_o_PPR.json"),
+            "gert": os.path.join(ablation_res, "bird_results/BirdUnion_GERT_Full.json"),
         },
         {
             "name": "SynLink",
-            "schema": os.path.join(project_root, "dataset_v2/SynLink/SynSQL_schema_csv_300.csv"),
-            "gold": os.path.join(project_root, "dataset_v2/SynLink/Formal_moderate_1k_gd.json"),
-            "dense": os.path.join(project_root, "output/synlink_results/SynLink_w_o_PPR.json"),
-            "gert": os.path.join(project_root, "output/synlink_results/SynLink_GERT_Full.json"),
+            "schema": os.path.join(data_dir, "SynLink/SynSQL_schema_csv_300.csv"),
+            "gold": os.path.join(data_dir, "SynLink/Formal_moderate_1k_gd.json"),
+            "dense": os.path.join(ablation_res, "synlink_results/SynLink_w_o_PPR.json"),
+            "gert": os.path.join(ablation_res, "synlink_results/SynLink_GERT_Full.json"),
         },
     ]
-    datasets = [d for d in all_ds if os.path.exists(d["gert"])]
+    datasets = [d for d in all_ds if os.path.exists(d["gert"]) and os.path.exists(d["dense"])]
 
     print("=" * 80)
-    print("GOLD TABLE RECOVERY & STRUCTURAL DISTANCE ANALYSIS (dataset_v2)")
+    print("GOLD TABLE RECOVERY & STRUCTURAL DISTANCE ANALYSIS")
     print("=" * 80)
 
     summary_rows = []
@@ -237,40 +224,36 @@ def main():
         res = analyze_dataset_recovery(d["schema"], d["gold"], d["dense"], d["gert"], k=15)
         summary_rows.append({
             "Dataset": d["name"],
-            "w/o PPR (Dense PR)": f"{res['pr_dense']:.2%}",
-            "GERT (PR)": f"{res['pr_gert']:.2%}",
-            "PR gain": f"+{res['pr_gain']:.2%}",
-            "Recovery@15": f"{res['recovery_rate']:.2%}",
-            "RescueRate@15": f"{res['rescue_rate']:.2%}",
-            "DamageRate@15": f"{res['damage_rate']:.2%}",
+            "DR Table CR": f"{res['pr_dense']:.2%}",
+            "GERT Table CR": f"{res['pr_gert']:.2%}",
+            "ΔCR": f"+{res['pr_gain']:.2%}",
+            "Table Recovery": f"{res['recovery_rate']:.2%}",
+            "Query Gain": f"{res['rescue_rate']:.2%}",
+            "Query Loss": f"{res['damage_rate']:.2%}",
         })
         all_strats[d["name"]] = res
 
     df_summary = pd.DataFrame(summary_rows)
-    print("\n### 1. Overall Perfect Recall, Recovery & Rescue Analysis")
+    print("\n### 1. Overall Table CR Transition & Recovery (Table 6 & Table 7)")
     print(df_summary.to_markdown(index=False))
 
     report_lines = [
-        "# GERT Comprehensive In-Depth Recovery & Stratification Analysis (dataset_v2)\n",
+        "# GERT Comprehensive In-Depth Recovery & Stratification Analysis\n",
         "Evaluated with candidate budget Top-K = 15\n",
-        "## 1. Overall Perfect Recall, Recovery & Rescue Analysis\n",
+        "## 1. Overall Table CR Transition & Recovery (Table 6 & Table 7)\n",
         df_summary.to_markdown(index=False),
     ]
 
     for name, res in all_strats.items():
-        print(f"\n### 2. {name} Structural distance stratification (Structural Distance Stratification)")
-        print(f"#### (a) Recovery of gold tables missed by dense retrieval (Omitted Tables Recovery by Distance to Recalled Tables)")
+        print(f"\n### 2. {name} Recovery by FK Distance (Table 8)")
         print(pd.DataFrame(res["omitted_strat"]).to_markdown(index=False))
-        print(f"\n#### (b) Gold-table recall by structural distance (Recall & Gain by Structural Distance to Nearest Seed)")
-        print(pd.DataFrame(res["all_strat"]).to_markdown(index=False))
 
-        report_lines.append(f"\n\n## 2. {name} Structural Distance Stratification\n")
-        report_lines.append("### (a) Recovery of gold tables missed by dense retrieval (Omitted Tables Recovery by Distance to Recalled Tables)\n")
+        report_lines.append(f"\n\n## 2. {name} Recovery by FK Distance (Table 8)\n")
         report_lines.append(pd.DataFrame(res["omitted_strat"]).to_markdown(index=False))
-        report_lines.append("\n\n### (b) Gold-table recall gain by distance (Recall Gain by Distance to Nearest Seed)\n")
-        report_lines.append(pd.DataFrame(res["all_strat"]).to_markdown(index=False))
 
-    summary_file = os.path.join(project_root, "output/gert_recovery_analysis_summary.md")
+    summary_dir = os.path.join(repo_root, "output")
+    os.makedirs(summary_dir, exist_ok=True)
+    summary_file = os.path.join(summary_dir, "gert_recovery_analysis_summary.md")
     with open(summary_file, "w", encoding="utf-8") as f:
         f.write("\n".join(report_lines) + "\n")
     print(f"\nSummary report saved to {summary_file}")

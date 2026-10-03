@@ -53,10 +53,10 @@ def evaluate(gold_rows, pred_rows, k: int = 15):
         f1s.append(f1)
 
     return {
-        "Table Rec": mean(recalls) * 100,
-        "Table CR": mean(complete) * 100,
-        "Precision": mean(precisions) * 100,
-        "F1-Score": mean(f1s) * 100,
+        "Table Recall (%)": mean(recalls) * 100,
+        "Table CR (%)": mean(complete) * 100,
+        "Precision (%)": mean(precisions) * 100,
+        "F1-Score (%)": mean(f1s) * 100,
     }
 
 
@@ -101,19 +101,19 @@ def main():
                 rows.append({
                     "Dataset": ds_name,
                     "Method": label,
-                    "Table Rec": f"{metrics['Table Rec']:.2f}%",
-                    "Table CR": f"{metrics['Table CR']:.2f}%",
-                    "Precision": f"{metrics['Precision']:.2f}%",
-                    "F1-Score": f"{metrics['F1-Score']:.2f}%",
+                    "Table Recall (%)": f"{metrics['Table Recall (%)']:.2f}",
+                    "Table CR (%)": f"{metrics['Table CR (%)']:.2f}",
+                    "Precision (%)": f"{metrics['Precision (%)']:.2f}",
+                    "F1-Score (%)": f"{metrics['F1-Score (%)']:.2f}",
                 })
             else:
                 rows.append({
                     "Dataset": ds_name,
                     "Method": label,
-                    "Table Rec": "N/A",
-                    "Table CR": "N/A",
-                    "Precision": "N/A",
-                    "F1-Score": "N/A",
+                    "Table Recall (%)": "N/A",
+                    "Table CR (%)": "N/A",
+                    "Precision (%)": "N/A",
+                    "F1-Score (%)": "N/A",
                 })
 
     df = pd.DataFrame(rows)

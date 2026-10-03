@@ -1,10 +1,17 @@
 # Main benchmark
 
-This suite evaluates table-level schema linking on SpiderUnion, BirdUnion, and SynLink at `K=15`. The paper's Table 2 reports table recall, complete recall (Table CR), precision, and F1. Figure 2 groups complete recall by the number of gold tables.
+This suite evaluates table-level schema linking on SpiderUnion, BirdUnion, and SynLink at `K=15`.
+- **Main Experiment (Table 2)**: Evaluates Table Recall, Complete Recall (Table CR), Precision, and F1.
+- **Multi-Table Experiment (Figure 2)**: Groups Table CR by the number of gold tables (1, 2, 3, and 4+).
 
-## Inputs and GERT runs
+## Data & Results Structure
 
-Run from the repository root. Each command uses the indicated gold JSON and schema CSV and writes predictions under `main_experiment_test/<dataset>/`. Configure Neo4j and the embedding API using the [root README](../../README.md). Use a dedicated Neo4j database: graph construction deletes existing nodes, relationships, and removable indexes. Complete prediction files are reused; append `--force` to rebuild the graph and overwrite predictions. The documented commands use API embeddings and do not require local model paths.
+- `paper_baseline_result/`: Contains paper baseline predictions across SpiderUnion, BirdUnion, and SynLink (`BM25`, `CORE-T`, `CRED-SQL`, `CRUSH4SQL`, `GERT`, `GESR_1hop`, `GESR_2hop`, `JAR`, `LinkAlign`, `MURRE`, `sgpt`).
+- `main_experiment_test/`: Output directory when running new experiments via `run_main_experiments.py`.
+
+## Running GERT
+
+Run from the repository root:
 
 | Dataset | Gold JSON | Schema CSV | Command |
 | --- | --- | --- | --- |
@@ -12,14 +19,37 @@ Run from the repository root. Each command uses the indicated gold JSON and sche
 | BirdUnion | `data/bird/murre_bird_dev.json` | `data/bird/bird_union_schema_FK.csv` | `python experiments/01_main_benchmark/run_main_experiments.py --dataset bird --gert-only` |
 | SynLink | `data/SynLink/Formal_moderate_1k_gd.json` | `data/SynLink/SynSQL_schema_csv_300.csv` | `python experiments/01_main_benchmark/run_main_experiments.py --dataset synlink --gert-only` |
 
-## Evaluation
+Complete prediction files are reused; append `--force` to rebuild the graph and overwrite predictions.
 
-Evaluate each prediction file separately:
+## Evaluation Commands
 
+Both evaluation scripts support passing either an entire directory (automatically matches and evaluates SpiderUnion, BirdUnion, and SynLink) or a single prediction JSON.
+
+### 1. Main Experiment Metrics (Table 2: Recall, CR, Precision, F1)
+
+Evaluate all 3 datasets for a method in a single command:
 ```bash
-python experiments/01_main_benchmark/scripts/calculate_overall_metrics_from_path.py experiments/01_main_benchmark/main_experiment_test/spider/gert.json --k 15 --method GERT
-python experiments/01_main_benchmark/scripts/calculate_overall_metrics_from_path.py experiments/01_main_benchmark/main_experiment_test/bird/gert.json --k 15 --method GERT
-python experiments/01_main_benchmark/scripts/calculate_overall_metrics_from_path.py experiments/01_main_benchmark/main_experiment_test/synlink/gert.json --k 15 --method GERT
+# Evaluate GERT archived results
+python experiments/01_main_benchmark/scripts/calculate_overall_metrics_from_path.py experiments/01_main_benchmark/paper_baseline_result/GERT --k 15
+
+# Or evaluate any baseline (e.g., CRED-SQL, CRUSH4SQL)
+python experiments/01_main_benchmark/scripts/calculate_overall_metrics_from_path.py experiments/01_main_benchmark/paper_baseline_result/CRED-SQL --k 15
 ```
 
-For each query, compare the first 15 predicted tables with its gold table set. Table recall is the fraction of gold tables retrieved; Table CR is 1 only when all gold tables are retrieved; precision is the fraction of retrieved tables that are gold; F1 is the harmonic mean of query-level precision and recall. Report the mean over queries. For complexity strata, compute Table CR separately for 1, 2, 3, and 4+ gold tables. The archived results are retained separately from new predictions.
+Or evaluate newly generated prediction files individually:
+```bash
+python experiments/01_main_benchmark/scripts/calculate_overall_metrics_from_path.py experiments/01_main_benchmark/main_experiment_test/spider/gert.json --k 15 --method GERT
+```
+
+### 2. Multi-Table Grouped Experiment (Figure 2: Table CR by 1, 2, 3, 4+ Gold Tables)
+
+Evaluate complete recall stratified by gold table count:
+```bash
+# Evaluate GERT across 1, 2, 3, and 4+ gold tables
+python experiments/01_main_benchmark/scripts/calculate_grouped_cr_from_path.py experiments/01_main_benchmark/paper_baseline_result/GERT --k 15
+
+# Or evaluate newly generated predictions
+python experiments/01_main_benchmark/scripts/calculate_grouped_cr_from_path.py experiments/01_main_benchmark/main_experiment_test/spider/gert.json --k 15 --method GERT
+```
+
+> **Tip**: Append `--output <filename>.md` to any command to export the markdown table directly to a file.

@@ -17,6 +17,7 @@ import re
 from pathlib import Path
 from statistics import mean
 from typing import Any, Dict, List, Set, Tuple
+import pandas as pd
 
 
 def strict_name(value: Any) -> str:
@@ -120,10 +121,10 @@ def evaluate_dataset_file(json_path: Path, eval_k: int = 15) -> Dict[str, Any]:
         "total_queries": len(dense_recs),
         "dense": {
             "Table Rec.": mean(dense_recs),
-            "Perfect Recall (PR)": mean(dense_prs),
+            "Table CR": mean(dense_prs),
             "Precision": mean(dense_precs),
             "F1": mean(dense_f1s),
-            "Grouped PR": {
+            "Grouped Table CR": {
                 b: (grouped_dense[b][0] / grouped_dense[b][1] if grouped_dense[b][1] else 0.0)
                 for b in ("1", "2", "3", "4+")
             },
@@ -131,10 +132,10 @@ def evaluate_dataset_file(json_path: Path, eval_k: int = 15) -> Dict[str, Any]:
         },
         "gert": {
             "Table Rec.": mean(gert_recs),
-            "Perfect Recall (PR)": mean(gert_prs),
+            "Table CR": mean(gert_prs),
             "Precision": mean(gert_precs),
             "F1": mean(gert_f1s),
-            "Grouped PR": {
+            "Grouped Table CR": {
                 b: (grouped_gert[b][0] / grouped_gert[b][1] if grouped_gert[b][1] else 0.0)
                 for b in ("1", "2", "3", "4+")
             },
@@ -142,19 +143,26 @@ def evaluate_dataset_file(json_path: Path, eval_k: int = 15) -> Dict[str, Any]:
         "recovery": {
             "total_omitted_tables": total_omitted,
             "recovered_tables": recovered_omitted,
-            "Recovery@K": recovered_omitted / total_omitted if total_omitted else 0.0,
+            "Table Recovery": recovered_omitted / total_omitted if total_omitted else 0.0,
             "dense_fail_queries": dense_fail_queries,
             "rescued_queries": rescued_queries,
-            "RescueRate@K": rescued_queries / dense_fail_queries if dense_fail_queries else 0.0,
+            "Query Gain": rescued_queries / dense_fail_queries if dense_fail_queries else 0.0,
             "dense_succ_queries": dense_succ_queries,
             "damaged_queries": damaged_queries,
-            "DamageRate@K": damaged_queries / dense_succ_queries if dense_succ_queries else 0.0,
+            "Query Loss": damaged_queries / dense_succ_queries if dense_succ_queries else 0.0,
         },
     }
 
 
 def main():
-    base_dir = Path(__file__).resolve().parent / "output" / "merged_dense_gert"
+    script_dir = Path(__file__).resolve().parent
+    repo_root = script_dir.parents[2]
+    candidate_dirs = [
+        script_dir / "output" / "merged_dense_gert",
+        repo_root / "experiments" / "04_mechanistic_analysis" / "02_connectivity_experiment" / "data_inputs",
+        repo_root / "output" / "merged_dense_gert",
+    ]
+    base_dir = next((p for p in candidate_dirs if p.exists() and (p / "SpiderUnion.json").exists()), candidate_dirs[0])
     datasets = ["SpiderUnion", "BirdUnion", "SynLink"]
 
     print("=" * 90)
@@ -163,6 +171,7 @@ def main():
     print("=" * 90)
 
     summary_rows = []
+    grouped_rows = []
 
     for ds in datasets:
         file_path = base_dir / f"{ds}.json"
@@ -177,42 +186,29 @@ def main():
 
         summary_rows.append({
             "Dataset": ds,
-            "Samples": res["total_queries"],
-            "Dense Rec": d["Table Rec."],
-            "Dense PR": d["Perfect Recall (PR)"],
-            "Dense Prec": d["Precision"],
-            "Dense F1": d["F1"],
-            "GERT Rec": g["Table Rec."],
-            "GERT PR": g["Perfect Recall (PR)"],
-            "GERT Prec": g["Precision"],
-            "GERT F1": g["F1"],
-            "Gain PR": g["Perfect Recall (PR)"] - d["Perfect Recall (PR)"],
-            "Recovery@15": r["Recovery@K"],
-            "RescueRate@15": r["RescueRate@K"],
-            "DamageRate@15": r["DamageRate@K"],
+            "Dense Table CR": f"{d['Table CR'] * 100:.2f}%",
+            "GERT Table CR": f"{g['Table CR'] * 100:.2f}%",
+            "ΔCR": f"{(g['Table CR'] - d['Table CR']) * 100:+.2f}%",
+            "Table Recovery": f"{r['Table Recovery'] * 100:.2f}%",
+            "Query Gain": f"{r['Query Gain'] * 100:.2f}%",
+            "Query Loss": f"{r['Query Loss'] * 100:.2f}%",
         })
 
-        print(f"\n▶ Dataset: {ds} (total queries: {res['total_queries']})")
-        print("-" * 75)
-        print(f"{'Metric':<22} | {'Dense retrieval':<18} | {'GERT (Full)':<18} | {'Delta':<12}")
-        print("-" * 75)
-        print(f"{'Table Rec.':<22} | {d['Table Rec.']*100:6.2f}%{'':<11} | {g['Table Rec.']*100:6.2f}%{'':<11} | {(g['Table Rec.']-d['Table Rec.'])*100:+6.2f}%")
-        print(f"{'Perfect Recall (PR)':<22} | {d['Perfect Recall (PR)']*100:6.2f}%{'':<11} | {g['Perfect Recall (PR)']*100:6.2f}%{'':<11} | {(g['Perfect Recall (PR)']-d['Perfect Recall (PR)'])*100:+6.2f}%")
-        print(f"{'Precision':<22} | {d['Precision']*100:6.2f}%{'':<11} | {g['Precision']*100:6.2f}%{'':<11} | {(g['Precision']-d['Precision'])*100:+6.2f}%")
-        print(f"{'F1-Score':<22} | {d['F1']*100:6.2f}%{'':<11} | {g['F1']*100:6.2f}%{'':<11} | {(g['F1']-d['F1'])*100:+6.2f}%")
-
-        print("\n  [PR@15 by number of gold tables]")
-        counts = d["Grouped Counts"]
         for b in ("1", "2", "3", "4+"):
-            cnt = counts[b]
-            pr_d_b = d["Grouped PR"][b]
-            pr_g_b = g["Grouped PR"][b]
-            print(f"    - {b} tables (N= {cnt:4d}): Dense PR = {pr_d_b*100:6.2f}%  -->  GERT PR = {pr_g_b*100:6.2f}% (gain {(pr_g_b-pr_d_b)*100:+6.2f}%)")
+            grouped_rows.append({
+                "Dataset": ds,
+                "Gold Tables": b,
+                "N": d["Grouped Counts"][b],
+                "Dense Table CR": f"{d['Grouped Table CR'][b] * 100:.2f}%",
+                "GERT Table CR": f"{g['Grouped Table CR'][b] * 100:.2f}%",
+                "ΔCR": f"{(g['Grouped Table CR'][b] - d['Grouped Table CR'][b]) * 100:+.2f}%",
+            })
 
-        print("\n  [Structural propagation and recovery metrics]")
-        print(f"    - Gold tables missed by dense retrieval: {r['total_omitted_tables']} | Gold tables recovered: {r['recovered_tables']} | Recovery@15: {r['Recovery@K']*100:.2f}%")
-        print(f"    - Dense retrieval failures: {r['dense_fail_queries']} | Queries rescued by GERT: {r['rescued_queries']} | RescueRate@15: {r['RescueRate@K']*100:.2f}%")
-        print(f"    - Dense retrieval successes: {r['dense_succ_queries']} | Queries damaged by GERT: {r['damaged_queries']} | DamageRate@15: {r['DamageRate@K']*100:.2f}%")
+    print("\n### 1. Main Dense vs. GERT Comparison (Table 2 & Tables 6, 7)")
+    print(pd.DataFrame(summary_rows).to_markdown(index=False))
+
+    print("\n### 2. Multi-Table Table CR Stratification (Figure 2)")
+    print(pd.DataFrame(grouped_rows).to_markdown(index=False))
 
     print("\n" + "=" * 90)
     print("Metric recomputation completed; compare these values with the paper tables before reporting.")

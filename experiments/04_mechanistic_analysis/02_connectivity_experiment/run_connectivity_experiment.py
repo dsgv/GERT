@@ -211,8 +211,8 @@ def format_markdown_table(all_results: Dict[str, Any], subset_type: str = "multi
     lines = [
         f"### {title}",
         "",
-        "| Dataset | Method | Path coverage (PathCov@15) | Induced connectivity (Conn@15) | Table recall | Precision | F1 |",
-        "| :--- | :--- | :---: | :---: | :---: | :---: | :---: |",
+        "| Dataset | Method | Table Rec | Table CR | Conn |",
+        "| :--- | :--- | :---: | :---: | :---: |",
     ]
 
     for ds_name, res in all_results.items():
@@ -229,47 +229,47 @@ def format_markdown_table(all_results: Dict[str, Any], subset_type: str = "multi
                 formatted = f"{value * 100:.2f}%"
                 return f"**{formatted}**" if value == max(metrics_dict[other][key] for other in METHODS) else formatted
 
-            pc = cell("path_coverage")
-            conn = cell("connectivity")
             rec = cell("table_rec")
-            prec = cell("precision")
-            f1 = cell("f1")
+            pc = cell("table_cr")
+            conn = cell("conn")
 
-            lines.append(f"| {prefix} | {m} | {pc} | {conn} | {rec} | {prec} | {f1} |")
+            lines.append(f"| {prefix} | {m} | {rec} | {pc} | {conn} |")
 
     return "\n".join(lines)
 
 
 def format_latex_table(all_results: Dict[str, Any]) -> str:
-    """Format multi-table comparison into IEEE conference LaTeX code."""
+    """Format multi-table comparison into paper Table 9 LaTeX code."""
     latex = [
-        r"\begin{table*}[t]",
+        r"\begin{table}[t]",
         r"  \centering",
-        r"  \caption{Path coverage and induced connectivity on queries with at least two gold tables (\%, $K=15$).}",
-        r"  \label{tab:connectivity-pathcov}",
-        r"  \vspace{-0.8em}",
-        r"  \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}llccccc}",
+        r"  \caption{Comparison of topological extension strategies on the multi-table query subset (gold tables $\ge 2$; best results in \textbf{bold}).}",
+        r"  \label{tab:connectivity_comparison}",
+        r"  \vspace{-1em}",
+        r"  \setlength{\tabcolsep}{4pt}",
+        r"  \begin{tabular}{llccc}",
         r"    \toprule",
-        r"    Dataset & Retrieval method & Path coverage (PathCov) & Induced connectivity (Conn) & Table recall & Precision & F1 \\",
+        r"    Dataset & Method & Table Rec & Table CR & Conn \\",
         r"    \midrule",
     ]
 
     for ds_name, res in all_results.items():
         m_dict = res["multi_table"]
+        sample_count = res["multi_table_queries"]
         for index, method in enumerate(METHODS):
             def cell(key: str) -> str:
                 value = m_dict[method][key]
                 formatted = f"{value * 100:.2f}"
                 return rf"\textbf{{{formatted}}}" if value == max(m_dict[other][key] for other in METHODS) else formatted
 
-            label = rf"\multirow{{4}}{{*}}{{{ds_name}}}" if index == 0 else ""
-            values = " & ".join(cell(key) for key in ("path_coverage", "connectivity", "table_rec", "precision", "f1"))
+            label = rf"\multirow{{4}}{{*}}{{\shortstack{{{ds_name}\\\textit{{(N={sample_count})}}}}}}" if index == 0 else ""
+            values = f"{cell('table_rec')} & {cell('table_cr')} & {cell('conn')}"
             latex.append(f"    {label} & {method} & {values} \\\\")
         latex.append(r"    \midrule" if ds_name != "SynLink" else r"    \bottomrule")
 
     latex.extend([
-        r"  \end{tabular*}",
-        r"\end{table*}",
+        r"  \end{tabular}",
+        r"\end{table}",
     ])
     return "\n".join(latex)
 

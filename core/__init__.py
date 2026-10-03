@@ -1,1 +1,1 @@
-"""GERT core algorithms, graph construction, routing, and evaluation."""
+"""GERT core algorithms, graph construction, and routing engine."""
